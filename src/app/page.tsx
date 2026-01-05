@@ -1,3 +1,8 @@
+import { getSession } from "@auth0/nextjs-auth0";
+
+const session = await getSession(); 
+const href = session ? "/dashboard" : "/api/auth/login?screen_hint=signup";
+
 export default function Home() {
   return (
      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
@@ -17,7 +22,7 @@ export default function Home() {
            </p>
 
            <a
-              href="/api/auth/login"
+              href={href}
               className="inline-block px-8 pt-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transition"
            >
               Get Started
@@ -79,7 +84,7 @@ export default function Home() {
               Ready to take control of your maintenance?
            </h2>
            <a
-              href="/api/auth/login"
+              href={href}
               className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transition"
            >
               Create Your Account
