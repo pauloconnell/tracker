@@ -1,8 +1,10 @@
 import ServiceDue from "@/components/Dashboard/ServiceDue";
+import { getAllVehicles } from "@/lib/vehicles";
 import VehicleList from "@/components/Dashboard/VehicleList";
 import Link from "next/link";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+    const vehicles = await getAllVehicles();
   return (
     <div className="min-h-screen bg-gray-50"> 
       {/* Same background as homepage */}
@@ -31,8 +33,11 @@ export default function DashboardPage() {
 
         {/* Vehicles */}
         <section className="flex flex-col gap-6">
+              <Link href="/vehicles/new" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" >
+          Add Vehicle
+        </Link>
           <h2 className="text-2xl font-semibold">Vehicles</h2>
-          <VehicleList />
+          <VehicleList vehicles={vehicles} />
         </section>
       </div>
     </div>

@@ -2,28 +2,15 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
 
-export default function RecordServiceForm() {
-   const searchParams = useSearchParams();
-   const prefill = {
-      vehicleId: searchParams.get('vehicleId') || '',
-      serviceType: searchParams.get('serviceType') || '',
-      location: searchParams.get('location') || 'na',
-   };
-
+export default function RecordServiceForm({ prefill, vehicles }) {
    const [form, setForm] = useState({
-      vehicleId: prefill.vehicleId,
+      id: prefill.id,
       serviceType: prefill.serviceType,
       date: new Date().toISOString().split('T')[0],
-      location: prefill.location.split(','), // or your checkbox logic
+      location: prefill.location?.split(',') ?? ['na'],
       notes: '',
    });
-
-   const vehicles = [
-      { vehicleId: 'subaru-forester', name: '2014 Subaru Forester' },
-      { vehicleId: 'toyota-tacoma', name: '2018 Toyota Tacoma' },
-   ];
 
    const serviceTypes = [
       'Oil Change',
@@ -54,11 +41,21 @@ export default function RecordServiceForm() {
       setForm({ ...form, [e.target.name]: e.target.value });
    }
 
-   function handleSubmit(e) {
+   const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log('Submitting service record:', form);
-      // TODO: send to API route
-   }
+
+      const res = await fetch('/api/service-records', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify(form),
+      });
+
+      if (res.ok) {
+         router.push(`/vehicles/${form.id}`);
+      } else {
+         alert('Failed to save record');
+      }
+   };
 
    // for cancel button
    const router = useRouter();
@@ -72,16 +69,17 @@ export default function RecordServiceForm() {
          <div>
             <label className="block font-medium mb-1">Vehicle</label>
             <select
-               name="vehicleId"
-               value={form.vehicleId}
-               onChange={handleChange}
-               className="w-full border rounded-lg p-2"
-               required
+               name="id"
+               value={form.id}
+               onChange={(e) => setForm({ ...form, id: e.target.value })}
+               className="border rounded px-3 py-2 w-full"
             >
-               <option value="">Select vehicle</option>
+          
+               <option value="">Select a vehicle</option>
                {vehicles.map((v) => (
-                  <option key={v.vehicleId} value={v.vehicleId}>
-                     {v.name}
+                  <option key={v._id} value={v._id}>
+          
+                     {v.name || `${v.year} ${v.make} ${v.model}`}
                   </option>
                ))}
             </select>

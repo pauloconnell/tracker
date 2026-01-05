@@ -1,0 +1,16 @@
+import mongoose, { Schema } from "mongoose";
+
+const ServiceRecordSchema = new Schema(
+  {
+    vehicleId: { type: Schema.Types.ObjectId, ref: "Vehicle" },
+    serviceType: String,
+    date: String,
+    mileage: Number,
+    location: [String],
+    notes: String,
+  },
+  { timestamps: true }
+);
+
+export default mongoose.models.ServiceRecord ||
+  mongoose.model("ServiceRecord", ServiceRecordSchema);
