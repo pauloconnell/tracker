@@ -1,99 +1,105 @@
-import Link from "next/link";
-import { getVehicleById, getServiceHistory } from "@/lib/vehicles";
+import Link from 'next/link';
+import { getVehicleById, getServiceHistory } from '@/lib/vehicles';
 
 interface Props {
-  params: { id: string };
+   params: { id: string };
 }
 
 export default async function VehiclePage({ params }: Props) {
-  const { id } = params;
+   const { id } = params;
 
-  // Fetch vehicle + service history from MongoDB
-  const vehicle = await getVehicleById(id);
-  console.log({vehicle})
-  const history = await getServiceHistory(id);
+   // Fetch vehicle + service history from MongoDB
+   const vehicle = await getVehicleById(id);
+   console.log({ vehicle });
+   const history = await getServiceHistory(id);
 
-  return (
-    <div className="space-y-6">
-      {/* Back Button */}
-      <div className="flex justify-between items-center mb-6">
-        <Link
-          href="/dashboard"
-          className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
-        >
-          Back to Dashboard
-        </Link>
+   return (
+      <div className="space-y-6">
+         {/* Back Button */}
+         <div className="flex justify-between items-center mb-6 mt-3 mx-6">
+            <Link
+               href="/dashboard"
+               className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
+            >
+               Back to Dashboard
+            </Link>
+            <Link
+               href={`/vehicles/${id}/edit`}
+               className="bg-yellow-600 text-white px-4 py-2 rounded-lg"
+            >
+               Edit Vehicle
+            </Link>
+         </div>
+
+         {/* Vehicle Title */}
+         <h1 className="text-2xl font-bold">
+            {vehicle?.year} {vehicle?.make} {vehicle?.model} Name: {vehicle?.name}
+         </h1>
+
+         {/* Action Buttons */}
+         <div className="flex gap-4">
+            <Link
+               href={{
+                  pathname: '/record-service',
+                  query: {
+                     id,
+                     serviceType: 'Work Order',
+                     location: 'na',
+                  },
+               }}
+               className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+            >
+               Create Work Order
+            </Link>
+
+            <Link
+               href={{
+                  pathname: '/record-service',
+                  query: {
+                     id,
+                     serviceType: 'Inspection',
+                     name: vehicle?.name,
+                     location: 'na',
+                  },
+               }}
+               className="bg-green-600 text-white px-4 py-2 rounded-lg"
+            >
+               Record Inspection
+            </Link>
+
+            <Link
+               href={{
+                  pathname: '/record-service',
+                  query: {
+                     id,
+                     name: vehicle?.name,
+                  },
+               }}
+               className="bg-green-600 text-white px-4 py-2 rounded-lg"
+            >
+               Record Service
+            </Link>
+         </div>
+
+         {/* Service History */}
+         <div>
+            <h2 className="text-xl font-semibold mb-2">Service History</h2>
+
+            {history.length === 0 && (
+               <p className="text-gray-500">No service records yet.</p>
+            )}
+
+            <ul className="space-y-3">
+               {history.map((item) => (
+                  <li key={item._id} className="border p-3 rounded-lg">
+                     <div className="font-medium">{item.serviceType}</div>
+                     <div className="text-sm text-gray-600">
+                        {item.date} — {item.mileage} km
+                     </div>
+                  </li>
+               ))}
+            </ul>
+         </div>
       </div>
-
-      {/* Vehicle Title */}
-      <h1 className="text-2xl font-bold">
-        {vehicle?.year} {vehicle?.make} {vehicle?.model} Name: {vehicle?.name}
-      </h1>
-
-      {/* Action Buttons */}
-      <div className="flex gap-4">
-        <Link
-          href={{
-            pathname: "/record-service",
-            query: {
-              id,
-              serviceType: "Work Order",
-              location: "na",
-            },
-          }}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-        >
-          Create Work Order
-        </Link>
-
-        <Link
-          href={{
-            pathname: "/record-service",
-            query: {
-              id,
-              serviceType: "Inspection",
-              name: vehicle?.name,
-              location: "na",
-            },
-          }}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg"
-        >
-          Record Inspection
-        </Link>
-
-        <Link
-          href={{
-            pathname: "/record-service",
-            query: {
-              id,
-              name: vehicle?.name,
-            },
-          }}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg"
-        >
-          Record Service
-        </Link>
-      </div>
-
-      {/* Service History */}
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Service History</h2>
-
-        {history.length === 0 && (
-          <p className="text-gray-500">No service records yet.</p>
-        )}
-
-        <ul className="space-y-3">
-          {history.map((item) => (
-            <li key={item._id} className="border p-3 rounded-lg">
-              <div className="font-medium">{item.serviceType}</div>
-              <div className="text-sm text-gray-600">
-                {item.date} — {item.mileage} km
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
+   );
 }
