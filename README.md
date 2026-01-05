@@ -1,5 +1,33 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+
+
+
+
+
+// add db
+
+// then : we need a page for 'create work order' which essentially just uses the same 'service' form, but instead creates a work order instead of a 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Getting Started
 
 First, run the development server:

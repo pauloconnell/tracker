@@ -2,29 +2,42 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 export default function RecordServiceForm() {
+   const searchParams = useSearchParams();
+   const prefill = {
+      vehicleId: searchParams.get('vehicleId') || '',
+      serviceType: searchParams.get('serviceType') || '',
+      location: searchParams.get('location') || 'na',
+   };
+
    const [form, setForm] = useState({
-      vehicleId: '',
-      serviceType: '',
-      location: ['N/A'],
-      date: '',
-      mileage: '',
+      vehicleId: prefill.vehicleId,
+      serviceType: prefill.serviceType,
+      date: new Date().toISOString().split('T')[0],
+      location: prefill.location.split(','), // or your checkbox logic
       notes: '',
    });
 
    const vehicles = [
-      { id: 'subaru-forester', name: '2014 Subaru Forester' },
-      { id: 'toyota-tacoma', name: '2018 Toyota Tacoma' },
+      { vehicleId: 'subaru-forester', name: '2014 Subaru Forester' },
+      { vehicleId: 'toyota-tacoma', name: '2018 Toyota Tacoma' },
    ];
 
    const serviceTypes = [
       'Oil Change',
-      'Brake Service',
       'Tire Rotation',
+      'Tire Replacement',
+      'Brake Caliper Service',
+      'Brake Pads Replace',
+      'Brake Fluid bleed',
+      'Belt Change',
+      'Power Steering Fluid Flush',
       'Coolant Flush',
       'Transmission Service',
       'Inspection',
+      'Electrical work(see notes)',
       'Other',
    ];
    const locations = [
@@ -67,7 +80,7 @@ export default function RecordServiceForm() {
             >
                <option value="">Select vehicle</option>
                {vehicles.map((v) => (
-                  <option key={v.id} value={v.id}>
+                  <option key={v.vehicleId} value={v.vehicleId}>
                      {v.name}
                   </option>
                ))}

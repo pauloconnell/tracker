@@ -1,27 +1,48 @@
+import Link from 'next/link';
+
 export default function ServiceDue() {
-  const workOrders = [
-    { id: 1, title: "Oil Change", vehicle: "2014 Subaru Forester", due: "2026-01-10" },
-    { id: 2, title: "Brake Inspection", vehicle: "2018 Toyota Tacoma", due: "2026-01-15" },
-  ];
+   const workOrders = [
+      {
+         title: 'Oil Change',
+         name: '2014 Subaru Forester',
+         vehicleId: 'subaru-forester',
+         due: '2026-01-10',
+         dueKM: '220000',
+         serviceType: 'Oil Change',
+         location: 'N/A',
+      },
+   ];
 
-  return (
-    <div className="border rounded-lg p-4 bg-white shadow-sm">
-      {workOrders.length === 0 && (
-        <p className="text-gray-500">No service due.</p>
-      )}
+   return (
+      <div className="border rounded-lg p-4 bg-white shadow-sm">
+         {workOrders.length === 0 && <p className="text-gray-500">No service due.</p>}
 
-      <ul className="space-y-3">
-        {workOrders.map((wo) => (
-          <li
-            key={wo.id}
-            className="p-3 border rounded-lg hover:bg-gray-50 transition"
-          >
-            <div className="font-medium">{wo.title}</div>
-            <div className="text-sm text-gray-600">{wo.vehicle}</div>
-            <div className="text-sm text-gray-500">Due: {wo.due}</div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+         <ul className="space-y-3">
+            {workOrders.map((wo) => (
+               <li
+                  key={wo.vehicleId}
+                  className="p-3 border rounded-lg hover:bg-gray-50 transition"
+               >
+                  <Link
+                     href={{
+                        pathname: '/record-service',
+                        query: {
+                           vehicleId: wo.vehicleId,
+                           serviceType: wo.serviceType,
+                           location: wo.location,
+                        },
+                     }}
+                  >
+                     <div className="font-medium">{wo.title}</div>
+                     <div className="text-sm text-gray-600">
+                        {wo.name}, {wo.vehicleId}
+                     </div>
+                     <div className="text-sm text-gray-500">Due: {wo.due}</div>
+                     <div className="text-sm text-gray-500">DueKM: {wo.dueKM}</div>
+                  </Link>
+               </li>
+            ))}
+         </ul>
+      </div>
+   );
 }
