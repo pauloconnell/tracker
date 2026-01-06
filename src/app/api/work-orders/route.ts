@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const data: IWorkOrder = await req.json();
 
     const wo = await WorkOrder.create(data);
-
+    console.log("server got new work order with details: ", data)
     return NextResponse.json({
       ...wo.toObject(),
       _id: wo._id.toString(),

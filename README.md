@@ -13,6 +13,8 @@ pollie_db_user
 
 NEXT: save work orders, retrieve work orders, mark complete and save as service record 
 
+THEN:
+remove list of vehicles from work orders and 
 
 // ui dashboard
 => move 'record service' down and center 'dashboard'
@@ -23,7 +25,8 @@ NEXT: save work orders, retrieve work orders, mark complete and save as service 
 
 
 
-
+// BUGS
+-> Create work order Location: n/a isn't clickable
 
 
 

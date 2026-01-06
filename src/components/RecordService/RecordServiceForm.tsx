@@ -50,7 +50,7 @@ export default function RecordServiceForm({ prefill, vehicles }) {
    const handleSubmit = async (e) => {
       e.preventDefault();
 
-      const endpoint = isWorkOrder ? "/api/work-orders" : "/api/service-records";
+      const endpoint = isWorkOrder ? '/api/work-orders' : '/api/service-records';
 
       const res = await fetch(endpoint, {
          method: 'POST',
@@ -171,37 +171,33 @@ export default function RecordServiceForm({ prefill, vehicles }) {
             </div>
          </div>
 
-         {/* completed service date */}
-         {!isWorkOrder && (
-            <input
-               type="date"
-               name="serviceDate"
-               required
-               defaultValue={prefill?.serviceDate}
-            />
-         )}
-
-         {/* service due date */}
-         {isWorkOrder && (
-            <input
-               type="date"
-               name="serviceDueDate"
-               defaultValue={prefill?.serviceDueDate}
-            />
-         )}
-
-         {/* Mileage */}
-         <div>
-            <label className="block font-medium mb-1">Mileage</label>
+         <div className="flex flex-col md:flex-row gap-4">
+            {' '}
+            {/* Date field */}
+            <label className="flex flex-col flex-1 basis-1/2">
+               {isWorkOrder ? 'Service Due Date:' : 'Date Service Performed:'}
+               <input
+                  type="date"
+                  name={isWorkOrder ? 'serviceDueDate' : 'serviceDate'}
+                  required={!isWorkOrder}
+                  defaultValue={
+                     isWorkOrder ? prefill?.serviceDueDate : prefill?.serviceDate
+                  }
+                  className="border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+               />
+            </label>
+            {/* Mileage */}
+            <label className="flex flex-col flex-1 basis-1/2">Mileage
             <input
                type="number"
                name="mileage"
                value={form?.mileage}
                onChange={handleChange}
-               className="w-full border rounded-lg p-2"
+               className="border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                placeholder="e.g. 182000"
                required
             />
+            </label>
          </div>
 
          {/* Notes */}

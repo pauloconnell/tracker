@@ -46,12 +46,8 @@ export default async function VehiclePage({ params }: Props) {
          <div className="flex gap-4">
             <Link
                href={{
-                  pathname: '/protectedPages/record-service',
-                  query: {
-                     vehicleId,
-                     serviceType: 'Work Order',
-                     location: 'na',
-                     mileage: vehicle?.mileage
+                  pathname: `/protectedPages/work-orders/${vehicleId}/new`,
+                  query: { vehicle: JSON.stringify(vehicle), // pass full object 
                   },
                }}
                className="bg-blue-600 text-white px-4 py-2 rounded-lg"
