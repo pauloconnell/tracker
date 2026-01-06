@@ -17,6 +17,8 @@ export default function RecordServiceForm({ prefill, vehicles }) {
       notes: '',
    });
 
+   console.log("service form data: ", {form})
+
    const serviceTypes = [
       'Oil Change',
       'Air Filter Replacement',
@@ -59,7 +61,7 @@ export default function RecordServiceForm({ prefill, vehicles }) {
       });
 
       if (res.ok) {
-         router.push(`/vehicles/${form.id}`);
+         router.push(`/vehicles/${form.vehicleId}`);
       } else {
          alert('Failed to save record');
       }

@@ -8,6 +8,11 @@ export async function POST(req: Request) {
         // Clean mileage input 
         if (body.mileage) { body.mileage = Number(body.mileage.replace(/,/g, "")); }
         const vehicle = await createVehicle(body);
+
+        // Assign vehicleId = _id.toString() as this is used to create work orders and serviceRecords
+        vehicle.vehicleId = vehicle._id.toString(); 
+        await vehicle.save();
+
         return NextResponse.json(vehicle, { status: 201 });
     } catch (err) {
         console.error("Error creating vehicle:", err);

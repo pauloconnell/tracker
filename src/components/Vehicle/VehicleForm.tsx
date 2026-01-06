@@ -12,17 +12,17 @@ interface VehicleFormProps {
       mileage: number | string;
       vin: string;
       _id?: string;
+      vehicleId: string
    };
 
 }
 
-export default function VehicleForm({
-   vehicle,
-   initialValues
-}: VehicleFormProps) {
+export default function VehicleForm({ vehicle }: VehicleFormProps) {
    const router = useRouter();
 
    const isEdit = !!vehicle;    //is in edit mode if we have been passed a vehicle
+
+   const derivedVehicleId = vehicle?.vehicleId ?? vehicle?._id?.toString() ?? "";   // vehicleId comes from the _id, but new vehicles will not have this until mongodb assigns it
 
    const [form, setForm] = useState({
       year: vehicle?.year ?? '',
@@ -31,6 +31,7 @@ export default function VehicleForm({
       name: vehicle?.name ?? '',
       mileage: vehicle?.mileage ?? '',
       vin: vehicle?.vin ?? '',
+      vehicleId: derivedVehicleId,
    });
 
    const handleChange = (e) => {

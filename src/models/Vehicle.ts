@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const VehicleSchema = new Schema(
   {
+    vehicleId: { type: String, required: true, unique: true },
     year: Number,
     make: String,
     model: String,
