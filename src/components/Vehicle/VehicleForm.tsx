@@ -55,7 +55,7 @@ export default function VehicleForm({
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(form),
          });
-         router.push('/dashboard');
+         router.push('/protectedPages/dashboard');
          router.refresh();
       }
    };

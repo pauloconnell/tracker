@@ -21,7 +21,7 @@ export default async function VehiclePage({ params }: Props) {
          {/* Back Button */}
          <div className="flex justify-between items-center mb-6 mt-3 mx-6">
             <Link
-               href="/dashboard"
+               href="/protectedPages/dashboard"
                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
             >
                Back to Dashboard
@@ -43,7 +43,7 @@ export default async function VehiclePage({ params }: Props) {
          <div className="flex gap-4">
             <Link
                href={{
-                  pathname: '/record-service',
+                  pathname: '/protectedPages/record-service',
                   query: {
                      id,
                      serviceType: 'Work Order',
@@ -57,7 +57,7 @@ export default async function VehiclePage({ params }: Props) {
 
             <Link
                href={{
-                  pathname: '/record-service',
+                  pathname: '/protectedPages/record-service',
                   query: {
                      id,
                      serviceType: 'Inspection',
@@ -72,7 +72,7 @@ export default async function VehiclePage({ params }: Props) {
 
             <Link
                href={{
-                  pathname: '/record-service',
+                  pathname: '/protectedPages/record-service',
                   query: {
                      id,
                      name: vehicle?.name,

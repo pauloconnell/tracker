@@ -1,7 +1,7 @@
 import { getSession } from "@auth0/nextjs-auth0";
 
 const session = await getSession(); 
-const href = session ? "/dashboard" : "/api/auth/login?screen_hint=signup";
+const href = session ? "/protectedPages/dashboard" : "/api/auth/login?screen_hint=signup";
 
 export default function Home() {
   return (

@@ -25,7 +25,7 @@ export default function ServiceDue() {
                >
                   <Link
                      href={{
-                        pathname: '/record-service',
+                        pathname: '/protectedPages/record-service',
                         query: {
                            vehicleId: wo.vehicleId,
                            serviceType: wo.serviceType,

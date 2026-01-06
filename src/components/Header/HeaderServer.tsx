@@ -1,8 +1,18 @@
-import { getSession } from "@auth0/nextjs-auth0/edge";
-import HeaderClient from "./HeaderClient";
-
+import { getSession } from '@auth0/nextjs-auth0/edge';
+import HeaderClient from './HeaderClient';
 
 export default async function HeaderServer() {
-  const session = (await getSession()) ?? null;
-  return <HeaderClient session={session} />;
+   const session = (await getSession()) ?? null;
+
+   const safeSession = session
+      ? {
+           user: {
+              name: session.user.name ?? null,
+              email: session.user.email ?? null,
+              picture: session.user.picture ?? null,
+           },
+        }
+      : null;
+
+   return <HeaderClient session={safeSession} />;
 }
