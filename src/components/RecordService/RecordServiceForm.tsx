@@ -79,7 +79,7 @@ export default function RecordServiceForm({ prefill, vehicles }) {
                {vehicles.map((v) => (
                   <option key={v._id} value={v._id}>
           
-                     {v.name || `${v.year} ${v.make} ${v.model}`}
+                      {v.year} {v.make} {v.model} {v.name}`
                   </option>
                ))}
             </select>

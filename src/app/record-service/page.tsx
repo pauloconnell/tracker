@@ -11,8 +11,8 @@ export default async function RecordServicePage({ searchParams}) {
    const vehicles = await getAllVehicles();
 
    const prefill = {
-      id: searchParams.get('id') || '',
-      name: searchParams.get('name') || '',
+      id: searchParams.id || '',
+      name: searchParams.name || '',
    };
    return (
       <div className="min-h-screen bg-gray-50">
