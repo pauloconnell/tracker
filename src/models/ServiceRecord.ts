@@ -4,7 +4,10 @@ const ServiceRecordSchema = new Schema(
   {
     vehicleId: { type: Schema.Types.ObjectId, ref: "Vehicle" },
     serviceType: String,
-    date: String,
+   // Completed service date 
+    date: { type: Date }, 
+    // Work order due date (optional) 
+    serviceDue: { type: Date, required: false },
     mileage: Number,
     location: [String],
     notes: String,

@@ -4,16 +4,22 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function RecordServiceForm({ prefill, vehicles }) {
+   const isWorkOrder = prefill.serviceType?.trim().toLowerCase() === 'work order';
+
    const [form, setForm] = useState({
       id: prefill.id,
       serviceType: prefill.serviceType,
-      date: new Date().toISOString().split('T')[0],
+      // Only one of these matters depending on mode
+      date: isWorkOrder ? '' : new Date().toISOString().split('T')[0],
+      serviceDue: isWorkOrder ? prefill.serviceDue || '' : '',
+      mileage: prefill.mileage ?? 0,
       location: prefill.location?.split(',') ?? ['na'],
       notes: '',
    });
 
    const serviceTypes = [
       'Oil Change',
+      'Air Filter Replacement',
       'Tire Rotation',
       'Tire Replacement',
       'Brake Caliper Service',
@@ -74,12 +80,10 @@ export default function RecordServiceForm({ prefill, vehicles }) {
                onChange={(e) => setForm({ ...form, id: e.target.value })}
                className="border rounded px-3 py-2 w-full"
             >
-          
                <option value="">Select a vehicle</option>
                {vehicles.map((v) => (
                   <option key={v._id} value={v._id}>
-          
-                      {v.year} {v.make} {v.model} {v.name}`
+                     {v.year} {v.make} {v.model} {v.name}`
                   </option>
                ))}
             </select>
@@ -165,18 +169,24 @@ export default function RecordServiceForm({ prefill, vehicles }) {
             </div>
          </div>
 
-         {/* Date */}
-         <div>
-            <label className="block font-medium mb-1">Date</label>
+         {/* completed service date */}
+         {!isWorkOrder && (
             <input
                type="date"
-               name="date"
-               value={form.date}
-               onChange={handleChange}
-               className="w-full border rounded-lg p-2"
+               name="serviceDate"
                required
+               defaultValue={prefill?.serviceDate}
             />
-         </div>
+         )}
+
+         {/* service due date */}
+         {isWorkOrder && (
+            <input
+               type="date"
+               name="serviceDueDate"
+               defaultValue={prefill?.serviceDueDate}
+            />
+         )}
 
          {/* Mileage */}
          <div>
@@ -184,7 +194,7 @@ export default function RecordServiceForm({ prefill, vehicles }) {
             <input
                type="number"
                name="mileage"
-               value={form.mileage}
+               value={form?.mileage}
                onChange={handleChange}
                className="w-full border rounded-lg p-2"
                placeholder="e.g. 182000"

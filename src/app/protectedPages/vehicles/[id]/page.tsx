@@ -38,6 +38,9 @@ export default async function VehiclePage({ params }: Props) {
          <h1 className="text-2xl font-bold">
             {vehicle?.year} {vehicle?.make} {vehicle?.model} Name: {vehicle?.name}
          </h1>
+         <h2>
+            KM:{vehicle.mileage}
+         </h2>
 
          {/* Action Buttons */}
          <div className="flex gap-4">
@@ -48,6 +51,7 @@ export default async function VehiclePage({ params }: Props) {
                      id,
                      serviceType: 'Work Order',
                      location: 'na',
+                     mileage: vehicle?.mileage
                   },
                }}
                className="bg-blue-600 text-white px-4 py-2 rounded-lg"

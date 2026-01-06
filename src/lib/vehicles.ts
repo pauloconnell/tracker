@@ -9,7 +9,8 @@ export async function getVehicleById(id: string) {
 
 export async function getAllVehicles() {
     await connectDB();
-    return Vehicle.find().sort({ year: -1 }).lean();
+    const vehicles = await Vehicle.find().sort({ year: -1 }).lean();
+    return vehicles.map(v => ({ ...v, _id: v._id.toString(), }));
 }
 
 export async function getServiceHistory(vehicleId: string) {
