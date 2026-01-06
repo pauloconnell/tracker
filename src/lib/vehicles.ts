@@ -8,9 +8,15 @@ export async function getVehicleById(id: string) {
 }
 
 export async function getAllVehicles() {
-    await connectDB();
-    const vehicles = await Vehicle.find().sort({ year: -1 }).lean();
-    return vehicles.map(v => ({ ...v, _id: v._id.toString(), }));
+   await connectDB();
+   const vehicles = await await Vehicle.find();
+   return vehicles.map((v) => ({ 
+    ...v, 
+    _id: v._id.toString(),
+    createdAt: v.createdAt?.toISOString?.() ?? null, 
+    updatedAt: v.updatedAt?.toISOString?.() ?? null,
+
+ }));
 }
 
 export async function getServiceHistory(vehicleId: string) {

@@ -4,17 +4,18 @@ import RecordServiceForm from '@/components/RecordService/RecordServiceForm';
 export default async function RecordServicePage({ searchParams }) {
   
 
-   const prefill = {
-      id: searchParams.id || '',
+    const prefill = {//...searchParams}; // Next.js requires searchParams to be spread so they become plain props for Client Components
+      id: searchParams.id || '',          // // Manually construct a plain object; spreading searchParams carries hidden symbol keys
+                                        // must pick only params I need
       name: searchParams.name || '',
       serviceType: searchParams.serviceType || '',
       location: searchParams.location || '',
       mileage: searchParams.mileage || '',
    };
 
-    const vehicles = await getAllVehicles();
+    const vehicles = JSON.parse(JSON.stringify(await getAllVehicles()));   // Deep‑serialize to strip symbols/prototypes from nested Mongo data
+   console.log("page got", vehicles)
 
-    
    return (
       <div className="min-h-screen bg-gray-50">
          <div className="max-w-3xl mx-auto px-6 py-16">
