@@ -3,18 +3,18 @@ import { getVehicleById, getServiceHistory } from '@/lib/vehicles';
 //import { requireAuth } from '@/lib/requireAuth';
 
 interface Props {
-   params: { id: string };
+   params: { vehicleId: string };
 }
 
 export default async function VehiclePage({ params }: Props) {
-   const { id } = params;
+   const { vehicleId } = params;
 
    // done in the layout for protected folder await requireAuth(); // 🔐 protect the page
 
    // Fetch vehicle + service history from MongoDB
-   const vehicle = await getVehicleById(id);
+   const vehicle = await getVehicleById(vehicleId);
    console.log({ vehicle });
-   const history = await getServiceHistory(id);
+   const history = await getServiceHistory(vehicleId);
 
    return (
       <div className="space-y-6">
@@ -27,7 +27,7 @@ export default async function VehiclePage({ params }: Props) {
                Back to Dashboard
             </Link>
             <Link
-               href={`/protectedPages/vehicles/${id}/edit`}
+               href={`/protectedPages/vehicles/${vehicleId}/edit`}
                className="bg-yellow-600 text-white px-4 py-2 rounded-lg"
             >
                Edit Vehicle

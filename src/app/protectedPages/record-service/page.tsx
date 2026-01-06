@@ -5,7 +5,7 @@ export default async function RecordServicePage({ searchParams }) {
   
 
     const prefill = {//...searchParams}; // Next.js requires searchParams to be spread so they become plain props for Client Components
-      id: searchParams.id || '',          // // Manually construct a plain object; spreading searchParams carries hidden symbol keys
+      vehicleId: searchParams.vehicleId || '',          // // Manually construct a plain object; spreading searchParams carries hidden symbol keys
                                         // must pick only params I need
       name: searchParams.name || '',
       serviceType: searchParams.serviceType || '',
