@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getVehicleById, getServiceHistory } from '@/lib/vehicles';
+//import { requireAuth } from '@/lib/requireAuth';
 
 interface Props {
    params: { id: string };
@@ -7,6 +8,8 @@ interface Props {
 
 export default async function VehiclePage({ params }: Props) {
    const { id } = params;
+
+   // done in the layout for protected folder await requireAuth(); // 🔐 protect the page
 
    // Fetch vehicle + service history from MongoDB
    const vehicle = await getVehicleById(id);
