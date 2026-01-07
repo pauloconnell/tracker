@@ -6,8 +6,10 @@ import { useRouter } from 'next/navigation';
 export default function RecordServiceForm({ prefill, vehicles }) {
    const isWorkOrder = prefill.serviceType?.trim().toLowerCase() === 'work order';
 
+   const derivedVehicleId = prefill.vehicleId ?? prefill._id?.toString?.() ?? '';
+
    const [form, setForm] = useState({
-      vehicleId: prefill.vehicleId,
+      vehicleId: derivedVehicleId,
       serviceType: prefill.serviceType,
       // Only one of these matters depending on mode
       date: isWorkOrder ? '' : new Date().toISOString().split('T')[0],
@@ -17,7 +19,7 @@ export default function RecordServiceForm({ prefill, vehicles }) {
       notes: '',
    });
 
-   console.log("service form data: ", {form})
+   console.log('service form data: ', { form });
 
    const serviceTypes = [
       'Oil Change',
@@ -189,16 +191,17 @@ export default function RecordServiceForm({ prefill, vehicles }) {
                />
             </label>
             {/* Mileage */}
-            <label className="flex flex-col flex-1 basis-1/2">Mileage
-            <input
-               type="number"
-               name="mileage"
-               value={form?.mileage}
-               onChange={handleChange}
-               className="border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-               placeholder="e.g. 182000"
-               required
-            />
+            <label className="flex flex-col flex-1 basis-1/2">
+               Mileage
+               <input
+                  type="number"
+                  name="mileage"
+                  value={form?.mileage}
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="e.g. 182000"
+                  required
+               />
             </label>
          </div>
 
