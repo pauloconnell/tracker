@@ -1,10 +1,11 @@
 export interface IWorkOrder {
-  _id: string;
+  _id?: string;
+  workOrderId?: string;
   vehicleId: string;
   serviceType: string;
   notes?: string;
   mileage?: number;
-  location?: string;
+  location: string[];
   serviceDueDate?: string | null;
-  serviceDueKM?: number|null;
+  serviceDueKM: number|null;
 }

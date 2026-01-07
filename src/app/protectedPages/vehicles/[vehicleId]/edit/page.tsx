@@ -4,7 +4,7 @@ import { getVehicleById } from "@/lib/vehicles";
 import EditFormWrapper from "./EditFormWrapper";
 
 export default async function EditVehiclePage({ params }) {
-  const { id } = params;
+  const { id } = await params;
 
   // Fetch vehicle from DB (lean() returns plain object)
   const doc = await getVehicleById(id);

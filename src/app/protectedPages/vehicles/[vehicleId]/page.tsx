@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default async function VehiclePage({ params }: Props) {
-   const { vehicleId } = params;
+   const { vehicleId } = await params;
 
    // done in the layout for protected folder await requireAuth(); // 🔐 protect the page
 

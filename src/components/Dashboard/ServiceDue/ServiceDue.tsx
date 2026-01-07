@@ -45,8 +45,12 @@ export default function ServiceDue({ vehicleId }) {
                            vehicleId: wo.vehicleId,
                            serviceType: wo.serviceType,
                            location: wo.location,
-                           _id: wo._id,
-                           serviceDueDate: wo.serviceDueDate
+                           workOrderId: wo._id,
+                           serviceDueDate: wo.serviceDueDate,
+                           name: wo.name, 
+                           type: wo.type, 
+                           year: wo.year, 
+                           notes: wo.notes
                            
                         },
                      }}

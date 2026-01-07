@@ -20,6 +20,7 @@ export default function WorkOrderForm({ prefill, vehicles }) {
       notes: prefill.notes ?? '',
    });
 
+   console.log("does prefill have notes:", form.notes, prefill)
    const serviceTypes = [
       'Oil Change',
       'Air Filter Replacement',
@@ -61,6 +62,7 @@ export default function WorkOrderForm({ prefill, vehicles }) {
       });
 
       if (res.ok) {
+      
         toast.success("Work order saved");
          router.push(`/protectedPages/vehicles/${form.vehicleId}`);
       } else {

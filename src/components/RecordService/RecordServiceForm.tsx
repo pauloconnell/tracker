@@ -6,7 +6,7 @@ import  DeleteWorkOrderButton  from '@/components/Buttons/DeleteWorkOrderButton'
 
 export default function RecordServiceForm({ prefill, vehicles }) {
    const isWorkOrder = !!prefill.workOrderId;
-   console.log('form component getting ', prefill, isWorkOrder);
+   //console.log('form component getting ', prefill, isWorkOrder);
    const derivedVehicleId = prefill.vehicleId ?? '';
 
    const [form, setForm] = useState({
@@ -22,7 +22,7 @@ export default function RecordServiceForm({ prefill, vehicles }) {
       notes: '',
    });
 
-   console.log('service form data: ', { form });
+   //console.log('service form data: ', { form });
 
    const serviceTypes = [
       'Oil Change',

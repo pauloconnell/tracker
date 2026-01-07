@@ -33,7 +33,7 @@ export default function DeleteWorkOrderButton({ workOrderId }: DeleteWorkOrderBu
       router.refresh();
 
     } catch (err) {
-      console.error("Delete error:", err);
+      
       toast.error("Something went wrong");
     }
   }

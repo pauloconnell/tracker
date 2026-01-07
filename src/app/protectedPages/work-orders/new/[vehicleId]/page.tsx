@@ -2,7 +2,7 @@ import { getAllVehicles } from '@/lib/vehicles';
 import WorkOrderForm from '@/components/Forms/WorkOrderForm';
 
 export default async function NewWorkOrderPage({ params, searchParams }) {
-   const { vehicleId } = params;
+   const { vehicleId } = await params;
 
    // Parse the serialized vehicle object
    const vehicle = searchParams.vehicle ? JSON.parse(searchParams.vehicle) : null;
@@ -18,6 +18,7 @@ export default async function NewWorkOrderPage({ params, searchParams }) {
       name: vehicle?.name ?? '',
       type: vehicle?.type ?? '',
       year: vehicle?.year ?? '',
+      notes: '',                    // new work order won't have notes yet
    };
 
    return (

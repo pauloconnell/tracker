@@ -8,9 +8,10 @@ export async function POST(req: Request) {
     await connectDB();
 
     const data: IWorkOrder = await req.json();
+console.log("Schema paths:", Object.keys(WorkOrder.schema.paths));
 
     const wo = await WorkOrder.create(data);
-    console.log('server got new work order with details: ', data);
+    console.log('server got new work order with details: ', data, wo);
     return NextResponse.json({
       ...wo.toObject(),
       workOrderId: wo._id.toString(),
