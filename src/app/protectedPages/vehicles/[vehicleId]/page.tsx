@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { getVehicleById, getServiceHistory } from '@/lib/vehicles';
+import { getServiceHistory } from '@/lib/serviceRecords';
+import { getVehicleById } from '@/lib/vehicles';
 import ServiceDue from "@/components/RecordService/ServiceDue";
 //import { requireAuth } from '@/lib/requireAuth';
 

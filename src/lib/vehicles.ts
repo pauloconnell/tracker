@@ -1,83 +1,54 @@
 import { connectDB } from "./mongodb";
 import Vehicle from "@/models/Vehicle";
-import ServiceRecord from "@/models/ServiceRecord";
-import WorkOrder from "@/models/WorkOrder";
 
-export async function getVehicleById(vehicleId: string) {
-    await connectDB();
-    return Vehicle.findById(vehicleId).lean();
-}
-
-export async function getAllVehicles() {
-   await connectDB();
-   const vehicles = await Vehicle.find().lean();
-   return vehicles.map((v) => ({ 
-    ...v, 
-    _id: v._id.toString(),
-    createdAt: v.createdAt?.toISOString?.() ?? null, 
-    updatedAt: v.updatedAt?.toISOString?.() ?? null,
-
- }));
-}
-
-export async function getServiceHistory(vehicleId: string) {
-    await connectDB();
-    return ServiceRecord.find({ vehicleId }).sort({ date: -1 }).lean();
-}
-
-export async function createServiceRecord(data: any) {
-    await connectDB();
-    const record = await ServiceRecord.create(data);
-    return record.toObject();
-}
-export async function createVehicle(data: any) {
-    await connectDB();
-    const vehicle = await Vehicle.create(data);
-    return vehicle.toObject();
-}
-
-
-
-export async function createWorkOrder(data) {
+export async function getVehicleById(vehicleId) {
   await connectDB();
 
-  const wo = await WorkOrder.create(data);
+  const vehicle = await Vehicle.findOne({
+    $or: [{ vehicleId }, { _id: vehicleId }],
+  }).lean();
+
+  if (!vehicle) return null;
 
   return {
-    ...wo.toObject(),
-    _id: wo._id.toString(),
-    createdAt: wo.createdAt.toISOString(),
-    updatedAt: wo.updatedAt.toISOString(),
+    ...vehicle,
+    _id: vehicle._id.toString(),
+    vehicleId: vehicle.vehicleId?.toString?.() ?? vehicle._id.toString(),
+    createdAt: vehicle.createdAt?.toISOString?.() ?? null,
+    updatedAt: vehicle.updatedAt?.toISOString?.() ?? null,
   };
 }
 
-export async function getAllWorkOrders() {
+export async function getAllVehicles() {
   await connectDB();
 
-  const workOrders = await WorkOrder.find().lean();
+  const vehicles = await Vehicle.find().lean();
 
-  return workOrders.map((wo) => ({
-    ...wo,
-    _id: wo._id.toString(),
-    vehicleId: wo.vehicleId.toString(),
-    createdAt: wo.createdAt?.toISOString?.() ?? null,
-    updatedAt: wo.updatedAt?.toISOString?.() ?? null,
+  return vehicles.map((v) => ({
+    ...v,
+    _id: v._id.toString(),
+    vehicleId: v.vehicleId?.toString?.() ?? v._id.toString(),
+    createdAt: v.createdAt?.toISOString?.() ?? null,
+    updatedAt: v.updatedAt?.toISOString?.() ?? null,
   }));
 }
 
-export async function getWorkOrdersForVehicle(vehicleId) {
+export async function createVehicle(data) {
   await connectDB();
 
-  const workOrders = await WorkOrder.find({ vehicleId }).lean();
+  const v = await Vehicle.create(data);
 
-  return workOrders.map((wo) => ({
-    ...wo,
-    _id: wo._id.toString(),
-    vehicleId: wo.vehicleId.toString(),
-    createdAt: wo.createdAt?.toISOString?.() ?? null,
-    updatedAt: wo.updatedAt?.toISOString?.() ?? null,
-  }));
+  // Ensure vehicleId is set
+  if (!v.vehicleId) {
+    v.vehicleId = v._id.toString();
+    await v.save();
+  }
+
+  return {
+    ...v.toObject(),
+    _id: v._id.toString(),
+    vehicleId: v.vehicleId.toString(),
+    createdAt: v.createdAt?.toISOString?.() ?? null,
+    updatedAt: v.updatedAt?.toISOString?.() ?? null,
+  };
 }
-
-
-
