@@ -29,7 +29,8 @@ export async function GET(req) {
       await connectDB();
       const { searchParams } = new URL(req.url);
       const vehicleId = searchParams.get('vehicleId');
-      const query = vehicleId ? { vehicleId } : {};       // handles both cases: all or just for this vehicle
+      const baseQuery = { status: "open" };                 // only get 'open' 
+      const query = vehicleId ? { ...baseQuery, vehicleId } : baseQuery;     // handles both cases: all or just for this vehicle
       const workOrders = await WorkOrder.find(query).lean();
       return NextResponse.json(
          workOrders.map((wo) => ({
@@ -45,6 +46,8 @@ export async function GET(req) {
       return NextResponse.json({ error: 'Failed to fetch work orders' }, { status: 500 });
    }
 }
+
+
 
 
 export async function DELETE(req) {

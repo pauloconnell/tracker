@@ -6,4 +6,5 @@ export interface IWorkOrder {
   mileage?: number;
   location?: string;
   serviceDueDate?: string | null;
+  serviceDueKm?: number|null;
 }
