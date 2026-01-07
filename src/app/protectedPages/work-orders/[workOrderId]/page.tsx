@@ -16,6 +16,7 @@ export default async function WorkOrderDetailPage({ params, searchParams }) {
       serviceDueDate: searchParams.serviceDueDate
          ? searchParams.serviceDueDate.split('T')[0]
          : '',
+         serviceDueKM: searchParams.serviceDueKM || '',
       name: searchParams.name || '',
       type: searchParams.type || '',
       year: searchParams.year || '',
@@ -31,8 +32,7 @@ export default async function WorkOrderDetailPage({ params, searchParams }) {
          <div className="max-w-3xl mx-auto px-6 py-16">
             <h1 className="text-3xl font-semibold mb-8">Work Order Details</h1>
             <WorkOrderForm prefill={prefill} vehicles={vehicles} />
-            delete:
-            <RecordServiceForm prefill={prefill} vehicles={vehicles} />
+         
          </div>
       </div>
    );

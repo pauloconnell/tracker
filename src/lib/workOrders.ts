@@ -14,7 +14,7 @@ export async function createWorkOrder(data) {
 
 export async function getAllWorkOrders() {
   await connectDB();
-  const workOrders = await WorkOrder.find().lean();
+  const workOrders = await WorkOrder.find({ status: "open", }).sort({ createdAt: -1 }).lean();
   return workOrders.map((wo) => ({
     ...wo,
     _id: wo._id.toString(),
@@ -26,7 +26,7 @@ export async function getAllWorkOrders() {
 
 export async function getWorkOrdersForVehicle(vehicleId) {
   await connectDB();
-  const workOrders = await WorkOrder.find({ vehicleId }).lean();
+  const workOrders = await WorkOrder.find({ vehicleId, status: "open", }).sort({ createdAt: -1 }).lean();
   return workOrders.map((wo) => ({
     ...wo,
     _id: wo._id.toString(),

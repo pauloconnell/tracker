@@ -1,9 +1,7 @@
-"use client"
+'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { IWorkOrder } from "@/types";
-
-
+import { IWorkOrder } from '@/types';
 
 export default function ServiceDue({ vehicleId }) {
    const [workOrders, setWorkOrders] = useState<IWorkOrder[]>([]);
@@ -11,12 +9,19 @@ export default function ServiceDue({ vehicleId }) {
    useEffect(() => {
       async function load() {
          try {
-            const url = vehicleId                  // get all work orders, or only specific vehicle if passed vehicleId
+            const url = vehicleId // get all work orders, or only specific vehicle if passed vehicleId
                ? `/api/work-orders?vehicleId=${vehicleId}`
                : `/api/work-orders`;
             const res = await fetch(url);
             const data = await res.json();
-            setWorkOrders(data);
+
+            // sanitize dates here -mongoDB needs full date, but HTML needs it like this:
+            const sanitized = data.map((wo) => ({
+               ...wo,
+               serviceDueDate: wo.serviceDueDate ? wo.serviceDueDate.split('T')[0] : '',
+            }));
+
+            setWorkOrders(sanitized);
          } catch (err) {
             console.error('Failed to load work orders', err);
          } finally {
@@ -47,20 +52,23 @@ export default function ServiceDue({ vehicleId }) {
                            location: wo.location,
                            workOrderId: wo._id,
                            serviceDueDate: wo.serviceDueDate,
-                           name: wo.name, 
-                           type: wo.type, 
-                           year: wo.year, 
-                           notes: wo.notes
-                           
+                           serviceDueKM: wo.serviceDueKM,
+                           mileage: wo.mileage,
+                           name: wo.name,
+                           type: wo.type,
+                           year: wo.year,
+                           notes: wo.notes,
                         },
                      }}
                   >
                      <div className="font-medium">{wo.serviceType}</div>
                      <div className="text-sm text-gray-600">
-                        {wo.name}, {wo.vehicleId}
+                        
                      </div>
-                     <div className="text-sm text-gray-500">Service Due: {wo.serviceDueDate}</div>
-                     <div className="text-sm text-gray-500">DueKM: {wo.dueKM}</div>
+                     <div className="text-sm text-gray-500">
+                        Service Due: {wo.serviceDueDate}
+                     </div>
+                     <div className="text-sm text-gray-500">Service Due @: {wo.serviceDueKM} KM</div>
                   </Link>
                </li>
             ))}
