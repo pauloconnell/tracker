@@ -5,10 +5,11 @@ const WorkOrderSchema = new mongoose.Schema(
     vehicleId: { type: mongoose.Schema.Types.ObjectId, ref: "Vehicle", required: true },
     serviceType: { type: String, required: true },
     notes: { type: String, default: "" },
+       location: [String],
     mileage: { type: Number, required: true },
     status: { type: String, enum: ["open", "completed"], default: "open" },
     serviceDueDate: { type: Date, default: null },
-    serviceDueKm: { type: Number, default: null },
+    serviceDueKM: { type: Number, default: null },
     
   },
   { timestamps: true }
