@@ -1,4 +1,4 @@
-import ServiceDue from "@/components/RecordService/ServiceDue";
+import ServiceDue from "@/components/Dashboard/ServiceDue/ServiceDue";
 import { getAllVehicles } from "@/lib/vehicles";
 import VehicleList from "@/components/Vehicle/VehicleList";
 import Link from "next/link";

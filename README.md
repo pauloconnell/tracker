@@ -9,10 +9,13 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 pollie_db_user 
 
-// then : we need a page for 'create work order' which essentially just uses the same 'service' form, but instead creates a work order instead of a service record
+WIP : we need a page for 'create work order' which essentially just uses the same 'service' form, but instead creates a work order instead of a service record
 
-NEXT: save work orders, retrieve work orders, mark complete and save as service record 
+NEXT 1: need to be able to delete a work order => button on work order to 'convert to completed service record' which deletes the work order and saves as completed service record
 
+
+NEXT2 : save work orders, retrieve work orders, mark complete and save as service record 
+keep work orders seperate from service records - have state of open/completed - the api should only retrieve work orders that are open, seperate endpoint for 'completed' work orders - add in tech's name
 THEN:
 remove list of vehicles from work orders and 
 

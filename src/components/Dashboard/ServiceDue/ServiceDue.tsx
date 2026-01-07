@@ -1,17 +1,17 @@
 "use client"
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-
+import { IWorkOrder } from "@/types";
 
 
 
 export default function ServiceDue({ vehicleId }) {
-   const [workOrders, setWorkOrders] = useState([]);
+   const [workOrders, setWorkOrders] = useState<IWorkOrder[]>([]);
    const [loading, setLoading] = useState(true);
    useEffect(() => {
       async function load() {
          try {
-            const url = vehicleId
+            const url = vehicleId                  // get all work orders, or only specific vehicle if passed vehicleId
                ? `/api/work-orders?vehicleId=${vehicleId}`
                : `/api/work-orders`;
             const res = await fetch(url);
@@ -40,21 +40,22 @@ export default function ServiceDue({ vehicleId }) {
                >
                   <Link
                      href={{
-                        pathname: '/protectedPages/record-service',
+                        pathname: `/protectedPages/work-orders/${wo._id}`,
                         query: {
                            vehicleId: wo.vehicleId,
                            serviceType: wo.serviceType,
                            location: wo.location,
                            _id: wo._id,
                            serviceDueDate: wo.serviceDueDate
+                           
                         },
                      }}
                   >
-                     <div className="font-medium">{wo.title}</div>
+                     <div className="font-medium">{wo.serviceType}</div>
                      <div className="text-sm text-gray-600">
                         {wo.name}, {wo.vehicleId}
                      </div>
-                     <div className="text-sm text-gray-500">Due: {wo.due}</div>
+                     <div className="text-sm text-gray-500">Service Due: {wo.serviceDueDate}</div>
                      <div className="text-sm text-gray-500">DueKM: {wo.dueKM}</div>
                   </Link>
                </li>
