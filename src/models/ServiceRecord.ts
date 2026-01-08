@@ -12,6 +12,7 @@ const ServiceRecordSchema = new Schema(
     mileage: Number,
     location: [String],
     notes: String,
+    completedBy: { type: String },
   },
   { timestamps: true }
 );

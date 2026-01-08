@@ -10,7 +10,7 @@ export default async function RecordServicePage({ searchParams }) {
                                         // must pick only params I need
       name: searchParams.name || '',
       serviceType: searchParams.serviceType || '',
-      location: searchParams.location || '',
+      location: searchParams.location || ['N/A'],
       mileage: searchParams.mileage || '',
    };
 

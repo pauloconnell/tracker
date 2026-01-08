@@ -64,7 +64,7 @@ export default async function VehiclePage({ params }: Props) {
                      vehicleId,
                      serviceType: 'Inspection',
                      name: vehicle?.name,
-                     location: 'na',
+                     location: ['N/A'],
                   },
                }}
                className="bg-green-600 text-white px-4 py-2 rounded-lg"
@@ -103,10 +103,15 @@ export default async function VehiclePage({ params }: Props) {
             <ul className="space-y-3">
                {history.map((item) => (
                   <li key={item._id} className="border p-3 rounded-lg">
-                     <div className="font-medium">{item.serviceType}</div>
+                     <div className="font-medium">{item.serviceType}
+                      {item.location && (  <div> Location: {item.location} </div>)}
+                     </div>
                      <div className="text-sm text-gray-600">
                         {item.date} — {item.mileage} km
                      </div>
+                     { item.notes && (<div className="border p-3 rounded-lg">
+                       Notes {item.notes}
+                     </div>)}
                   </li>
                ))}
             </ul>

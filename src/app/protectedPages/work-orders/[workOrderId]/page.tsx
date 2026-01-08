@@ -10,7 +10,7 @@ export default async function WorkOrderDetailPage({ params, searchParams }) {
       workOrderId,
       vehicleId: searchParams.vehicleId || '',
       serviceType: searchParams.serviceType || '',
-      location: searchParams.location || '',
+      location: searchParams.location || ['N/A'],
       mileage: searchParams.mileage || '',
       status: searchParams.status || 'open',
       serviceDueDate: searchParams.serviceDueDate

@@ -18,7 +18,7 @@ export default function RecordServiceForm({ prefill, vehicles }) {
       serviceDueDate: isWorkOrder ? prefill.serviceDueDate || '' : '',
       serviceDueKM: isWorkOrder ? prefill.serviceDueKM || '' : '',
       mileage: prefill.mileage ?? 0,
-      location: prefill.location?.split(',') ?? ['na'],
+      location: prefill.location ?? ['N/A'],
       notes: '',
    });
 

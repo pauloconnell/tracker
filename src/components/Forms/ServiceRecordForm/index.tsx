@@ -12,7 +12,7 @@ export default function ServiceRecordForm({ prefill, vehicles }) {
     serviceType: prefill.serviceType,
     date: new Date().toISOString().split("T")[0],
     mileage: prefill.mileage ?? 0,
-    location: prefill.location?.split(",") ?? ["N/A"],
+    location: prefill.location ?? ['N/A'],
     notes: "",
   });
 

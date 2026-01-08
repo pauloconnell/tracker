@@ -10,6 +10,8 @@ const WorkOrderSchema = new mongoose.Schema(
     status: { type: String, enum: ["open", "completed"], default: "open" },
     serviceDueDate: { type: Date, default: null },
     serviceDueKM: { type: Number, default: null },
+    completedDate: { type: Date }, 
+    completedBy: { type: String },
     
   },
   { timestamps: true }

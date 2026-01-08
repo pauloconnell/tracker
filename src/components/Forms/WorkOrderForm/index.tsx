@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast';
 
 export default function WorkOrderForm({ prefill, vehicles }) {
    const router = useRouter();
+   
 
    const [form, setForm] = useState({
       workOrderId: prefill?.workOrderId ? prefill.workOrderId.toString() : '',
@@ -16,10 +17,12 @@ export default function WorkOrderForm({ prefill, vehicles }) {
       serviceDueDate: prefill.serviceDueDate || '',
       serviceDueKM: prefill.serviceDueKM || '',
       mileage: prefill.mileage ?? '',
-      location: prefill.location?.split(',') ?? ['N/A'],
+      location: prefill.location ?? ['N/A'],
       notes: prefill.notes ?? '',
+      completedBy: prefill.completedBy || '',
    });
-  
+
+   const isEditing = Boolean(form.workOrderId); // allow updates when viewing work order(add notes ect)
 
    console.log('does prefill have notes:', form.notes, prefill);
    const serviceTypes = [
@@ -57,7 +60,6 @@ export default function WorkOrderForm({ prefill, vehicles }) {
       e.preventDefault();
       console.log('submitted to API:', form);
 
-      const isEditing = Boolean(form.workOrderId);    // allow updates when viewing work order(add notes ect)
       const url = isEditing ? `/api/work-orders/${form.workOrderId}` : `/api/work-orders`;
       const method = isEditing ? 'PUT' : 'POST';
       const res = await fetch(url, {
@@ -81,6 +83,22 @@ export default function WorkOrderForm({ prefill, vehicles }) {
       }
    }
 
+   // handle complete will complete a work order to mark it done:
+   const handleComplete = async () => {
+      const res = await fetch(`/api/work-orders/${form.workOrderId}/complete`, {
+         method: 'PUT',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ completedBy: form.completedBy }),
+      });
+
+      const data = await res.json();
+
+      toast.success('Work order completed');
+
+      router.push(`/protectedPages/vehicles/${form.vehicleId}`);
+      router.refresh();
+   };
+
    return (
       <form
          onSubmit={handleSubmit}
@@ -94,6 +112,35 @@ export default function WorkOrderForm({ prefill, vehicles }) {
             locations={locations}
             handleChange={handleChange}
          />
+         {/* If existing work order: allow user to Complete work order - must add tech's name */}
+         {isEditing &&(
+         <div className="space-y-2 mt-6">
+            <label className="block text-sm font-medium text-gray-700">
+               Completed By (Technician)
+            </label>
+            <input
+               type="text"
+               name="completedBy"
+               value={form.completedBy || ''}
+               onChange={handleChange}
+               placeholder="Technician Name"
+               className="border px-3 py-2 rounded w-full"
+            />{' '}
+            <button
+               type="button"
+               onClick={handleComplete}
+               disabled={!form.completedBy}
+               className={`px-4 py-2 rounded text-white ${
+                  form.completedBy
+                     ? 'bg-green-600 hover:bg-green-700'
+                     : 'bg-gray-400 cursor-not-allowed'
+               }`}
+            >
+               {' '}
+               Mark Work Order as Completed{' '}
+            </button>{' '}
+         </div>
+         )}
 
          {/* Work Order specific fields */}
          <div className="flex flex-col md:flex-row gap-4">
@@ -127,7 +174,6 @@ export default function WorkOrderForm({ prefill, vehicles }) {
             </button>
 
             {prefill.workOrderId && (
-               
                <DeleteWorkOrderButton workOrderId={prefill.workOrderId} />
             )}
             <button
