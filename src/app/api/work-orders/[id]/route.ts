@@ -17,3 +17,26 @@ export async function PUT(req, { params }) {
    }
    return NextResponse.json(updated);
 }
+
+// get a specific work order given id (in the url of API)
+
+export async function GET(req, { params }) {
+   try {
+      await connectDB();
+      const { id } = params;
+      const wo = await WorkOrder.findById(id).lean();
+      if (!wo) {
+         return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
+      }
+      return NextResponse.json({
+         ...wo,
+         _id: wo._id.toString(),
+         vehicleId: wo.vehicleId?.toString?.() ?? '',
+         createdAt: wo.createdAt?.toISOString?.() ?? null,
+         updatedAt: wo.updatedAt?.toISOString?.() ?? null,
+      });
+   } catch (err) {
+      console.error('Failed to fetch work order:', err);
+      return NextResponse.json({ error: 'Failed to fetch work order' }, { status: 500 });
+   }
+}

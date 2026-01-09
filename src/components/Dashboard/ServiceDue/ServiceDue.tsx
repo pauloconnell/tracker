@@ -1,11 +1,16 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { IWorkOrder } from '@/types';
+import { IWorkOrder } from '@/types/workorder';
+import { useWorkOrderStore } from "@/store/useWorkOrderStore";
 
 export default function ServiceDue({ vehicleId }) {
    const [workOrders, setWorkOrders] = useState<IWorkOrder[]>([]);
    const [loading, setLoading] = useState(true);
+
+   // use Zustand store to contain the Work Order details
+   const setSelectedWorkOrder = useWorkOrderStore((wo) => wo.setSelectedWorkOrder);
+
    useEffect(() => {
       async function load() {
          try {
@@ -44,22 +49,9 @@ export default function ServiceDue({ vehicleId }) {
                   className="p-3 border rounded-lg hover:bg-gray-50 transition"
                >
                   <Link
-                     href={{
-                        pathname: `/protectedPages/work-orders/${wo._id}`,
-                        query: {
-                           vehicleId: wo.vehicleId,
-                           serviceType: wo.serviceType,
-                           location: wo.location,
-                           workOrderId: wo._id,
-                           serviceDueDate: wo.serviceDueDate,
-                           serviceDueKM: wo.serviceDueKM,
-                           mileage: wo.mileage,
-                           name: wo.name,
-                           type: wo.type,
-                           year: wo.year,
-                           notes: wo.notes,
-                        },
-                     }}
+                     href={`/protectedPages/work-orders/${wo._id}`}
+                      onClick={() => setSelectedWorkOrder(wo)}
+                     
                   >
                      <div className="font-medium">{wo.serviceType}</div>
                      <div className="text-sm text-gray-600">

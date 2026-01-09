@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import WorkOrder from "@/models/WorkOrder";
 
+// get all 'completed' work orders
 export async function GET(req: Request) {
   try {
     await connectDB();

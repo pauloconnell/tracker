@@ -1,30 +1,46 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import SharedServiceFormFields from '../Shared/SharedServiceFormFields';
 import DeleteWorkOrderButton from '@/components/Buttons/DeleteWorkOrderButton';
 import { toast } from 'react-hot-toast';
+import { useWorkOrderStore } from '@/store/useWorkOrderStore';
 
-export default function WorkOrderForm({ prefill, vehicles }) {
+export default function WorkOrderForm({ workOrderId, vehicles }) {
    const router = useRouter();
-   
+   const storeWO = useWorkOrderStore((s) => s.selectedWorkOrder);
+   const fetchWorkOrder = useWorkOrderStore((s) => s.fetchWorkOrder);
+   // Fetch on refresh
+   useEffect(() => {
+      // If store is empty OR store has a different workOrderId, fetch it
+      if (!storeWO || storeWO._id !== workOrderId) {
+         fetchWorkOrder(workOrderId);
+      }
+   }, [storeWO, workOrderId, fetchWorkOrder]);
 
+
+   console.log("vehicleId issue?", storeWO)
    const [form, setForm] = useState({
-      workOrderId: prefill?.workOrderId ? prefill.workOrderId.toString() : '',
-      vehicleId: prefill.vehicleId ?? '',
-      serviceType: prefill?.serviceType ?? '',
-      serviceDueDate: prefill.serviceDueDate || '',
-      serviceDueKM: prefill.serviceDueKM || '',
-      mileage: prefill.mileage ?? '',
-      location: prefill.location ?? ['N/A'],
-      notes: prefill.notes ?? '',
-      completedBy: prefill.completedBy || '',
+      workOrderId: workOrderId.toString(),
+      vehicleId: storeWO?.vehicleId ?? '',
+      serviceType: storeWO?.serviceType ?? '',
+      serviceDueDate: storeWO?.serviceDueDate ? storeWO.serviceDueDate.split('T')[0] : '',
+      serviceDueKM: storeWO?.serviceDueKM ?? '',
+      mileage: storeWO?.mileage ?? '',
+      location: storeWO?.location ?? ['N/A'],
+      notes: storeWO?.notes ?? '',
+      completedBy: storeWO?.completedBy ?? '',
    });
 
-   const isEditing = Boolean(form.workOrderId); // allow updates when viewing work order(add notes ect)
+   // Build a plain prefill object from searchParams OR Zustand Store
+   if (!storeWO) {
+      return <div>Loading…</div>;
+   }
+   const isEditing = Boolean(form.workOrderId);
+   // allow updates when viewing work order(add notes ect)
 
-   console.log('does prefill have notes:', form.notes, prefill);
+   console.log('does prefill have notes:', form.notes);
    const serviceTypes = [
       'Oil Change',
       'Air Filter Replacement',
@@ -113,33 +129,33 @@ export default function WorkOrderForm({ prefill, vehicles }) {
             handleChange={handleChange}
          />
          {/* If existing work order: allow user to Complete work order - must add tech's name */}
-         {isEditing &&(
-         <div className="space-y-2 mt-6">
-            <label className="block text-sm font-medium text-gray-700">
-               Completed By (Technician)
-            </label>
-            <input
-               type="text"
-               name="completedBy"
-               value={form.completedBy || ''}
-               onChange={handleChange}
-               placeholder="Technician Name"
-               className="border px-3 py-2 rounded w-full"
-            />{' '}
-            <button
-               type="button"
-               onClick={handleComplete}
-               disabled={!form.completedBy}
-               className={`px-4 py-2 rounded text-white ${
-                  form.completedBy
-                     ? 'bg-green-600 hover:bg-green-700'
-                     : 'bg-gray-400 cursor-not-allowed'
-               }`}
-            >
-               {' '}
-               Mark Work Order as Completed{' '}
-            </button>{' '}
-         </div>
+         {isEditing && (
+            <div className="space-y-2 mt-6">
+               <label className="block text-sm font-medium text-gray-700">
+                  Completed By (Technician)
+               </label>
+               <input
+                  type="text"
+                  name="completedBy"
+                  value={form.completedBy || ''}
+                  onChange={handleChange}
+                  placeholder="Technician Name"
+                  className="border px-3 py-2 rounded w-full"
+               />{' '}
+               <button
+                  type="button"
+                  onClick={handleComplete}
+                  disabled={!form.completedBy}
+                  className={`px-4 py-2 rounded text-white ${
+                     form.completedBy
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : 'bg-gray-400 cursor-not-allowed'
+                  }`}
+               >
+                  {' '}
+                  Mark Work Order as Completed{' '}
+               </button>{' '}
+            </div>
          )}
 
          {/* Work Order specific fields */}
@@ -173,8 +189,8 @@ export default function WorkOrderForm({ prefill, vehicles }) {
                Save Work Order
             </button>
 
-            {prefill.workOrderId && (
-               <DeleteWorkOrderButton workOrderId={prefill.workOrderId} />
+            {workOrderId && (
+               <DeleteWorkOrderButton workOrderId={workOrderId} />
             )}
             <button
                type="button"
