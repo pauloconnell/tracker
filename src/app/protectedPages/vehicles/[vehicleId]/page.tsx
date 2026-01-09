@@ -75,13 +75,7 @@ export default async function VehiclePage({ params }: Props) {
             </Link>
 
             <Link
-               href={{
-                  pathname: '/protectedPages/record-service',
-                  query: {
-                     vehicleId,
-                     name: vehicle?.name,
-                  },
-               }}
+               href={ `/protectedPages/record-service/${vehicleId}`}
                className="bg-green-600 text-white px-4 py-2 rounded-lg"
             >
                Record Service

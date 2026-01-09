@@ -20,7 +20,7 @@ export default function SharedServiceFormFields({
           className="border rounded px-3 py-2 w-full"
         >
           <option value="">Select a vehicle</option>
-          {vehicles.map((v) => (
+          {vehicles?.map((v) => (
             <option key={v._id} value={v._id}>
               {v.year} {v.make} {v.model} {v.name}
             </option>

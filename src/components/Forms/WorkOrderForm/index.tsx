@@ -7,8 +7,17 @@ import DeleteWorkOrderButton from '@/components/Buttons/DeleteWorkOrderButton';
 import { toast } from 'react-hot-toast';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
+import { IVehicle } from '@/types/vehicle';
 
-export default function WorkOrderForm({ workOrderId, prefill, vehicles }) {
+export default function WorkOrderForm({
+   workOrderId,
+   vehicleId,
+   vehicles,
+}: {
+   workOrderId?: string;
+   vehicleId?: string;
+   vehicles: IVehicle[];
+}) {
    const router = useRouter();
 
    // Zustand stores
@@ -34,6 +43,10 @@ export default function WorkOrderForm({ workOrderId, prefill, vehicles }) {
    }, [isEditing, storeWO, workOrderId, fetchWorkOrder]);
 
    // 2) Form State
+   const derivedVehicleId = isEditing
+      ? storeWO?.vehicleId
+      : vehicleId || selectedVehicle?._id;
+
    const [form, setForm] = useState(() => {
       if (isEditing && storeWO) {
          return {
@@ -47,16 +60,16 @@ export default function WorkOrderForm({ workOrderId, prefill, vehicles }) {
             notes: storeWO.notes ?? '',
             completedBy: storeWO.completedBy ?? '',
          };
-      } // New Work Order → use prefill
+      } // New Work Order
       return {
          workOrderId: '',
-         vehicleId: prefill?.vehicleId ?? '',
-         serviceType: prefill?.serviceType ?? '',
-         serviceDueDate: prefill?.serviceDueDate ?? '',
-         serviceDueKM: prefill?.serviceDueKM ?? '',
-         mileage: prefill?.mileage ?? '',
-         location: prefill?.location ?? ['N/A'],
-         notes: prefill?.notes ?? '',
+         vehicleId: derivedVehicleId || '',
+         serviceType: '',
+         serviceDueDate: '',
+         serviceDueKM: '',
+         mileage: '',
+         location: ['N/A'],
+         notes: '',
          completedBy: '',
       };
    });
@@ -80,13 +93,11 @@ export default function WorkOrderForm({ workOrderId, prefill, vehicles }) {
 
    //4 fetch vehicle
 
-   const vehicleId = isEditing ? storeWO?.vehicleId : prefill?.vehicleId;
    useEffect(() => {
-      if (vehicleId && !selectedVehicle) {
-         // add check here to ensure not stale
-         fetchVehicle(vehicleId);
+      if (derivedVehicleId && !selectedVehicle) {
+         fetchVehicle(derivedVehicleId);
       }
-   }, [vehicleId, selectedVehicle, fetchVehicle]);
+   }, [derivedVehicleId, selectedVehicle, fetchVehicle]);
 
    // 5. Block rendering ONLY when editing and store isn't loaded
 
@@ -94,15 +105,8 @@ export default function WorkOrderForm({ workOrderId, prefill, vehicles }) {
       return <div>Loading…</div>;
    }
 
-
-   
-
-
-
-
    // allow updates when viewing work order(add notes ect)
 
-   console.log('does prefill have notes:', form.notes);
    const serviceTypes = [
       'Oil Change',
       'Air Filter Replacement',
@@ -137,7 +141,10 @@ export default function WorkOrderForm({ workOrderId, prefill, vehicles }) {
    async function handleSubmit(e) {
       e.preventDefault();
       console.log('submitted to API:', form);
-
+      if (!form.vehicleId) {
+         toast.error('Vehicle is required');
+         return;
+      }
       const url = isEditing ? `/api/work-orders/${form.workOrderId}` : `/api/work-orders`;
       const method = isEditing ? 'PUT' : 'POST';
       const res = await fetch(url, {
@@ -146,11 +153,6 @@ export default function WorkOrderForm({ workOrderId, prefill, vehicles }) {
          body: JSON.stringify(form),
       });
 
-      // const res = await fetch('/api/work-orders', {
-      //    method: 'POST',
-      //    headers: { 'Content-Type': 'application/json' },
-      //    body: JSON.stringify(form),
-      // });
 
       if (res.ok) {
          toast.success('Work order saved');
