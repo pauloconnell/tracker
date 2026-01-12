@@ -235,6 +235,7 @@ export default function WorkOrderForm({
                <button
                   type="button"
                   onClick={handleComplete}
+                  title="Please Enter Tech's name"
                   disabled={!form.completedBy}
                   className={`px-4 py-2 rounded text-white ${
                      form.completedBy
