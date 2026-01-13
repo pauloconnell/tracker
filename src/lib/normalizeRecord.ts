@@ -4,6 +4,7 @@ export function normalizeRecord(doc: any) {
   return {
     ...obj,
     _id: obj._id?.toString?.() ?? "",
+    vehicleId: obj.vehicleId?.toString?.() ?? obj.vehicleId ?? "",
     createdAt: obj.createdAt?.toISOString?.() ?? null,
     updatedAt: obj.updatedAt?.toISOString?.() ?? null,
   };

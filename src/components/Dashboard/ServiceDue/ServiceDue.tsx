@@ -16,18 +16,17 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
    const [loading, setLoading] = useState(true);
    const { selectedVehicle, fetchVehicle } = useVehicleStore();
 
-   // Load all work orders into Zustand on mount
    useEffect(() => {
+      setLoading(true);
       fetchAllWorkOrders().finally(() => setLoading(false));
    }, []);
 
    // If a vehicleId is passed, filter upcoming WOs for that vehicle
    const upcoming = getUpcomingWorkOrders();
-   const workOrders = vehicleId ? upcoming.filter((wo)=> wo.vehicleId === vehicleId)
-      : upcoming;    // else show all
-
-
-  
+   //console.log({ upcoming });
+   const workOrders = vehicleId
+      ? upcoming.filter((wo) => wo.vehicleId === vehicleId)
+      : upcoming; // else show all
 
    // if passed vehicleId in URL, then populate store with vehicle details
    useEffect(() => {
@@ -36,12 +35,7 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
       }
    }, [vehicleId, selectedVehicle]);
 
-   // Load all work orders into Zustand on mount
-   useEffect(() => {
-      fetchAllWorkOrders().finally(() => setLoading(false));
-   }, []);
-
-    if (!workOrders.length) {
+   if (!workOrders.length) {
       return <div>No upcoming service due</div>;
    }
    if (loading) return <div>Loading…</div>;
@@ -65,8 +59,14 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
                         {/* <pre className="text-xs text-left"> {JSON.stringify(wo, null, 2)} </pre>  */}
                         {wo?.name ?? ''}
                      </div>
+
                      <div className="font-medium">{wo.serviceType}</div>
-                     <div className="text-sm text-gray-600"></div>
+                     {wo.serviceType === 'Other' && wo.notes && (
+                        <div className="mt-2 text-sm text-gray-700">
+                           {wo.notes}
+                        </div>
+                     )}
+                   
                      <div className="text-sm text-gray-500">
                         Service Due: {wo.serviceDueDate}
                      </div>

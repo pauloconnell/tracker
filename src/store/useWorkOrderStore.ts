@@ -57,12 +57,16 @@ export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
    getUpcomingWorkOrders: () => {
       const now = new Date();
       const twoWeeksFromNow = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+
       return get().workOrders.filter((wo) => {
          const dueDate = wo.serviceDueDate ? new Date(wo.serviceDueDate) : null;
          const dueKM = wo.serviceDueKM;
-         const dateSoon = dueDate && dueDate >= now && dueDate <= twoWeeksFromNow; // want all due before 2weeksFromNow
+         // Show if overdue OR due within next 2 weeks 
+         // Only evaluate date logic if a dueDate exists 
+         const isOverdue = dueDate ? dueDate < now : false;
+         const isDueSoon = dueDate ? (dueDate >= now && dueDate <= twoWeeksFromNow) : false;
          const kmSoon = dueKM && wo.mileage && dueKM - wo.mileage <= 100;
-         return dateSoon || kmSoon;
+         return isOverdue || isDueSoon || kmSoon;
       });
    },
 

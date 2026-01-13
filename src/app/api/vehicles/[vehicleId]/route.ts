@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import Vehicle from "@/models/Vehicle";
 import { connectDB } from "@/lib/mongodb";
 import { sanitizeUpdate } from "@/lib/sanitizeUpdate";
-import { normalizeVehicle } from "@/lib/normalizeVehicle";
+import { normalizeRecord } from "@/lib/normalizeRecord";
 import mongoose from "mongoose";
 
 
@@ -42,7 +42,7 @@ export async function GET(req: Request, { params }:{ params: {vehicleId: string 
   if (!vehicle) {
     return new Response(JSON.stringify({ error: `Not found, id:${vehicleId}` }), { status: 404 });
   }
-const normalized = normalizeVehicle(vehicle);
+const normalized = normalizeRecord(vehicle);
   return new Response(JSON.stringify(normalized), { status: 200 });
 }
 
