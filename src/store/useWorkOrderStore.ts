@@ -25,20 +25,34 @@ export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
    clearSelectedWorkOrder: () => set({ selectedWorkOrder: null }),
 
    fetchAllWorkOrders: async () => {
+
       const res = await fetch('/api/work-orders');
-      const data = await res.json();
-      set({ workOrders: data });
+      try {
+         const data = await res.json();
+         set({ workOrders: data });
+      } catch (e) {
+         console.error("error getting work orders:", e)
+         set({ workOrders: [] });
+      }
+
    },
 
    fetchWorkOrder: async (id) => {
-      const res = await fetch(`/api/work-orders/${id}`);
-      const data = await res.json();
-      set({ selectedWorkOrder: data });
+      try {
+         const res = await fetch(`/api/work-orders/${id}`);
+         const data = await res.json();
+         set({ selectedWorkOrder: data });
+      }
+      catch (e) {
+         set({ selectedWorkOrder: null });
+      }
    },
 
    getWorkOrdersForVehicle: (vehicleId) => {
       return get().workOrders.filter((wo) => wo.vehicleId === vehicleId);
    },
+
+   // DB Actions
 
    getUpcomingWorkOrders: () => {
       const now = new Date();

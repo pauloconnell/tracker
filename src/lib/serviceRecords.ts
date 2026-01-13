@@ -1,46 +1,36 @@
-import { connectDB } from "./mongodb";
-import ServiceRecord from "@/models/ServiceRecord";
+import { connectDB } from './mongodb';
+import ServiceRecord from '@/models/ServiceRecord';
+import type { IWorkOrder } from '@/types/workorder';
+import type { IVehicle } from '@/types/vehicle';
 
-export async function createServiceRecord(data) {
-  await connectDB();
-
-  const record = await ServiceRecord.create(data);
-
-  return {
-    ...record.toObject(),
-    _id: record._id.toString(),
-    vehicleId: record.vehicleId?.toString?.() ?? "",
-    createdAt: record.createdAt?.toISOString?.() ?? null,
-    updatedAt: record.updatedAt?.toISOString?.() ?? null,
-  };
+// helper to normalize Records
+function normalizeServiceRecord(record: any) {
+   return {
+      ...record,
+      _id: record._id?.toString() ?? '',
+      vehicleId: record.vehicleId?.toString() ?? '',
+      createdAt: record.createdAt ? new Date(record.createdAt).toISOString() : null,
+      updatedAt: record.updatedAt ? new Date(record.updatedAt).toISOString() : null,
+   };
 }
 
-export async function getServiceHistory(vehicleId) {
-  await connectDB();
+export async function createServiceRecord(data: IWorkOrder) {
+   await connectDB();
+   const record = await ServiceRecord.create(data);
 
-  const records = await ServiceRecord.find({ vehicleId })
-    .sort({ date: -1 })
-    .lean();
-
-  return records.map((r) => ({
-    ...r,
-    _id: r._id.toString(),
-    vehicleId: r.vehicleId?.toString?.() ?? "",
-    createdAt: r.createdAt?.toISOString?.() ?? null,
-    updatedAt: r.updatedAt?.toISOString?.() ?? null,
-  }));
+   return normalizeServiceRecord(record.toObject());
 }
 
-export async function getAllServiceRecords() {
-  await connectDB();
+export async function getServiceHistory(vehicleId: IVehicle) {
+   await connectDB();
+   const records = await ServiceRecord.find({ vehicleId }).sort({ date: -1 }).lean();
 
-  const records = await ServiceRecord.find().lean();
+   return records.map(normalizeServiceRecord);
+}
 
-  return records.map((r) => ({
-    ...r,
-    _id: r._id.toString(),
-    vehicleId: r.vehicleId?.toString?.() ?? "",
-    createdAt: r.createdAt?.toISOString?.() ?? null,
-    updatedAt: r.updatedAt?.toISOString?.() ?? null,
-  }));
+export async function getAllServiceRecords(): Promise<IWorkOrder[]> {
+   await connectDB();
+   const records = await ServiceRecord.find().lean();
+
+return records.map(normalizeServiceRecord);
 }
