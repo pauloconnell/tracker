@@ -13,6 +13,7 @@ interface WorkOrderState {
    // Derived selectors
    getWorkOrdersForVehicle: (vehicleId: string) => IWorkOrder[];
    getUpcomingWorkOrders: () => IWorkOrder[];
+   updateWorkOrderInStore: (wo: IWorkOrder) => void;
 }
 
 export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
@@ -45,9 +46,16 @@ export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
       return get().workOrders.filter((wo) => {
          const dueDate = wo.serviceDueDate ? new Date(wo.serviceDueDate) : null;
          const dueKM = wo.serviceDueKM;
-         const dateSoon = dueDate && dueDate >= now && dueDate <= twoWeeksFromNow;  // want all due before 2weeksFromNow
+         const dateSoon = dueDate && dueDate >= now && dueDate <= twoWeeksFromNow; // want all due before 2weeksFromNow
          const kmSoon = dueKM && wo.mileage && dueKM - wo.mileage <= 100;
          return dateSoon || kmSoon;
       });
    },
+
+   updateWorkOrderInStore: (updatedWO: IWorkOrder) =>
+      set((state) => ({
+         workOrders: state.workOrders.map((wo: IWorkOrder) =>
+            wo._id === updatedWO._id ? updatedWO : wo
+         ),
+      })),
 }));

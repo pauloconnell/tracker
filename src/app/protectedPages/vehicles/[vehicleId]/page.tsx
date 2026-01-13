@@ -85,7 +85,7 @@ export default async function VehiclePage({ params }: { params: { vehicleId: str
                  </section>
 
          {/* Service History */}
-         <div>
+         <div className="border rounded-lg p-4 bg-gray-100 shadow-sm">
             <h2 className="text-xl font-semibold mb-2">Service History</h2>
 
             {history.length === 0 && (
@@ -95,15 +95,15 @@ export default async function VehiclePage({ params }: { params: { vehicleId: str
             <ul className="space-y-3">
                {history.map((item) => (
                   <li key={item._id} className="border p-3 rounded-lg">
-                     <div className="font-medium">{item.serviceType}
+                     <div className="font-semibold">{item.serviceType}
                       {item.location && (  <div> Location: {item.location} </div>)}
                      </div>
                      <div className="text-sm text-gray-600">
                         {item.date} — {item.mileage} km
                      </div>
-                     { item.notes && (<div className="border p-3 rounded-lg">
-                       Notes {item.notes}
-                     </div>)}
+                     { item.notes && (<label>Notes<div className="border p-3 bg-white rounded-lg">
+                        {item.notes}
+                     </div></label>)}
                   </li>
                ))}
             </ul>

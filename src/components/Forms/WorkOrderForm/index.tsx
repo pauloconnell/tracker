@@ -7,7 +7,9 @@ import DeleteWorkOrderButton from '@/components/Buttons/DeleteWorkOrderButton';
 import { toast } from 'react-hot-toast';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
-import { IVehicle } from '@/types/vehicle';
+//import { IVehicle } from '@/types/vehicle';
+import { IVehicle } from '../../types/vehicle';
+
 
 export default function WorkOrderForm({
    workOrderId,
@@ -27,6 +29,7 @@ export default function WorkOrderForm({
    const selectedVehicle = useVehicleStore((state) => state.selectedVehicle);
    const fetchVehicle = useVehicleStore((state) => state.fetchVehicle);
    const setSelectedVehicle = useVehicleStore((s) => s.setSelectedVehicle);
+   const fetchAllWorkOrders = useWorkOrderStore((s) => s.fetchAllWorkOrders);
 
    //console.log('vehicleId issue?', storeWO);
 
@@ -90,9 +93,10 @@ export default function WorkOrderForm({
          location: ['N/A'],
          notes: '',
          completedBy: '',
-         isRecurring: false, serviceFrequencyKM: '', serviceFrequencyWeeks: '',
-       };
-      
+         isRecurring: false,
+         serviceFrequencyKM: '',
+         serviceFrequencyWeeks: '',
+      };
    });
 
    //3 update form when storeWO loads(edit mode)
@@ -108,7 +112,7 @@ export default function WorkOrderForm({
             location: storeWO.location ?? ['N/A'],
             notes: storeWO.notes ?? '',
             completedBy: storeWO.completedBy ?? '',
-              isRecurring: storeWO.isRecurring ?? false,
+            isRecurring: storeWO.isRecurring ?? false,
             serviceFrequencyKM: storeWO.serviceFrequencyKM ?? '',
             serviceFrequencyWeeks: storeWO.serviceFrequencyWeeks ?? '',
          });
@@ -182,6 +186,7 @@ export default function WorkOrderForm({
 
       if (res.ok) {
          toast.success('Work order saved');
+         await fetchAllWorkOrders(); // refresh Zustand store
          router.push(`/protectedPages/vehicles/${form.vehicleId}`);
       } else {
          toast.error('Failed to save work order');
@@ -200,8 +205,9 @@ export default function WorkOrderForm({
       const data = await res.json();
 
       toast.success('Work order completed');
-
+      await fetchAllWorkOrders(); // refresh Zustand store
       router.push(`/protectedPages/vehicles/${form.vehicleId}`);
+
       router.refresh();
    };
 

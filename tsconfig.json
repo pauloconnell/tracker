@@ -19,9 +19,9 @@
       }
     ],
 
-    "baseUrl": ".",               // ⭐ REQUIRED
+    "baseUrl": ".",               // REQUIRED
     "paths": {
-      "@/*": ["src/*"]            // ⭐ Now resolves correctly
+      "@/*": ["src/*"]           
     }
   },
   "include": [
