@@ -8,6 +8,9 @@ if (!MONGODB_URI) {
 
 let cached = (global as any).mongoose || { conn: null, promise: null };
 
+// Persist cache back to global -for hot reloads/serverless environments
+(global as any).mongoose = cached;
+
 export async function connectDB() {
   if (cached.conn) return cached.conn;
 

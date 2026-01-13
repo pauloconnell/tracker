@@ -3,7 +3,9 @@ import Vehicle from "@/models/Vehicle";
 import { connectDB } from "@/lib/mongodb";
 
 
-export async function PUT(req: Request, { params }) {
+
+
+export async function PUT(req: Request, { params}:{ params: {vehicleId: string } }) {
   try {
     await connectDB();
 

@@ -1,6 +1,11 @@
 import { getSession } from "@auth0/nextjs-auth0";
-
-const session = await getSession(); 
+let session;
+try {
+  session = await getSession();
+} catch (error) {
+  console.error('Failed to get session:', error);
+  session = null;
+}
 const href = session ? "/protectedPages/dashboard" : "/api/auth/login?screen_hint=signup";
 const isLoggedIn = !!session;
 
