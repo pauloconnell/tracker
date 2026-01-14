@@ -7,19 +7,19 @@ import DeleteWorkOrderButton from '@/components/Buttons/DeleteWorkOrderButton';
 import { toast } from 'react-hot-toast';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
-//import { IVehicle } from '@/types/vehicle';
-import { IVehicle } from '../../types/vehicle';
+import { IVehicle } from '@/types/vehicle';
 
+interface WorkOrderFormProps {
+   workOrderId?: string;
+   vehicleId?: string;
+   vehicles: IVehicle[];
+}
 
 export default function WorkOrderForm({
    workOrderId,
    vehicleId,
    vehicles,
-}: {
-   workOrderId?: string;
-   vehicleId?: string;
-   vehicles: IVehicle[];
-}) {
+}: WorkOrderFormProps) {
    const router = useRouter();
 
    // Zustand stores
@@ -143,7 +143,12 @@ export default function WorkOrderForm({
       'Electrical work(see notes)',
       'Other',
    ];
-   const locations = [
+   interface LocationOption {
+      value: string;
+      label: string;
+   }
+
+   const locations: LocationOption[] = [
       { value: 'front', label: 'Front' },
       { value: 'rear', label: 'Rear' },
       { value: 'fr', label: 'Front Right (FR)' },

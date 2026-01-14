@@ -5,7 +5,7 @@ import { IWorkOrder } from '@/types/workorder';
 import { useWorkOrderStore, getWorkOrdersForVehicle } from '@/store/useWorkOrderStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
 interface ServiceDueProps {
-   vehicleId: string;
+   vehicleId?: string;
 }
 
 export default function ServiceDue({ vehicleId }: ServiceDueProps) {

@@ -1,5 +1,27 @@
 'use client';
 import { useState } from 'react';
+import { IVehicle } from '@/types/vehicle';
+
+interface SharedServiceFormFieldsProps {
+  form: {
+    vehicleId: string;
+    serviceType: string;
+    location: string;
+    notes: string;
+    mileage: number | null;
+    serviceDueDate: string | null;
+    serviceDueKM: number | null;
+    isRecurring: boolean;
+    serviceFrequencyWeeks: number | null;
+    serviceFrequencyKM: number | null;
+  };
+  setForm: React.Dispatch<React.SetStateAction<any>>; // can tighten later
+  vehicles: IVehicle[];
+  serviceTypes: string[];
+  locations: string[];
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+}
+
 
 export default function SharedServiceFormFields({
    form,
@@ -8,7 +30,7 @@ export default function SharedServiceFormFields({
    serviceTypes,
    locations,
    handleChange,
-}) {
+}: SharedServiceFormFieldsProps) {
 
   // toggle lock for recurring service intervals
   const [isLocked, setIsLocked] = useState(true);
@@ -115,7 +137,7 @@ export default function SharedServiceFormFields({
                <input
                   type="checkbox"
                   name="isRecurring"
-                  value={form.isRecurring ?? false}
+                  value={form?.isRecurring ?? false}
 
                   checked={form.isRecurring}
                   onChange={(e) => setForm({ ...form, isRecurring: e.target.checked })}

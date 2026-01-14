@@ -4,7 +4,14 @@ import VehicleList from "@/components/vehicle/VehicleList";
 import Link from "next/link";
 
 export default async function DashboardPage() {
-    const vehicles = await getAllVehicles();      // on server so hit  DB directly
+    let vehicles = []; 
+    try { 
+      vehicles = await getAllVehicles();      // on server so hit  DB directlygetAllVehicles(); 
+      
+    } catch (err) { 
+      console.error("Failed to load vehicles:", err); 
+      return <div className="text-red-600">Error loading vehicles</div>; 
+    }
     
   return (
     <div className="min-h-screen bg-gray-50"> 

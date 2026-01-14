@@ -1,29 +1,36 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import WorkOrder from '@/models/WorkOrder';
-import { IWorkOrder } from '@/types/workorder';
+import { sanitizeUpdate } from '@/lib/sanitizeUpdate';
+import { normalizeRecord } from '@/lib/normalizeRecord';
+import { NextRequest } from 'next/server';
 
-export async function PUT(req, { params }) {
+
+export async function PUT(req: NextRequest, { params }: { params: { id: string }}) {
    await connectDB();
-   const body = await req.json();
-   const id = params.id;
+ 
+   const id = params?.id;
 
    if (!id) {
       return NextResponse.json({ error: 'Missing ID' }, { status: 400 });
    }
-   const updated = await WorkOrder.findByIdAndUpdate(id, body, { new: true }).lean();
+
+  const body = await req.json();
+   let sanitized = sanitizeUpdate(WorkOrder, body);
+
+   const updated = await WorkOrder.findByIdAndUpdate(id, sanitized, { new: true }).lean();
    if (!updated) {
       return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
    }
-   return NextResponse.json(updated);
+   return NextResponse.json(normalizeRecord(updated));
 }
 
 // get a specific work order given id (in the url of API)
 
-export async function GET(req, { params }) {
+export async function GET(req: NextRequest, { params }: { params: { id: string }}) {
    try {
       await connectDB();
-      const { id } = params;
+       const id = params?.id;
       const wo = await WorkOrder.findById(id).lean();
       if (!wo) {
          return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
