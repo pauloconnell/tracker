@@ -1,15 +1,20 @@
 import { getSession } from "@auth0/nextjs-auth0";
-let session;
+
+
+
+export default async function Home() {
+
+let session=null;
 try {
   session = await getSession();
 } catch (error) {
   console.error('Failed to get session:', error);
-  session = null;
 }
+
 const href = session ? "/protectedPages/dashboard" : "/api/auth/login?screen_hint=signup";
 const isLoggedIn = !!session;
 
-export default function Home() {
+
   return (
      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
         {/* Hero Section */}

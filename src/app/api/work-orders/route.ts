@@ -17,14 +17,14 @@ export async function POST(req: Request) {
       // Create work order
       const wo = await WorkOrder.create(sanitized as IWorkOrderInput);
 
-      return NextResponse.json(normalizeRecord(wo), { status: 201 });
+      return NextResponse.json({ success: true }, { status: 201 });
    } catch (err) {
       console.error('Failed to create work order:', err);
       return NextResponse.json({ error: 'Failed to create work order' }, { status: 500 });
    }
 }
 
-export async function PUT(req, { params }) {
+export async function PUT(req: Request, { params }: { params: { id: string }}) {
    try {
       await connectDB();
       const body = await req.json();
@@ -36,9 +36,10 @@ export async function PUT(req, { params }) {
       if (!updated) {
          return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
       }
-      return NextResponse.json(normalizeRecord(updated));
+      return NextResponse.json({ success: true }, { status: 201 });
    } catch (e) {
       console.error('Failed to update work order:', e);
+       return NextResponse.json({ error: 'Failed to update work order' }, { status: 500 });
    }
 }
 

@@ -10,7 +10,7 @@ export interface IVehicle {
 
 }
 
-
+// delete this:
 export type VehicleCreateInput = Omit<
   IVehicle,
   '_id' | 'vehicleId' | 'createdAt' | 'updatedAt'

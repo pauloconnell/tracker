@@ -50,5 +50,5 @@ export async function PUT(req: Request,
       console.error("Failed to create next recurring work order:", err); // Do NOT throw — completion should still succeed 
     }
   }
-  return NextResponse.json({ serviceRecordId: serviceRecord._id });
+  return NextResponse.json({ success: true }, { status: 201 });
 }

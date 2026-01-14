@@ -1,4 +1,4 @@
-export function sanitizeCreate<T>(model: any, body: unknown): T  {
+export function sanitizeCreate<T>(model: any, body: unknown): Partial<T>  {
    
   // narrow type
   if (typeof body !== 'object' || body === null) { 

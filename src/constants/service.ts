@@ -1,0 +1,16 @@
+export const SERVICE_TYPES = [
+  'Oil Change',
+  'Air Filter Replacement',
+  'Tire Rotation',
+  'Tire Replacement',
+  'Brake Caliper Service',
+  'Brake Pads Replace',
+  'Brake Fluid bleed',
+  'Belt Change',
+  'Power Steering Fluid Flush',
+  'Coolant Flush',
+  'Transmission Service',
+  'Inspection',
+  'Electrical work(see notes)',
+  'Other',
+] as const;

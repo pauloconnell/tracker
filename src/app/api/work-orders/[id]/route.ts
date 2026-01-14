@@ -22,7 +22,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
    if (!updated) {
       return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
    }
-   return NextResponse.json(normalizeRecord(updated));
+  return NextResponse.json({ success: true }, { status: 201 });
 }
 
 // get a specific work order given id (in the url of API)

@@ -1,8 +1,9 @@
 import { connectDB } from "./mongodb";
 import WorkOrder from "@/models/WorkOrder";
+import { IWorkOrder } from "@/types/workorder";
 
 
-export async function createWorkOrder(data:) {
+export async function createWorkOrder(data:IWorkOrder) {
   await connectDB();
   const wo = await WorkOrder.create(data);
   return {
@@ -20,8 +21,8 @@ export async function getAllWorkOrders() {
     ...wo,
     _id: wo._id.toString(),
     vehicleId: wo?.vehicleId?.toString(),
-    createdAt: wo.createdAt?.toISOString?.() ?? null,
-    updatedAt: wo.updatedAt?.toISOString?.() ?? null,
+    createdAt: wo.createdAt?.toISOString() ?? null,
+    updatedAt: wo.updatedAt?.toISOString() ?? null,
   }));
 }
 
@@ -32,8 +33,8 @@ export async function getWorkOrdersForVehicle(vehicleId: string) {
     ...wo,
     _id: wo._id?.toString(),
     vehicleId: wo.vehicleId?.toString(),
-    createdAt: wo.createdAt?.toISOString?.() ?? null,
-    updatedAt: wo.updatedAt?.toISOString?.() ?? null,
+    createdAt: wo.createdAt?.toISOString() ?? null,
+    updatedAt: wo.updatedAt?.toISOString() ?? null,
   }));
 }
 
@@ -49,7 +50,7 @@ export async function deleteWorkOrder(id: string) {
     ? {
         ...deleted,
         _id: deleted._id.toString(),
-        vehicleId: deleted.vehicleId?.toString?.() ?? "",
+        vehicleId: deleted.vehicleId?.toString() ?? "",
       }
     : null;
 }

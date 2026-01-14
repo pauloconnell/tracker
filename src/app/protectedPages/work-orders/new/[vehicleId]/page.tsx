@@ -4,9 +4,17 @@ import WorkOrderForm from '@/components/Forms/WorkOrderForm';
 export default async function NewWorkOrderPage({ params }: {params: { vehicleId: string }}) {
    const { vehicleId } = params;
 
-
+   try{
    // Fetch all vehicles (for dropdowns, names, etc.)
    const vehicles = JSON.parse(JSON.stringify(await getAllVehicles()));
+   }catch(err){
+      console.error("Error fetching vehicles:", err);
+      return( <div className="min-h-screen flex items-center justify-center">
+         <p className="text-red-500 text-lg">Failed to load vehicles. Please try again later.</p>
+      </div>
+      );
+      
+   }
 
    return (
       <div className="min-h-screen bg-gray-50">

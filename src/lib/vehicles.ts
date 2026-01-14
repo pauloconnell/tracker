@@ -34,7 +34,7 @@ export async function getAllVehicles() {
   }));
 }
 
-export async function createVehicle(data: VehicleCreateInput) {
+export async function createVehicle<T>(data: Partial<T>): Promise<T> {
   await connectDB();
 
   const v = await Vehicle.create(data);

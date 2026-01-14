@@ -158,15 +158,18 @@ export default function WorkOrderForm({
       { value: 'N/A', label: 'N/A' },
    ];
 
-   function handleChange(e) {
+   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
       const { name, value, type } = e.target;
       setForm({ ...form, [name]: type === 'number' ? Number(value) : value });
-      console.log('event ', name);
+      //console.log('event ', name);
       // If the user changed the vehicle dropdown, update the store
       if (name === 'vehicleId') {
          const v = vehicles.find((veh) => veh._id === value);
          console.log('changed vehicle ', v);
-         setSelectedVehicle(v);
+         if(v){
+            setSelectedVehicle(v);
+         }
+         
       }
    }
 
@@ -180,7 +183,7 @@ export default function WorkOrderForm({
       const url = isEditing ? `/api/work-orders/${form.workOrderId}` : `/api/work-orders`;
       const method = isEditing ? 'PUT' : 'POST';
 
-      const workOrderName = `${selectedVehicle.year} ${selectedVehicle.make} — ${selectedVehicle.name}`;
+      const workOrderName = `${selectedVehicle?.year} ${selectedVehicle?.make} — ${selectedVehicle?.name}`;
       const payload = { ...form, name: workOrderName };
       console.log('saving ', payload);
       const res = await fetch(url, {
@@ -195,7 +198,7 @@ export default function WorkOrderForm({
          router.push(`/protectedPages/vehicles/${form.vehicleId}`);
       } else {
          toast.error('Failed to save work order');
-         alert('Failed to save work order');
+         
       }
    }
 

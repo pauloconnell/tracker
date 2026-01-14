@@ -22,9 +22,9 @@ export async function GET(req: Request) {
       workOrders.map((wo) => ({
         ...wo,
         _id: wo._id.toString(),
-        vehicleId: wo.vehicleId?.toString?.() ?? "",
-        createdAt: wo.createdAt?.toISOString?.() ?? null,
-        updatedAt: wo.updatedAt?.toISOString?.() ?? null,
+        vehicleId: wo.vehicleId?.toString() ?? "",
+        createdAt: wo.createdAt?.toISOString() ?? null,
+        updatedAt: wo.updatedAt?.toISOString() ?? null,
       }))
     );
   } catch (err) {

@@ -2,11 +2,16 @@
 import { useState } from 'react';
 import { IVehicle } from '@/types/vehicle';
 
+interface LocationOption {
+  value: string;
+  label: string;
+}
+
 interface SharedServiceFormFieldsProps {
   form: {
     vehicleId: string;
     serviceType: string;
-    location: string;
+    location: string[];
     notes: string;
     mileage: number | null;
     serviceDueDate: string | null;
@@ -18,7 +23,7 @@ interface SharedServiceFormFieldsProps {
   setForm: React.Dispatch<React.SetStateAction<any>>; // can tighten later
   vehicles: IVehicle[];
   serviceTypes: string[];
-  locations: string[];
+  locations: LocationOption[];
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
 }
 
