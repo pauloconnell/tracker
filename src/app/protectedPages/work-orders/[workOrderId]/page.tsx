@@ -9,7 +9,7 @@ export default async function WorkOrderDetailPage({ params}: { params: { workOrd
 
 
    // Fetch all vehicles (for dropdowns, names, etc.)
-   const vehicles = JSON.parse(JSON.stringify(await getAllVehicles()));
+   const vehicles = await getAllVehicles();
 
    return (
       <div className="min-h-screen bg-gray-50">

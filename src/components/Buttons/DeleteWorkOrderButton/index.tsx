@@ -10,14 +10,14 @@ interface DeleteWorkOrderButtonProps {
 export default function DeleteWorkOrderButton({ workOrderId }: DeleteWorkOrderButtonProps) {
   const router = useRouter();
 
-  async function handleDelete(e) {
+  async function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault(); 
     e.stopPropagation();
     const confirmed = confirm("Are you sure you want to delete this work order?");
     if (!confirmed) return;
 
     try {
-      const res = await fetch(`/api/work-orders?workOrderId=${workOrderId}`, {
+      const res = await fetch(`/api/work-orders/${workOrderId}`, {
         method: "DELETE",
       });
 
@@ -36,7 +36,7 @@ export default function DeleteWorkOrderButton({ workOrderId }: DeleteWorkOrderBu
 
     } catch (err) {
       
-      toast.error("Something went wrong");
+      toast.error(`Delete Failed: ${err}`);
     }
   }
 

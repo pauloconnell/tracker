@@ -81,10 +81,8 @@ export async function DELETE(req: Request) {
          return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
       }
 
-      return NextResponse.json({
-         ...deleted,
-         _id: deleted._id.toString(),
-         vehicleId: deleted.vehicleId?.toString?.() ?? '',
+      return NextResponse.json(
+       { success: true }, { status: 200
       });
    } catch (err) {
       console.error('Failed to delete work order:', err);

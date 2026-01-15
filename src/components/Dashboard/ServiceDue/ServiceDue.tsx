@@ -11,7 +11,6 @@ interface ServiceDueProps {
 export default function ServiceDue({ vehicleId }: ServiceDueProps) {
    const fetchAllWorkOrders = useWorkOrderStore((s) => s.fetchAllWorkOrders);
    const setSelectedWorkOrder = useWorkOrderStore((s) => s.setSelectedWorkOrder);
-   const getWorkOrdersForVehicle = useWorkOrderStore((s) => s.getWorkOrdersForVehicle);
    const getUpcomingWorkOrders = useWorkOrderStore((s) => s.getUpcomingWorkOrders);
    const [loading, setLoading] = useState(true);
    const { selectedVehicle, fetchVehicle } = useVehicleStore();
@@ -35,10 +34,12 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
       }
    }, [vehicleId, selectedVehicle]);
 
+    if (loading) return <div>Loading…</div>;
+    
    if (!workOrders.length) {
       return <div>No upcoming service due</div>;
    }
-   if (loading) return <div>Loading…</div>;
+  
    //if (workOrders.length === 0) return <div className="text-gray-500">No outstanding work orders</div>;
 
    return (

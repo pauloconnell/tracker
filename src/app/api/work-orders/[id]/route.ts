@@ -4,33 +4,43 @@ import WorkOrder from '@/models/WorkOrder';
 import { sanitizeUpdate } from '@/lib/sanitizeUpdate';
 import { normalizeRecord } from '@/lib/normalizeRecord';
 import { NextRequest } from 'next/server';
+import mongoose from 'mongoose';
 
-
-export async function PUT(req: NextRequest, { params }: { params: { id: string }}) {
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
    await connectDB();
- 
+
    const id = params?.id;
+
+   if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+   }
 
    if (!id) {
       return NextResponse.json({ error: 'Missing ID' }, { status: 400 });
    }
 
-  const body = await req.json();
+   const body = await req.json();
    let sanitized = sanitizeUpdate(WorkOrder, body);
 
    const updated = await WorkOrder.findByIdAndUpdate(id, sanitized, { new: true }).lean();
    if (!updated) {
       return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
    }
-  return NextResponse.json({ success: true }, { status: 201 });
+   return NextResponse.json({ success: true }, { status: 201 });
 }
 
 // get a specific work order given id (in the url of API)
 
-export async function GET(req: NextRequest, { params }: { params: { id: string }}) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+   await connectDB();
+   const id = params?.id;
+   if (!id) {
+      return NextResponse.json({ error: 'Missing ID' }, { status: 400 });
+   }
+   if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+   }
    try {
-      await connectDB();
-       const id = params?.id;
       const wo = await WorkOrder.findById(id).lean();
       if (!wo) {
          return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
