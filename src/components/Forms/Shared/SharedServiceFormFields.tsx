@@ -1,45 +1,47 @@
 'use client';
 import { useState } from 'react';
 import { IVehicle } from '@/types/IVehicle';
+import { SERVICE_TYPES } from '@/constants/service'
+import { LOCATIONS } from '@/constants/locations'
+
 
 interface LocationOption {
-  value: string;
-  label: string;
+   value: string;
+   label: string;
 }
 
 interface SharedServiceFormFieldsProps {
-  form: {
-    vehicleId: string;
-    serviceType: string;
-    location: string[];
-    notes: string;
-    mileage: number | null;
-    serviceDueDate: string | null;
-    serviceDueKM: number | null;
-    isRecurring: boolean;
-    serviceFrequencyWeeks: number | null;
-    serviceFrequencyKM: number | null;
-  };
-  setForm: React.Dispatch<React.SetStateAction<any>>; // can tighten later
-  vehicles: IVehicle[];
-  serviceTypes: string[];
-  locations: LocationOption[];
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+   form: {
+      vehicleId: string;
+      serviceType: string;
+      location: string[];
+      notes: string;
+      mileage: number | null;
+      serviceDueDate: string | null;
+      serviceDueKM: number | null;
+      isRecurring: boolean;
+      serviceFrequencyWeeks: number | null;
+      serviceFrequencyKM: number | null;
+   };
+   setForm: React.Dispatch<React.SetStateAction<any>>; // can tighten later
+   vehicles: IVehicle[];
+   serviceTypes: string[];
+   locations: LocationOption[];
+   handleChange: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+   ) => void;
 }
-
 
 export default function SharedServiceFormFields({
    form,
    setForm,
    vehicles,
-   serviceTypes,
-   locations,
    handleChange,
 }: SharedServiceFormFieldsProps) {
-
-  // toggle lock for recurring service intervals
-  const [isLocked, setIsLocked] = useState(true);
-
+   // toggle lock for recurring service intervals
+   const [isLocked, setIsLocked] = useState(form.isRecurring);
+ const serviceTypes = SERVICE_TYPES;
+   const locations =LOCATIONS;
 
    return (
       <>
@@ -51,6 +53,7 @@ export default function SharedServiceFormFields({
                value={form.vehicleId}
                onChange={handleChange}
                className="border rounded px-3 py-2 w-full"
+               required
             >
                <option value="">Select a vehicle</option>
                {vehicles?.map((v) => (
@@ -142,10 +145,12 @@ export default function SharedServiceFormFields({
                <input
                   type="checkbox"
                   name="isRecurring"
-                  value={form?.isRecurring ?? false}
-
                   checked={form.isRecurring}
+                  disabled={isLocked}
                   onChange={(e) => setForm({ ...form, isRecurring: e.target.checked })}
+                  className={`h-5 w-5 ${
+                     isLocked ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                />
                <span className="font-medium">Recurring Service</span>
             </label>
@@ -163,27 +168,27 @@ export default function SharedServiceFormFields({
                   <span className="font-medium"> Edit Mode </span>{' '}
                </div>
                <fieldset disabled={isLocked}>
-               <label className="flex flex-col flex-1">
-                  Repeat Every (KM)
-                  <input
-                     type="number"
-                     name="serviceFrequencyKM"
-                     value={form.serviceFrequencyKM}
-                     onChange={handleChange}
-                     className="border rounded-full px-4 py-2"
-                  />
-               </label>
+                  <label className="flex flex-col flex-1">
+                     Repeat Every (KM)
+                     <input
+                        type="number"
+                        name="serviceFrequencyKM"
+                        value={form.serviceFrequencyKM}
+                        onChange={handleChange}
+                        className="border rounded-full px-4 py-2"
+                     />
+                  </label>
 
-               <label className="flex flex-col flex-1">
-                  Repeat Every (Weeks)
-                  <input
-                     type="number"
-                     name="serviceFrequencyWeeks"
-                     value={form.serviceFrequencyWeeks}
-                     onChange={handleChange}
-                     className="border rounded-full px-4 py-2"
-                  />
-               </label>
+                  <label className="flex flex-col flex-1">
+                     Repeat Every (Weeks)
+                     <input
+                        type="number"
+                        name="serviceFrequencyWeeks"
+                        value={form.serviceFrequencyWeeks}
+                        onChange={handleChange}
+                        className="border rounded-full px-4 py-2"
+                     />
+                  </label>
                </fieldset>
             </div>
          )}

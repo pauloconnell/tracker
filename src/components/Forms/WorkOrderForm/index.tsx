@@ -208,9 +208,7 @@ export default function WorkOrderForm({
          <SharedServiceFormFields
             form={form}
             setForm={setForm}
-            vehicles={vehicles}
-            serviceTypes={serviceTypes}
-            locations={locations}
+            vehicles={vehicles}           
             handleChange={handleChange}
          />
          {/* If existing work order: allow user to Complete work order - must add tech's name */}

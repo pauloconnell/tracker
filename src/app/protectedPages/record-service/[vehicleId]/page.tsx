@@ -2,7 +2,7 @@ import ServiceRecordForm from '@/components/Forms/ServiceRecordForm';
 
 
   
-export default async function RecordServicePage({ params }) {
+export default async function RecordServicePage({ params }: { params: { vehicleId: string }}) {
   const { vehicleId } = params;
 
   return (

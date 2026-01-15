@@ -7,7 +7,7 @@ import { useVehicleStore } from '@/store/useVehicleStore';
 import { SERVICE_TYPES } from '@/constants/service';
 import { LOCATIONS } from '@/constants/locations';
 
-export default function ServiceRecordForm({ vehicleId }) {
+export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } ) {
    const router = useRouter();
 
    // Zustand
@@ -92,23 +92,35 @@ export default function ServiceRecordForm({ vehicleId }) {
             form={form}
             setForm={setForm}
             vehicles={vehicles}
-            serviceTypes={serviceTypes}
-            locations={locations}
             handleChange={handleChange}
          />
 
-         {/* Service Record specific field */}
-         <label className="flex flex-col flex-1">
-            Date Service Performed
-            <input
-               type="date"
-               name="serviceDate"
-               value={form.serviceDate}
-               onChange={handleChange}
-               className="border rounded-full px-4 py-2"
-               required
-            />
-         </label>
+         <div className="flex flex-col md:flex-row gap-4">
+            {/* Service Record specific field */}
+            <label className="flex flex-col flex-1">
+               Date Service Performed
+               <input
+                  type="date"
+                  name="serviceDate"
+                  value={form.serviceDate}
+                  onChange={handleChange}
+                  className="border rounded px-4 py-2"
+                  required
+               />
+            </label>
+            <label className="flex flex-col flex-1">
+               Completed By (Technician)
+               <input
+                  type="text"
+                  name="completedBy"
+                  value={form.completedBy || ''}
+                  onChange={handleChange}
+                  placeholder="Technician Name"
+                  className="border px-3 py-2 rounded w-full"
+                  required
+               />
+            </label>
+         </div>
 
          {/* Submit */}
          <div className="flex justify-between items-center mt-6 px-3">
