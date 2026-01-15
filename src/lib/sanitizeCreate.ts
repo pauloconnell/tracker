@@ -12,7 +12,7 @@ export function sanitizeCreate<T>(model: any, body: unknown): Partial<T>  {
    }
 
    // Allowed fields come from the schema
-   const allowed = Object.keys(model.schema.paths).filter(
+   const allowed = Object.keys(model.schema.paths)?.filter(
       (key) => !key.startsWith('_') && key !== 'createdAt' && key !== 'updatedAt'
    );
 

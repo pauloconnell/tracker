@@ -8,6 +8,8 @@ import { toast } from 'react-hot-toast';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
 import { IVehicle } from '@/types/vehicle';
+import { SERVICE_TYPES } from '@/constants/service'
+import { LOCATIONS } from '@/constants/locations'
 
 interface WorkOrderFormProps {
    workOrderId?: string;
@@ -38,7 +40,7 @@ export default function WorkOrderForm({
 
    //  1) Fetch Work Order (editing only)
    useEffect(() => {
-      if (isEditing) {
+      if (isEditing && workOrderId) {
          if (!storeWO || storeWO._id !== workOrderId) {
             // If store is empty OR store has a different workOrderId, fetch it
             fetchWorkOrder(workOrderId);
@@ -127,36 +129,10 @@ export default function WorkOrderForm({
 
    // allow updates when viewing work order(add notes ect)
 
-   const serviceTypes = [
-      'Oil Change',
-      'Air Filter Replacement',
-      'Tire Rotation',
-      'Tire Replacement',
-      'Brake Caliper Service',
-      'Brake Pads Replace',
-      'Brake Fluid bleed',
-      'Belt Change',
-      'Power Steering Fluid Flush',
-      'Coolant Flush',
-      'Transmission Service',
-      'Inspection',
-      'Electrical work(see notes)',
-      'Other',
-   ];
-   interface LocationOption {
-      value: string;
-      label: string;
-   }
+   const serviceTypes = SERVICE_TYPES;
+   
 
-   const locations: LocationOption[] = [
-      { value: 'front', label: 'Front' },
-      { value: 'rear', label: 'Rear' },
-      { value: 'fr', label: 'Front Right (FR)' },
-      { value: 'fl', label: 'Front Left (FL)' },
-      { value: 'rr', label: 'Rear Right (RR)' },
-      { value: 'rl', label: 'Rear Left (RL)' },
-      { value: 'N/A', label: 'N/A' },
-   ];
+   const locations= LOCATIONS;
 
    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
       const { name, value, type } = e.target;
@@ -173,7 +149,7 @@ export default function WorkOrderForm({
       }
    }
 
-   async function handleSubmit(e) {
+   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
       console.log('submitted to API:', form);
       if (!form.vehicleId) {

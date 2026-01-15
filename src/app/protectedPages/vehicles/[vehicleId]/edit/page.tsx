@@ -2,16 +2,27 @@ import Link from "next/link";
 import { getVehicleById } from "@/lib/vehicles";
 //import VehicleForm from "@/components/Vehicle/VehicleForm";
 import EditFormWrapper from "./EditFormWrapper";
+import mongoose from "mongoose";
+import { toast } from "react-hot-toast";
 
 export default async function EditVehiclePage({ params }: { params: { vehicleId: string } }) {
   const { vehicleId } = await params;
 
-  // Fetch vehicle from DB (lean() returns plain object)
+ if (!mongoose.isValidObjectId(vehicleId)) {
+     toast.error('failed to load data, this vehicleid is in correct, please try again')
+   }
+
+   try{
+// Fetch vehicle from DB (lean() returns plain object)
   const doc = await getVehicleById(vehicleId);
 
   // Extra safety: ensure fully JSON-serializable
   const vehicle = JSON.parse(JSON.stringify(doc));
 
+   }catch(err){
+  toast.error('failed to load data for this vehicleid. Please go back to Dashboard.')
+   }
+  
 
 
   return (

@@ -1,9 +1,18 @@
 import { connectDB } from "./mongodb";
 import Vehicle from "@/models/Vehicle";
 import type { VehicleCreateInput } from "@/types/vehicle";
+import mongoose from "mongoose";
+
+
 
 export async function getVehicleById(vehicleId: string) {
   await connectDB();
+
+  // Security: ensure validId sent
+  if (!mongoose.isValidObjectId(vehicleId)) {
+  return null; // or throw an error
+}
+
 
   const vehicle = await Vehicle.findOne({
     $or: [{ vehicleId }, { _id: vehicleId }],

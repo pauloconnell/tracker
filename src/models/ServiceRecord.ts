@@ -9,7 +9,7 @@ const ServiceRecordSchema = new Schema(
       // Work order due date (optional)
       serviceDueDate: { type: Date, required: false },
       serviceDueKM: { type: Number, required: false },
-      mileage: Number,
+      mileage: { type: Number, required: false },
       location: [String],
       notes: String,
       completedBy: { type: String },

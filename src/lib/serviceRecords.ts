@@ -4,13 +4,13 @@ import type { IWorkOrder } from '@/types/workorder';
 import type { IVehicle } from '@/types/vehicle';
 
 // helper to normalize Records
-export function normalizeServiceRecord(record: any) {
+export function normalizeServiceRecord(record: Partial<IWorkOrder>): Partial<IWorkOrder> {
    return {
       ...record,
-      _id: record._id?.toString() ?? '',
-      vehicleId: record.vehicleId?.toString() ?? '',
-      createdAt: record.createdAt ? new Date(record.createdAt).toISOString() : null,
-      updatedAt: record.updatedAt ? new Date(record.updatedAt).toISOString() : null,
+      _id: record._id ? record._id.toString() : undefined,
+      vehicleId: record.vehicleId ? record.vehicleId.toString() : undefined,
+      createdAt: record.createdAt ? new Date(record.createdAt).toISOString() : undefined,
+      updatedAt: record.updatedAt ? new Date(record.updatedAt).toISOString() : undefined,
    };
 }
 
@@ -32,5 +32,5 @@ export async function getAllServiceRecords(): Promise<IWorkOrder[]> {
    await connectDB();
    const records = await ServiceRecord.find().lean();
 
-return records.map(normalizeServiceRecord);
+   return records.map(normalizeServiceRecord);
 }

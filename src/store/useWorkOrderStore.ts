@@ -25,9 +25,11 @@ export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
    clearSelectedWorkOrder: () => set({ selectedWorkOrder: null }),
 
    fetchAllWorkOrders: async () => {
-
-      const res = await fetch('/api/work-orders');
       try {
+         const res = await fetch('/api/work-orders');
+         if (!res.ok) {
+            throw new Error(`Failed to fetch work order: ${res.statusText}`);
+         }
          const data = await res.json();
          set({ workOrders: data });
       } catch (e) {
@@ -40,10 +42,14 @@ export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
    fetchWorkOrder: async (id) => {
       try {
          const res = await fetch(`/api/work-orders/${id}`);
+         if (!res.ok) {
+            throw new Error(`Failed to fetch work order: ${res.statusText}`);
+         }
          const data = await res.json();
          set({ selectedWorkOrder: data });
       }
       catch (e) {
+         console.error("error getting work order:", e);
          set({ selectedWorkOrder: null });
       }
    },

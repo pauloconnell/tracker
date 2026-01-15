@@ -3,62 +3,50 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import  DeleteWorkOrderButton  from '@/components/Buttons/DeleteWorkOrderButton';
+import { SERVICE_TYPES } from '@/constants/service'
+import { LOCATIONS } from '@/constants/locations'
+import { toast } from "react-hot-toast";
+import { IVehicle } from '@/types/vehicle'
+import { IWorkOrder } from '@/types/workorder'
 
-export default function RecordServiceForm({ prefill, vehicles }) {
-   const isWorkOrder = !!prefill.workOrderId;
+interface RecordServiceFormProps { 
+   prefill?: Partial<IWorkOrder>; // or your actual type 
+   vehicles: IVehicle[]; 
+}
+
+export default function RecordServiceForm({ prefill, vehicles}:RecordServiceFormProps) {
+   const isWorkOrder = !!prefill?.workOrderId;
    //console.log('form component getting ', prefill, isWorkOrder);
-   const derivedVehicleId = prefill.vehicleId ?? '';
+   const derivedVehicleId = prefill?.vehicleId ?? '';
 
    const [form, setForm] = useState({
-      workOrderId: isWorkOrder ? prefill.workOrderId?.toString() : null,
+      workOrderId: isWorkOrder ? prefill?.workOrderId?.toString() : null,
       vehicleId: derivedVehicleId,
-      serviceType: prefill.serviceType,
+      serviceType: prefill?.serviceType,
       // Only one of these matters depending on mode
       date: isWorkOrder ? '' : new Date().toISOString().split('T')[0],
+      serviceDate: '',
       serviceDueDate: isWorkOrder ? prefill.serviceDueDate || '' : '',
       serviceDueKM: isWorkOrder ? prefill.serviceDueKM || '' : '',
-      mileage: prefill.mileage ?? 0,
-      location: prefill.location ?? ['N/A'],
+      mileage: prefill?.mileage ?? 0,
+      location: prefill?.location ?? ['N/A'],
       notes: '',
    });
 
    //console.log('service form data: ', { form });
 
-   const serviceTypes = [
-      'Oil Change',
-      'Air Filter Replacement',
-      'Tire Rotation',
-      'Tire Replacement',
-      'Brake Caliper Service',
-      'Brake Pads Replace',
-      'Brake Fluid bleed',
-      'Belt Change',
-      'Power Steering Fluid Flush',
-      'Coolant Flush',
-      'Transmission Service',
-      'Inspection',
-      'Electrical work(see notes)',
-      'Other',
-   ];
-   const locations = [
-      { value: 'front', label: 'Front' },
-      { value: 'rear', label: 'Rear' },
-      { value: 'fr', label: 'Front Right (FR)' },
-      { value: 'fl', label: 'Front Left (FL)' },
-      { value: 'rr', label: 'Rear Right (RR)' },
-      { value: 'rl', label: 'Rear Left (RL)' },
-      { value: 'N/A', label: 'N/A' },
-   ];
+   const serviceTypes = SERVICE_TYPES;
+   const locations =LOCATIONS;
 
-   function handleChange(e) {
+   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
       setForm({ ...form, [e.target.name]: e.target.value });
    }
 
-   const handleSubmit = async (e) => {
+   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       const endpoint = isWorkOrder ? '/api/work-orders' : '/api/service-records';
-
+      try{
       const res = await fetch(endpoint, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
@@ -67,8 +55,11 @@ export default function RecordServiceForm({ prefill, vehicles }) {
 
       if (res.ok) {
          router.push(`/protectedPages/vehicles/${form.vehicleId}`);
-      } else {
+      }
+      }catch(err){
          alert('Failed to save record');
+         toast.error(`failed to submit form: ${err}`);
+         console.error('Error submitting form:', err);
       }
    };
 
@@ -187,9 +178,7 @@ export default function RecordServiceForm({ prefill, vehicles }) {
                   type="date"
                   name={isWorkOrder ? 'serviceDueDate' : 'serviceDate'}
                   required={!isWorkOrder}
-                  defaultValue={
-                     isWorkOrder ? prefill?.serviceDueDate : prefill?.serviceDate
-                  }
+                value={isWorkOrder ? form.serviceDueDate : form.serviceDate}
                   className="border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                />
             </label>
