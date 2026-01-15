@@ -1,36 +1,29 @@
-import { IBaseService } from '@/types/IBaseService'
+import { IBaseService } from '@/types/IBaseService';
 
 export interface IWorkOrder extends IBaseService {
-  name: string;
-  year?: string;
-  type?: string;
+   name: string;
+   year?: string;
+   type?: string;
 
-  status: 'open' | 'completed';
+   status: 'open' | 'completed';
 
-  serviceDate?: string | null;
-  serviceDueDate?: string | null;
-  serviceDueKM?: number | null;
+   serviceDate: Date | string;
+   serviceDueDate?: Date | string | null;
+   serviceDueKM?: number | null;
+   mileage?: number | null;
+   createdAt?: Date | string;
+   updatedAt?: Date | string;
 
-  completedDate?: string | null;
+   completedDate?: Date | string | null;
 
-  isRecurring?: boolean;
-  serviceFrequencyKM?: number | null;
-  serviceFrequencyWeeks?: number | null;
+   isRecurring?: boolean;
+   serviceFrequencyKM?: number | null;
+   serviceFrequencyWeeks?: number | null;
 
-  createdAt?: string;
-  updatedAt?: string;
 }
 
-
 // Payload shape for creating a new work order
-export type IWorkOrderInput = Omit<
-  IWorkOrder,
-  "_id" | "createdAt" | "updatedAt"
->;
-
-
-
-
+export type IWorkOrderInput = Omit<IWorkOrder, '_id' | 'createdAt' | 'updatedAt'>;
 
 // export interface IWorkOrder {
 //    _id?: string;
@@ -46,9 +39,8 @@ export type IWorkOrderInput = Omit<
 //    serviceDueKM?: number | null;
 //    status: 'open' | 'completed';
 //    completedBy?: string;
-   
+
 //    isRecurring: boolean;
 //    serviceFrequencyKM?: number | null;
 //    serviceFrequencyWeeks?: number | null;
 // }
-

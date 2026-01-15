@@ -3,20 +3,21 @@ import { IBaseService } from '@/types/IBaseService'
 
 
 export interface IServiceRecord extends IBaseService {
-  serviceDate: string; // required
+    serviceDate: Date | string;// required
 
-  // Track originating work order
-  workOrderId?: string;
+    // Track originating work order
+    workOrderId?: string;
 
-  // Work order scheduling info preserved for history
-  serviceDueDate?: string | null;
-  serviceDueKM?: number | null;
+    // Work order scheduling info preserved for history
+    serviceDueDate?: Date | string | null;
+    serviceDueKM?: number | null;
 
-  // Recurrence info preserved for history
-  isRecurring?: boolean;
-  serviceFrequencyKM?: number | null;
-  serviceFrequencyWeeks?: number | null;
+    // Recurrence info preserved for history
+    isRecurring?: boolean;
+    serviceFrequencyKM?: number | null;
+    serviceFrequencyWeeks?: number | null;
 
-  createdAt: string;
-  updatedAt: string;
+    // Timestamps (ISO strings on the client, Date objects on the server) 
+    createdAt: Date | string;
+    updatedAt: Date | string
 }

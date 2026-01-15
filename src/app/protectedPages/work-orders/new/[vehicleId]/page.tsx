@@ -1,12 +1,13 @@
 import { getAllVehicles } from '@/lib/vehicles';
 import WorkOrderForm from '@/components/Forms/WorkOrderForm';
+import { IVehicle } from '@/types/vehicle';
 
 export default async function NewWorkOrderPage({ params }: {params: { vehicleId: string }}) {
    const { vehicleId } = params;
-
+   let vehicles:IVehicle[] = [];
    try{
    // Fetch all vehicles (for dropdowns, names, etc.)
-   const vehicles = JSON.parse(JSON.stringify(await getAllVehicles()));
+   vehicles = JSON.parse(JSON.stringify(await getAllVehicles()));
    }catch(err){
       console.error("Error fetching vehicles:", err);
       return( <div className="min-h-screen flex items-center justify-center">
