@@ -22,14 +22,14 @@ export async function createServiceRecord(data: Partial<IServiceRecord>) {
    return normalizeServiceRecord(record.toObject());
 }
 
-export async function getServiceHistory(vehicleId: Partial<IVehicle>) {
+export async function getServiceHistory(vehicleId: string): Promise<Partial<IServiceRecord>[]> {
    await connectDB();
    const records = await ServiceRecord.find({ vehicleId }).sort({ date: -1 }).lean();
 
    return records.map(normalizeServiceRecord);
 }
 
-export async function getAllServiceRecords(): Promise<IServiceRecord[]> {
+export async function getAllServiceRecords(): Promise<Partial<IServiceRecord>[]> {
    await connectDB();
    const records = await ServiceRecord.find().lean();
 

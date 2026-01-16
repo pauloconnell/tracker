@@ -1,17 +1,16 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 const VehicleSchema = new Schema(
-  {
-    vehicleId: { type: String, required: false },
-    year: Number,
-    make: String,
-    model: String,
-    name: String,
-    mileage: Number,
-    vin: String,
-  },
-  { timestamps: true }
+   {
+      vehicleId: { type: String },
+      year: { type: Number, required: true },
+      make: { type: String, required: true },
+      model: { type: String, required: true },
+      name: { type: String, required: true },
+      mileage: { type: Number },
+      vin: { type: String },
+   },
+   { timestamps: true }
 );
 
-export default mongoose.models.Vehicle ||
-  mongoose.model("Vehicle", VehicleSchema);
+export default mongoose.models.Vehicle || mongoose.model('Vehicle', VehicleSchema);

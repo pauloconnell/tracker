@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { getAllVehicles, createVehicle } from '@/lib/vehicles';
 import { sanitizeCreate } from '@/lib/sanitizeCreate';
 import { normalizeRecord } from '@/lib/normalizeRecord';
-import Vehicle from '@/models/Vehicle';
-import { IVehicle } from '@/types/IVehicle';
+import  Vehicle  from '@/models/Vehicle';
+import type { IFormVehicle } from "@/types/IFormVehicle";
 
 export async function GET() {
    try {
@@ -22,17 +22,17 @@ export async function GET() {
 
 export async function POST(req: Request) {
    try {
-      const body = (await req.json()) as Partial<IVehicle>;
+      const body = (await req.json()) as IFormVehicle;
       //console.log('body:', body);
       // Clean mileage input and covert to number
       if (body.mileage) {
-         body.mileage = Number(body.mileage.toString().replace(/,/g, ''));
+         body.mileage = body.mileage.toString().replace(/,/g, '');
       }
 
       // Sanitize input based on Vehicle schema
-      const sanitized = sanitizeCreate<IVehicle>(Vehicle, body);
+      const sanitized = sanitizeCreate(Vehicle, body);
 
-      const vehicle = await createVehicle<IVehicle>(sanitized);
+      const vehicle = await createVehicle(sanitized);
       // note above function get _id and sets vehicleID in DB and response
 
       // Normalize output

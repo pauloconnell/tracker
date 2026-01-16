@@ -35,7 +35,7 @@ export default function VehicleForm({ vehicle }: VehicleFormProps) {
       vehicleId: derivedVehicleId,
    });
 
-   const handleChange = (e) => {
+   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
       setForm({ ...form, [e.target.name]: e.target.value });
    };
 
@@ -84,6 +84,7 @@ export default function VehicleForm({ vehicle }: VehicleFormProps) {
       onChange={handleChange}
       placeholder="Year"
       className="border px-3 py-2 rounded w-full"
+      required
     />
   </div>
 
@@ -98,6 +99,7 @@ export default function VehicleForm({ vehicle }: VehicleFormProps) {
       onChange={handleChange}
       placeholder="Make"
       className="border px-3 py-2 rounded w-full"
+      required
     />
   </div>
 
@@ -112,6 +114,7 @@ export default function VehicleForm({ vehicle }: VehicleFormProps) {
       onChange={handleChange}
       placeholder="Model"
       className="border px-3 py-2 rounded w-full"
+      required
     />
   </div>
 
@@ -124,8 +127,9 @@ export default function VehicleForm({ vehicle }: VehicleFormProps) {
       name="name"
       value={form.name}
       onChange={handleChange}
-      placeholder="Name"
+      placeholder="Nick Name"
       className="border px-3 py-2 rounded w-full"
+      required
     />
   </div>
 

@@ -1,19 +1,12 @@
 'use client'
 import Link from 'next/link';
 import { useVehicleStore } from "@/store/useVehicleStore";
+import { IVehicle } from '@/types/IVehicle'
 
 
 
-interface Vehicle {
-   _id: string;
-   year: number;
-   make: string;
-   model: string;
-   name: string;
-   mileage: number;
-}
 interface VehicleListProps {
-   vehicles: Vehicle[];
+   vehicles: IVehicle[];
 }
 
 export default function VehicleList({ vehicles }: VehicleListProps) {

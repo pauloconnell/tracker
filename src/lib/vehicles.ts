@@ -1,6 +1,7 @@
 import { connectDB } from "./mongodb";
 import Vehicle from "@/models/Vehicle";
-import type { VehicleCreateInput } from "@/types/IVehicle";
+import type { IFormVehicle } from "@/types/IFormVehicle";
+import type { IVehicle } from "@/types/IVehicle";
 import mongoose from "mongoose";
 
 
@@ -43,7 +44,7 @@ export async function getAllVehicles() {
   }));
 }
 
-export async function createVehicle<T>(data: Partial<T>): Promise<T> {
+export async function createVehicle(data: IFormVehicle): Promise<Partial<IVehicle>> {
   await connectDB();
 
   const v = await Vehicle.create(data);

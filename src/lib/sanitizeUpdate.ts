@@ -1,4 +1,4 @@
-export function sanitizeUpdate(model: any, body: Record<string, any>) {
+export function sanitizeUpdate<T extends Record<string, any>>(model: any, body: Partial<T>):Partial<T> {
    // Block MongoDB operators
    if (Object.keys(body).some((k) => k.startsWith('$'))) {
       throw new Error('Invalid update payload');

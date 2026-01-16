@@ -169,22 +169,22 @@ export default function SharedServiceFormFields({
                </div>
                <fieldset disabled={isLocked}>
                   <label className="flex flex-col flex-1">
-                     Repeat Every (KM)
+                     Repeat Every: (KM)
                      <input
                         type="number"
                         name="serviceFrequencyKM"
-                        value={form.serviceFrequencyKM}
+                        value={form.serviceFrequencyKM ?? ''}
                         onChange={handleChange}
                         className="border rounded-full px-4 py-2"
                      />
                   </label>
 
                   <label className="flex flex-col flex-1">
-                     Repeat Every (Weeks)
+                     Repeat Every: (Weeks)
                      <input
                         type="number"
                         name="serviceFrequencyWeeks"
-                        value={form.serviceFrequencyWeeks}
+                        value={form.serviceFrequencyKM ?? ''}
                         onChange={handleChange}
                         className="border rounded-full px-4 py-2"
                      />

@@ -17,7 +17,9 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
 
    useEffect(() => {
       setLoading(true);
-      fetchAllWorkOrders().finally(() => setLoading(false));
+      fetchAllWorkOrders()
+      .catch(console.error)
+      .finally(() => setLoading(false));
    }, []);
 
    // If a vehicleId is passed, filter upcoming WOs for that vehicle
@@ -29,13 +31,16 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
 
    // if passed vehicleId in URL, then populate store with vehicle details
    useEffect(() => {
+       setLoading(true);
       if (vehicleId && !selectedVehicle) {
-         fetchVehicle(vehicleId);
+         fetchVehicle(vehicleId)
+            .catch(console.error)
+            .finally(() => setLoading(false));
       }
    }, [vehicleId, selectedVehicle]);
 
     if (loading) return <div>Loading…</div>;
-    
+
    if (!workOrders.length) {
       return <div>No upcoming service due</div>;
    }
@@ -44,7 +49,7 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
 
    return (
       <div className="border border-yellow-200  rounded-lg p-4 bg-yellow-100 shadow-sm">
-         {workOrders.length === 0 && <p className="text-gray-500">No service due.</p>}
+       
 
          <ul className="space-y-3 ">
             {workOrders.map((wo) => (
@@ -71,7 +76,7 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
                      </div>
                                        
                     {wo.serviceDueDate && ( <div className="text-sm text-gray-500">
-                        Service Due: {wo.serviceDueDate?.split("T")[0]}
+                        Service Due: {String(wo.serviceDueDate).split("T")[0]}
                      </div>)}
                      {wo.serviceDueKM && (
                      <div className="text-sm text-gray-500">
