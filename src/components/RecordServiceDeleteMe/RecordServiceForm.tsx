@@ -6,8 +6,9 @@ import  DeleteWorkOrderButton  from '@/components/Buttons/DeleteWorkOrderButton'
 import { SERVICE_TYPES } from '@/constants/service'
 import { LOCATIONS } from '@/constants/locations'
 import { toast } from "react-hot-toast";
-import { IVehicle } from '@/types/IVehicle'
-import { IServiceRecord } from '@/types/IServiceRecord'
+import { IVehicle } from '@/types/IVehicle';
+import { IServiceRecord } from '@/types/IServiceRecord';
+import { sanitizeInput } from '@/lib/sanitizeInput'
 
 interface RecordServiceFormProps { 
    prefill?: Partial<IServiceRecord>; // or your actual type 
@@ -39,7 +40,10 @@ export default function RecordServiceForm({ prefill, vehicles}:RecordServiceForm
    const locations =LOCATIONS;
 
    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-      setForm({ ...form, [e.target.name]: e.target.value });
+
+      const cleaned = sanitizeInput(e.target.value);
+
+      setForm({ ...form, [e.target.name]: cleaned });
    }
 
    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

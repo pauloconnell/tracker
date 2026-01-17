@@ -1,7 +1,7 @@
 import { IBaseService } from '@/types/IBaseService';
 
 export interface IWorkOrder extends IBaseService {
-   name: string;
+   nickName: string;
    year?: string;
    type?: string;
 
@@ -10,14 +10,13 @@ export interface IWorkOrder extends IBaseService {
    serviceDate: Date | string;
    serviceDueDate?: Date | string | null;
    serviceDueKM?: number | null;
+
    createdAt?: Date | string;
    updatedAt?: Date | string;
+   
    completedDate?: Date | string | null;
 
-   isRecurring?: boolean;
-   serviceFrequencyKM?: number | null;
-   serviceFrequencyWeeks?: number | null;
-
+   
 }
 
 // Payload shape for creating a new work order

@@ -1,16 +1,12 @@
-export interface IFormServiceRecord {       // react input forms will always be all strings -> mongoDB will convert this input into correct types based on schema
-  serviceDate: string; // yyyy-mm-dd
+import { IFormBaseService } from '@/types/IFormBaseService';
 
-  workOrderId: string;
+export interface IFormServiceRecord extends IFormBaseService {       // react input forms will always be all strings -> mongoDB will convert this input into correct types based on schema
 
-  serviceDueDate: string; // yyyy-mm-dd or ''
-  serviceDueKM: string;
+  serviceDate?: string; // yyyy-mm-dd
 
-  isRecurring: boolean;
-  serviceFrequencyKM: string;
-  serviceFrequencyWeeks: string;
+  workOrderId?: string;
 
-  notes: string;
-  completedBy: string;
-  location: string[];
+  serviceDueDate?: string; // yyyy-mm-dd or ''
+    serviceDueKM?: string;
+
 }

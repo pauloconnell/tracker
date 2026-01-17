@@ -8,9 +8,9 @@ import { toast } from 'react-hot-toast';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
 import { IVehicle } from '@/types/IVehicle';
-import { SERVICE_TYPES } from '@/constants/service';
-import { LOCATIONS } from '@/constants/locations';
 import { IFormWorkOrder } from '@/types/IFormWorkOrder';
+import { sanitizeInput } from '@/lib/sanitizeInput';
+
 
 interface WorkOrderFormProps {
    workOrderId?: string;
@@ -120,7 +120,9 @@ export default function WorkOrderForm({
             mileage: String(storeWO.mileage) ?? '',
             location: storeWO.location ?? ['N/A'],
             notes: storeWO.notes ?? '',
-            serviceDate: storeWO.serviceDate ? String(storeWO.serviceDate).split('T')[0] : '',
+            serviceDate: storeWO.serviceDate
+               ? String(storeWO.serviceDate).split('T')[0]
+               : '',
             completedBy: storeWO.completedBy ?? '',
             isRecurring: storeWO.isRecurring ?? false,
             serviceFrequencyKM: String(storeWO.serviceFrequencyKM) ?? '',
@@ -137,14 +139,11 @@ export default function WorkOrderForm({
 
    // allow updates when viewing work order(add notes ect)
 
-   const serviceTypes = SERVICE_TYPES;
-
-   const locations = LOCATIONS;
+  
 
    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
       const { name, value, type } = e.target;
-      setForm({ ...form, [name]: type === 'number' ? Number(value) : value });
-      //console.log('event ', name);
+
       // If the user changed the vehicle dropdown, update the store
       if (name === 'vehicleId') {
          const v = vehicles.find((veh) => veh._id === value);
@@ -153,6 +152,11 @@ export default function WorkOrderForm({
             setSelectedVehicle(v);
          }
       }
+
+      const cleaned = sanitizeInput(value);
+
+      setForm({ ...form, [name]: type === 'number' ? Number(cleaned) : cleaned });
+      //console.log('event ', name);
    }
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -205,10 +209,10 @@ export default function WorkOrderForm({
          onSubmit={handleSubmit}
          className="bg-white p-6 rounded-lg shadow-sm border space-y-6"
       >
-         <SharedServiceFormFields
+         <SharedServiceFormFields<IFormWorkOrder>
             form={form}
             setForm={setForm}
-            vehicles={vehicles}           
+            vehicles={vehicles}
             handleChange={handleChange}
          />
          {/* If existing work order: allow user to Complete work order - must add tech's name */}

@@ -12,10 +12,7 @@ export interface IServiceRecord extends IBaseService {
     serviceDueDate?: Date | string | null;
     serviceDueKM?: number | null;
 
-    // Recurrence info preserved for history
-    isRecurring?: boolean;
-    serviceFrequencyKM?: number | null;
-    serviceFrequencyWeeks?: number | null;
+ 
 
     // Timestamps (ISO strings on the client, Date objects on the server) 
     createdAt: Date | string;

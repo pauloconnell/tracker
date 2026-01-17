@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import SharedServiceFormFields from '../Shared/SharedServiceFormFields';
 import { useVehicleStore } from '@/store/useVehicleStore';
-import { SERVICE_TYPES } from '@/constants/service';
-import { LOCATIONS } from '@/constants/locations';
+import { sanitizeInput } from '@/lib/sanitizeInput';
+import type { IFormServiceRecord } from '@/types/IFormServiceRecord';
 
 export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } ) {
    const router = useRouter();
@@ -27,11 +27,11 @@ export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } )
    }, [vehicleId, selectedVehicle, fetchVehicle]);
 
    // Form state
-   const [form, setForm] = useState({
+   const [form, setForm] = useState<IFormServiceRecord>({
       vehicleId: vehicleId || '',
       serviceType: '',
       serviceDate: new Date().toISOString().split('T')[0],
-      mileage: 0,
+      mileage: "",
       location: ['N/A'],
       notes: '',
       completedBy: '',
@@ -47,11 +47,10 @@ export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } )
       }
    }, [selectedVehicle, form.vehicleId]);
 
-   const serviceTypes = SERVICE_TYPES; // using Constants
-   const locations = LOCATIONS;
-
+  
    function handleChange(e) {
       const { name, value } = e.target;
+     
       // Special case: vehicle selection
       if (name === 'vehicleId') {
          const v = vehicles.find((veh) => veh._id === value);
@@ -63,8 +62,12 @@ export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } )
          }));
          return;
       }
+
+      // sanitize input (prevent XXS)-throws toast to warn user
+       const cleaned = sanitizeInput(value);
+
       // Generic update
-      setForm((prev) => ({ ...prev, [name]: value }));
+      setForm((prev) => ({ ...prev, [name]: cleaned }));
    }
 
    async function handleSubmit(e) {
@@ -88,7 +91,7 @@ export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } )
          onSubmit={handleSubmit}
          className="bg-white p-6 rounded-lg shadow-sm border space-y-6"
       >
-         <SharedServiceFormFields
+         <SharedServiceFormFields<IFormServiceRecord>
             form={form}
             setForm={setForm}
             vehicles={vehicles}

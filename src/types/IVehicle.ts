@@ -1,7 +1,7 @@
 export interface IVehicle {
    _id: string;
    vehicleId?: string;
-   name: string;
+   nickName: string;
    make: string;
    model: string;
    mileage?: number;

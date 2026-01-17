@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from "react-hot-toast";
+import { sanitizeInput } from '@/lib/sanitizeInput';
 
 interface VehicleFormProps {
    vehicle?: {
@@ -29,14 +30,16 @@ export default function VehicleForm({ vehicle }: VehicleFormProps) {
       year: vehicle?.year ?? '',
       make: vehicle?.make ?? '',
       model: vehicle?.model ?? '',
-      name: vehicle?.name ?? '',
+      nickName: vehicle?.name ?? '',
       mileage: vehicle?.mileage ?? '',
       vin: vehicle?.vin ?? '',
       vehicleId: derivedVehicleId,
    });
 
    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-      setForm({ ...form, [e.target.name]: e.target.value });
+
+    const cleaned = sanitizeInput(e.target.value);
+      setForm({ ...form, [e.target.name]: cleaned });
    };
 
    const handleSubmit = async (e) => {
@@ -125,7 +128,7 @@ export default function VehicleForm({ vehicle }: VehicleFormProps) {
     <input
       id="name"
       name="name"
-      value={form.name}
+      value={form.nickName}
       onChange={handleChange}
       placeholder="Nick Name"
       className="border px-3 py-2 rounded w-full"
@@ -175,7 +178,7 @@ export default function VehicleForm({ vehicle }: VehicleFormProps) {
   </div>
 
   <div>
-    <pre>{JSON.stringify(form, null, 2)}</pre>
+   delete this once dev is done: <pre>{JSON.stringify(form, null, 2)}</pre>
   </div>
 
 </form>
