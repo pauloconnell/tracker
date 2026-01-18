@@ -34,7 +34,7 @@ export default async function DashboardPage() {
         </header>
 
         {/* Service Due */}
-        <section className="flex flex-col gap-6">
+        <section className="flex flex-col gap-6 min-h-[150px] sm:min-h-[300px]">
           <h2 className="text-2xl font-semibold">Service Due</h2>
           <ServiceDue />
         </section>

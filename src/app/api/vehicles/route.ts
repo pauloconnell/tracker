@@ -36,7 +36,7 @@ export async function POST(req: Request) {
       // note above function get _id and sets vehicleID in DB and response
 
       // Normalize output
-      const normalized = normalizeRecord(vehicle);
+    //  const normalized = normalizeRecord(vehicle);
 
       return NextResponse.json({ success: true }, { status: 201 });
    } catch (err) {

@@ -34,7 +34,7 @@ export async function PUT(req: Request, { params }: { params: { vehicleId: strin
 }
 
 export async function GET(req: Request, { params }: { params: { vehicleId: string } }) {
-  const { vehicleId } = params;
+  const { vehicleId } = await params;
   try {
     await connectDB();
 

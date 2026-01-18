@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { IWorkOrder } from '@/types/IWorkOrder';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
+import { LoadingSpinner} from '@/components/UI/LoadingSpinner';
 interface ServiceDueProps {
    vehicleId?: string;
 }
@@ -14,6 +15,7 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
    const getUpcomingWorkOrders = useWorkOrderStore((s) => s.getUpcomingWorkOrders);
    const [loading, setLoading] = useState(true);
    const { selectedVehicle, fetchVehicle } = useVehicleStore();
+   
 
    useEffect(() => {
       setLoading(true);
@@ -39,7 +41,7 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
       }
    }, [vehicleId, selectedVehicle]);
 
-    if (loading) return <div>Loading…</div>;
+    if (loading) return <div><LoadingSpinner /> Loading…</div>;
 
    if (!workOrders.length) {
       return <div>No upcoming service due</div>;

@@ -17,11 +17,17 @@ DONE  need to be able to delete a work order => button on work order to 'convert
 DONE : save work orders, retrieve work orders, mark complete and save as service record 
 DONE keep work orders seperate from service records - have state of open/completed - the api should only retrieve work orders that are open, seperate endpoint for 'completed' work orders - add in tech's name
 
-WIP: add Zustand - 
+DONE: add Zustand - 
 DONE:work order store
-WIP=> vehicle store
+DONE=> vehicle store
 
-NEXT: need name of vehicle saved into work order to tell which vehicle when dashboard showing list of all outstanding work orders
+DONE: need name of vehicle saved into work order to tell which vehicle when dashboard showing list of all outstanding work orders
+
+Next:
+Add loading spiner: dashboard
+Review props interface in vehicle
+Review editVehicle wrapper page?
+
 
 
 

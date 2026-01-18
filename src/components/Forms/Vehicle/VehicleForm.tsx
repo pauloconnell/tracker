@@ -122,12 +122,12 @@ export default function VehicleForm({ vehicle }: VehicleFormProps) {
   </div>
 
   <div>
-    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+    <label htmlFor="nickName" className="block text-sm font-medium text-gray-700 mb-1">
       Vehicle Nickname
     </label>
     <input
       id="name"
-      name="name"
+      name="nickName"
       value={form.nickName}
       onChange={handleChange}
       placeholder="Nick Name"

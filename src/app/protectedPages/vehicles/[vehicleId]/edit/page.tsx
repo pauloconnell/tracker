@@ -12,12 +12,13 @@ export default async function EditVehiclePage({ params }: { params: { vehicleId:
      toast.error('failed to load data, this vehicleid is in correct, please try again')
    }
 
+  let vehicle = null;
    try{
 // Fetch vehicle from DB (lean() returns plain object)
   const doc = await getVehicleById(vehicleId);
 
   // Extra safety: ensure fully JSON-serializable
-  const vehicle = JSON.parse(JSON.stringify(doc));
+  vehicle = JSON.parse(JSON.stringify(doc));
 
    }catch(err){
   toast.error('failed to load data for this vehicleid. Please go back to Dashboard.')

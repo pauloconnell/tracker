@@ -27,7 +27,7 @@ const setSelectedVehicle = useVehicleStore((s) => s.setSelectedVehicle);
                className="p-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition"
             >
                <div className="font-medium">
-                  {v.year} {v.make} {v.model}, Name: {v.name}
+                  {v.year} {v.make} {v.model}, Name: {v.nickName}
                </div>
             </Link>
          ))}
