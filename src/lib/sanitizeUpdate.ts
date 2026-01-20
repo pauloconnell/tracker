@@ -18,20 +18,20 @@ export function sanitizeUpdate<T extends Record<string, any>>(model: any, body: 
       .map(([key]) => key);
 
    // Build sanitized object
-   const sanitized: Record<string, any> = {};
+   const sanitized: Partial<T>= {};
 
    for (const key of allowed) {
       if (!(key in body)) continue;
-      let value = body[key];
+      let value = body[key as keyof T];
       // Normalize numeric fields ->mongodb will blow up if it tries to convert 'null' to a number
       if (numericFields.includes(key)) {
          if (value === '' || value === null || value === 'null') {
-            value = undefined; // ignore this field in update
+           continue; // skip this field entirely
          } else {
-            value = Number(value);
+            value = Number(value) as T[keyof T];
          }
       }
-      sanitized[key] = value;
+      sanitized[key as keyof T] = value;
    }
 
    return sanitized;

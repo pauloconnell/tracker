@@ -24,7 +24,7 @@ export async function POST(req: Request) {
    }
 }
 
-export async function PUT(req: Request, { params }: { params: { id: string }}) {
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
    try {
       await connectDB();
       const body = await req.json();
@@ -39,7 +39,7 @@ export async function PUT(req: Request, { params }: { params: { id: string }}) {
       return NextResponse.json({ success: true }, { status: 201 });
    } catch (e) {
       console.error('Failed to update work order:', e);
-       return NextResponse.json({ error: 'Failed to update work order' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to update work order' }, { status: 500 });
    }
 }
 
@@ -48,16 +48,19 @@ export async function GET(req: Request) {
       await connectDB();
       const { searchParams } = new URL(req.url);
       const vehicleId = searchParams.get('vehicleId');
+
       const baseQuery = { status: 'open' }; // only get 'open'
       const query = vehicleId ? { ...baseQuery, vehicleId } : baseQuery; // handles both cases: all or just for this vehicle
+
       const workOrders = await WorkOrder.find(query).lean();
-    // Normalize each record 
-    const normalized = workOrders.map((wo) => { 
-      const n = normalizeRecord(wo); 
-      n.workOrderId = n._id; // add model-specific ID field 
-     return n;
-    });
-     return NextResponse.json(normalized); 
+
+      // Normalize each record 
+      const normalized = workOrders.map((wo) => {
+         const n = normalizeRecord(wo);
+        // now use PreviousId  n.workOrderId = n._id; // add model-specific ID field 
+         return n;
+      });
+      return NextResponse.json(normalized);
    } catch (err) {
       console.error('Failed to fetch work orders:', err);
       return NextResponse.json({ error: 'Failed to fetch work orders' }, { status: 500 });
@@ -82,7 +85,8 @@ export async function DELETE(req: Request) {
       }
 
       return NextResponse.json(
-       { success: true }, { status: 200
+         { success: true }, {
+            status: 200
       });
    } catch (err) {
       console.error('Failed to delete work order:', err);

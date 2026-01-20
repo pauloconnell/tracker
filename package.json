@@ -1,33 +1,38 @@
 {
-  "name": "tracker",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "autoprefixer": "^10.4.23",
-    "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "^15.5.9",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.18",
-    "typescript": "^5"
-  },
-  "dependencies": {
-    "@auth0/nextjs-auth0": "^3.8.0",
-    "mongoose": "^9.1.2",
-    "next": "^15.5.9",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-hot-toast": "^2.6.0",
-    "zustand": "^5.0.9"
-  }
+   "name": "tracker",
+   "version": "0.1.0",
+   "private": true,
+   "scripts": {
+      "test": "vitest",
+      "test:watch": "vitest --watch",
+      "test:coverage": "vitest run --coverage",
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "eslint"
+   },
+   "devDependencies": {
+      "@tailwindcss/postcss": "^4",
+      "@types/node": "^20.19.30",
+      "@types/react": "^19",
+      "@types/react-dom": "^19",
+      "@vitest/coverage-v8": "^4.0.17",
+      "autoprefixer": "^10.4.23",
+      "babel-plugin-react-compiler": "1.0.0",
+      "eslint": "^9",
+      "eslint-config-next": "^15.5.9",
+      "postcss": "^8.5.6",
+      "tailwindcss": "^4.1.18",
+      "typescript": "^5",
+      "vitest": "^4.0.17"
+   },
+   "dependencies": {
+      "@auth0/nextjs-auth0": "^3.8.0",
+      "mongoose": "^9.1.2",
+      "next": "^15.5.9",
+      "react": "^18.3.1",
+      "react-dom": "^18.3.1",
+      "react-hot-toast": "^2.6.0",
+      "zustand": "^5.0.9"
+   }
 }
