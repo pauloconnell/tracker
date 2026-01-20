@@ -169,8 +169,8 @@ export default function WorkOrderForm({
       const url = isEditing ? `/api/work-orders/${form.workOrderId}` : `/api/work-orders`;
       const method = isEditing ? 'PUT' : 'POST';
 
-      const workOrderName = `${selectedVehicle?.year} ${selectedVehicle?.make} — ${selectedVehicle?.name}`;
-      const payload = { ...form, name: workOrderName };
+      const workOrderName = `${selectedVehicle?.year} ${selectedVehicle?.make} — ${selectedVehicle?.nickName}`;
+      const payload = { ...form, nickName: workOrderName };
       console.log('saving ', payload);
       const res = await fetch(url, {
          method,

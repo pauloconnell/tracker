@@ -57,8 +57,8 @@ export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } )
          setForm((prev) => ({
             ...prev,
             vehicleId: value,
-            name: v?.name || '', // REQUIRED by WorkOrder schema
-            mileage: v?.mileage ?? prev.mileage, // set mileage to last known
+            nickName: v?.nickName ?? prev.nickName, //|| '', // REQUIRED by WorkOrder schema
+            mileage: String(v?.mileage ?? prev.mileage), // set mileage to last known
          }));
          return;
       }
@@ -70,7 +70,7 @@ export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } )
       setForm((prev) => ({ ...prev, [name]: cleaned }));
    }
 
-   async function handleSubmit(e) {
+   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
       console.log('about to save ', form);
       const res = await fetch('/api/service-records', {

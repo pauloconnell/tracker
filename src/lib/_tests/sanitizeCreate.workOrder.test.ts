@@ -6,8 +6,7 @@ describe('sanitizeCreate (WorkOrder schema)', () => {
   it('keeps only fields defined in WorkOrder schema', () => {
     const input = {
       vehicleId: '656f9c9f9f9f9f9f9f9f9f9f',
-      workOrderId: 'WO-1',
-      name: 'Oil change',
+      nickName: 'Oil change',
       year: '2020',
       type: 'Maintenance',
       serviceType: 'Oil',
@@ -30,8 +29,7 @@ describe('sanitizeCreate (WorkOrder schema)', () => {
 
     expect(result).toMatchObject({
       vehicleId: input.vehicleId,
-      workOrderId: 'WO-1',
-      name: 'Oil change',
+      nickName: 'Oil change',
       year: '2020',
       type: 'Maintenance',
       serviceType: 'Oil',

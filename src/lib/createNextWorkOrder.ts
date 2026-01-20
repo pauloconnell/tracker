@@ -1,8 +1,10 @@
 import WorkOrder from "@/models/WorkOrder";
 import Vehicle from "@/models/Vehicle";
 import mongoose from "mongoose";
+import { IWorkOrder } from '@/types/IWorkOrder'
 
-export async function createNextWorkOrder(prevWO) {
+
+export async function createNextWorkOrder(prevWO: IWorkOrder) {
 
    if (!mongoose.isValidObjectId(prevWO.vehicleId)) {
      return null; // or throw an error
@@ -27,7 +29,8 @@ export async function createNextWorkOrder(prevWO) {
    // Create the new work order
    await WorkOrder.create({
       vehicleId: prevWO.vehicleId,
-      name: prevWO.name,
+      previousWorkOrderId: prevWO._id,
+      nickName: prevWO.nickName,
       serviceType: prevWO.serviceType,
       notes: "",
       location: ["N/A"],
@@ -38,5 +41,6 @@ export async function createNextWorkOrder(prevWO) {
       isRecurring: true,
       serviceFrequencyKM: prevWO.serviceFrequencyKM,
       serviceFrequencyWeeks: prevWO.serviceFrequencyWeeks,
+      
    });
 }

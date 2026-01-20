@@ -10,7 +10,7 @@ interface VehicleFormProps {
       year: number | string;
       make: string;
       model: string;
-      name: string;
+      nickName: string;
       mileage: number | string;
       vin: string;
       _id?: string;

@@ -40,7 +40,7 @@ export default async function VehiclePage({ params }: { params: { vehicleId: str
 
          {/* Vehicle Title */}
          <h1 className="text-2xl font-bold">
-            {vehicle?.year} {vehicle?.make} {vehicle?.model} Name: {vehicle?.name}
+            {vehicle?.year} {vehicle?.make} {vehicle?.model} Name: {vehicle?.nickName}
          </h1>
          <h2>
             KM:{vehicle?.mileage}
@@ -61,7 +61,7 @@ export default async function VehiclePage({ params }: { params: { vehicleId: str
                   query: {
                      vehicleId,
                      serviceType: 'Inspection',
-                     name: vehicle?.name,
+                     nickName: vehicle?.nickName,
                      location: ['N/A'],
                   },
                }}

@@ -4,7 +4,8 @@ const WorkOrderSchema = new mongoose.Schema(
    {
       vehicleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Vehicle', required: true },
       workOrderId: { type: String }, 
-      name: { type: String, required: true },
+      previousWorkOrderId: { type: mongoose.Schema.Types.ObjectId, ref: 'WorkOrder', default: null },
+      nickName: { type: String, required: true },
       year: { type: String },
       type: { type: String },
       serviceType: { type: String, required: true },
@@ -20,6 +21,7 @@ const WorkOrderSchema = new mongoose.Schema(
       isRecurring: { type: Boolean, default: false },
       serviceFrequencyKM: { type: Number, default: null },
       serviceFrequencyWeeks: { type: Number, default: null },
+      
    },
    { timestamps: true }
 );
