@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import WorkOrder from '@/models/WorkOrder';
-import { sanitizeCreate } from '../sanitizeCreate';
+import { sanitizeCreate } from '../../lib/sanitizeCreate';
 
 describe('sanitizeCreate (WorkOrder schema)', () => {
   it('keeps only fields defined in WorkOrder schema', () => {
