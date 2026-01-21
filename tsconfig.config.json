@@ -1,0 +1,9 @@
+{
+   "extends": "./tsconfig.json",
+   "compilerOptions": {
+      "composite": true,
+      "moduleResolution": "bundler",
+      "noEmit": false
+   },
+   "include": ["vitest.config.ts"]
+}

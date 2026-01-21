@@ -71,7 +71,7 @@ export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
          // Only evaluate date logic if a dueDate exists 
          const isOverdue = dueDate ? dueDate < now : false;
          const isDueSoon = dueDate ? (dueDate >= now && dueDate <= twoWeeksFromNow) : false;
-         const kmSoon = dueKM && wo.mileage && dueKM - wo.mileage <= 100;
+         const kmSoon = dueKM != null && wo.mileage != null && (Number(dueKM) - Number(wo.mileage) <= 100);
          return isOverdue || isDueSoon || kmSoon;
       });
    },

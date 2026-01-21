@@ -15,7 +15,9 @@ export async function connectDB() {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose);
+    // TypeScript now knows this is a string 
+    const uri = MONGODB_URI as string;
+    cached.promise = mongoose.connect(uri).then((mongoose) => mongoose);
   }
 
   cached.conn = await cached.promise;

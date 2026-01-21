@@ -11,6 +11,9 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'html'],
     },
+    typecheck: {
+      tsconfig: './tsconfig.vitest.json',
+    },
   },
   resolve: { alias: { '@': path.resolve(__dirname, './src'), }, },
 });
