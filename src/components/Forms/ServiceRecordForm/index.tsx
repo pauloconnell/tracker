@@ -7,7 +7,7 @@ import { useVehicleStore } from '@/store/useVehicleStore';
 import { sanitizeInput } from '@/lib/sanitizeInput';
 import type { IFormServiceRecord } from '@/types/IFormServiceRecord';
 
-export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } ) {
+export default function ServiceRecordForm({ vehicleId }: { vehicleId: string }) {
    const router = useRouter();
 
    // Zustand
@@ -15,23 +15,14 @@ export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } )
    const fetchAllVehicles = useVehicleStore((s) => s.fetchAllVehicles);
    const selectedVehicle = useVehicleStore((s) => s.selectedVehicle);
    const fetchVehicle = useVehicleStore((s) => s.fetchVehicle); // Fetch all vehicles if not loaded (dashboard mode)
-   useEffect(() => {
-      if (!vehicles.length) {
-         fetchAllVehicles();
-      }
-   }, [vehicles, fetchAllVehicles]); // Fetch selected vehicle if vehicleId provided
-   useEffect(() => {
-      if (vehicleId && !selectedVehicle) {
-         fetchVehicle(vehicleId);
-      }
-   }, [vehicleId, selectedVehicle, fetchVehicle]);
 
-   // Form state
+
+      // Form state
    const [form, setForm] = useState<IFormServiceRecord>({
       vehicleId: vehicleId || '',
       serviceType: '',
       serviceDate: new Date().toISOString().split('T')[0],
-      mileage: "",
+      mileage: '',
       location: ['N/A'],
       notes: '',
       completedBy: '',
@@ -40,17 +31,44 @@ export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } )
       serviceFrequencyWeeks: '',
    });
 
-   // Update form.vehicleId when selectedVehicle loads
-   useEffect(() => {
-      if (selectedVehicle && !form.vehicleId) {
-         setForm((prev) => ({ ...prev, vehicleId: selectedVehicle._id }));
-      }
-   }, [selectedVehicle, form.vehicleId]);
 
-  
+   // Load all vehicles (dashboard mode)
+
+   // if no vehicleId, get all vehicles into store
+   useEffect(() => {
+      if (!vehicles.length) {
+         fetchAllVehicles();
+      }
+   }, [vehicles, fetchAllVehicles]);
+
+
+   //  Load selected vehicle (detail mode)
+
+   // Fetch selected vehicle if vehicleId provided
+   useEffect(() => {
+      // If no selectedVehicle OR wrong selectedVehicle, fetch it
+      if (!selectedVehicle || selectedVehicle._id !== vehicleId) {
+         fetchVehicle(vehicleId);   // this sets selectedVehicle in store
+      }
+   }, [vehicleId, selectedVehicle, fetchVehicle]);
+
+   
+   // Hydrate form when selectedVehicle loads
+   useEffect(() => {
+      if (!selectedVehicle) return;
+      setForm((prev) => ({
+         ...prev,
+         vehicleId: prev.vehicleId || selectedVehicle._id,
+         nickName: selectedVehicle.nickName,
+         mileage: String(selectedVehicle.mileage ?? ''),
+      }));
+   }, [selectedVehicle]);
+
+
+
    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
       const { name, value } = e.target;
-     
+
       // Special case: vehicle selection
       if (name === 'vehicleId') {
          const v = vehicles.find((veh) => veh._id === value);
@@ -64,7 +82,7 @@ export default function ServiceRecordForm({ vehicleId }: { vehicleId: string } )
       }
 
       // sanitize input (prevent XXS)-throws toast to warn user
-       const cleaned = sanitizeInput(value);
+      const cleaned = sanitizeInput(value);
 
       // Generic update
       setForm((prev) => ({ ...prev, [name]: cleaned }));

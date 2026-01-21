@@ -3,13 +3,14 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import VehicleForm from '@/components/Forms/Vehicle/VehicleForm';
 import '@testing-library/jest-dom';
 
-// Mock router
+const mockRouter = {
+  push: vi.fn(),
+  back: vi.fn(),
+  refresh: vi.fn(),
+};
+
 vi.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: vi.fn(),
-    back: vi.fn(),
-    refresh: vi.fn(),
-  }),
+  useRouter: () => mockRouter,
 }));
 
 // Mock toast
