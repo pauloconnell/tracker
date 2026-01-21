@@ -30,7 +30,7 @@ export default function VehicleForm({ vehicle }: VehicleFormProps) {
       year: vehicle?.year ?? '',
       make: vehicle?.make ?? '',
       model: vehicle?.model ?? '',
-      nickName: vehicle?.name ?? '',
+      nickName: vehicle?.nickName ?? '',
       mileage: vehicle?.mileage ?? '',
       vin: vehicle?.vin ?? '',
       vehicleId: derivedVehicleId,

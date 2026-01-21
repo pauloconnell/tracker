@@ -62,7 +62,7 @@ export default function SharedServiceFormFields<T extends IFormBaseService>({
                <option value="">Select a vehicle</option>
                {vehicles?.map((v) => (
                   <option key={v._id} value={v._id}>
-                     {v.year} {v.make} {v.model} {v.name}
+                     {v.year} {v.make} {v.model} {v.nickName}
                   </option>
                ))}
             </select>
