@@ -3,10 +3,15 @@ import { getAllVehicles } from "@/lib/vehicles";
 import VehicleList from "@/components/vehicle/VehicleList";
 import Link from "next/link";
 
-export default async function DashboardPage() {
+interface PageProps {
+  params: Promise<{ companyId: string }>;
+}
+
+export default async function DashboardPage({ params }: PageProps) {
+  const { companyId } = await params;
     let vehicles = []; 
     try { 
-      vehicles = await getAllVehicles();      // on server so hit  DB directlygetAllVehicles(); 
+      vehicles = await getAllVehicles(companyId);      // on server so hit  DB directlygetAllVehicles(); 
       
     } catch (err) { 
       console.error("Failed to load vehicles:", err); 

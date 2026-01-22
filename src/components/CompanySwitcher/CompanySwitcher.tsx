@@ -2,7 +2,8 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ICompany } from '@/types/ICompany';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useCompanyStore } from '@/store/useCompanyStore';
 
 interface CompanySwitcherProps {
    companies: (ICompany & { role: string })[];
@@ -11,8 +12,18 @@ interface CompanySwitcherProps {
 
 export default function CompanySwitcher({ companies, activeCompanyId }: CompanySwitcherProps) {
    const router = useRouter();
-   const searchParams = useSearchParams();
+   //const searchParams = useSearchParams();
+   const { setActiveCompanyId } = useCompanyStore();
    const [isOpen, setIsOpen] = useState(false);
+
+
+// Sync the URL-provided activeCompanyId into the Zustand store on mount or change
+   useEffect(() => {
+      if (activeCompanyId) {
+         setActiveCompanyId(activeCompanyId);
+      }
+   }, [activeCompanyId, setActiveCompanyId]);
+
 
    if (companies.length <= 1) {
       return null; // Don't show switcher if only one company
@@ -21,10 +32,12 @@ export default function CompanySwitcher({ companies, activeCompanyId }: CompanyS
    const activeCompany = companies.find((c) => c._id === activeCompanyId);
 
    function handleSwitch(companyId: string) {
-      // Get current path and add/update companyId param
-      const params = new URLSearchParams(searchParams);
-      params.set('companyId', companyId);
-      router.push(`?${params.toString()}`);
+   // 1. Update the global state
+      setActiveCompanyId(companyId);
+      
+      // 2. Navigate to the dynamic route
+      router.push(`/protectedPages/${companyId}/dashboard`);
+      
       setIsOpen(false);
    }
 

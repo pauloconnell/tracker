@@ -51,7 +51,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
    return NextResponse.json({ success: true }, { status: 201 });
 }
 
-// get a specific work order given id (in the url of API)
+// get a specific work order given it's id (in the url of API)
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
    const session = await getAuthSession();

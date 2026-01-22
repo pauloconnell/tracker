@@ -13,7 +13,7 @@ export default function HeaderClient({ session }: HeaderClientProps) {
   return (
     <header className="w-full flex items-center justify-between px-6 py-4 bg-gray-900 text-white">
       <h1 className="text-xl font-semibold">
-       <Link href="/protectedPages/dashboard" className=" text-white px-4 py-2 rounded-lg hover:bg-blue-700" >
+       <Link href="/" className=" text-white px-4 py-2 rounded-lg hover:bg-blue-700" >
         mainTracker
         </Link>
         </h1>
