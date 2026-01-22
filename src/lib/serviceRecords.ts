@@ -33,7 +33,7 @@ export async function getServiceHistory(
    if (companyId) {
       query.companyId = companyId;
    }
-   const records = await ServiceRecord.find(query).sort({ date: -1 }).lean();
+   const records = await ServiceRecord.find(query).sort({ serviceDate: -1 }).lean();
 
    return records.map(normalizeServiceRecord);
 }
