@@ -11,7 +11,7 @@ interface VehicleState {
   // All vehicles (dashboard, dropdowns, forms)
   allVehicles: IVehicle[];
   setAllVehicles: (vehicles: IVehicle[]) => void;
-  fetchAllVehicles: () => Promise<void>;
+  fetchAllVehicles: (companyId: string) => Promise<void>;
 }
 
 export const useVehicleStore = create<VehicleState>((set) => ({
@@ -40,9 +40,9 @@ fetchVehicle: async (id) => {
 
   setAllVehicles: (vehicles) => set({ allVehicles: vehicles }),
 
-  fetchAllVehicles: async () => {
+  fetchAllVehicles: async (companyId) => {
     try {
-    const res = await fetch(`/api/vehicles`);
+    const res = await fetch(`/api/vehicles?companyId=${companyId}`);
      if (!res.ok) throw new Error(`Failed to fetch vehicles: ${res.status}`);
     const data = await res.json();
     set({ allVehicles: data });

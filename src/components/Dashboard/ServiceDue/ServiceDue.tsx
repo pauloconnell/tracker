@@ -63,7 +63,7 @@ export default function ServiceDue({ vehicleId, companyId }: ServiceDueProps) {
                   className="p-3 border rounded-lg bg-yellow-50 hover:bg-gray-50 transition"
                >
                   <Link
-                     href={`/protectedPages/work-orders/${wo._id}`}
+                     href={`/protectedPages/${companyId}/work-orders/${wo._id}`}
                      onClick={() => setSelectedWorkOrder(wo)}
                   >
                      <div className="text-center font-extrabold text-lg mb-2">

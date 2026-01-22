@@ -38,7 +38,7 @@ export default function ServiceRecordForm({ companyId, vehicleId }: { companyId:
    // if no vehicleId, get all vehicles into store
    useEffect(() => {
       if (!vehicles.length) {
-         fetchAllVehicles();
+         fetchAllVehicles(companyId);
       }
    }, [vehicles, fetchAllVehicles]);
 
