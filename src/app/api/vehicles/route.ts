@@ -2,12 +2,30 @@ import { NextResponse, NextRequest } from 'next/server';
 import { getAllVehicles, createVehicle } from '@/lib/vehicles';
 import { sanitizeCreate } from '@/lib/sanitizeCreate';
 import { normalizeRecord } from '@/lib/normalizeRecord';
-import  Vehicle  from '@/models/Vehicle';
+import Vehicle from '@/models/Vehicle';
 import type { IFormVehicle } from "@/types/IFormVehicle";
+import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';
+import { hasPermission } from '@/lib/rbac';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
    try {
-      const vehicles = await getAllVehicles();
+      const session = await getAuthSession();
+      if (!session) return unauthenticatedResponse();
+
+      const { searchParams } = new URL(req.url);
+      const companyId = searchParams.get('companyId');
+
+      if (!companyId) {
+         return validationErrorResponse('companyId is required');
+      }
+
+      // RBAC: Check read permission
+      const canRead = await hasPermission(session.userId, companyId, 'vehicle', 'read');
+      if (!canRead) {
+         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+
+      const vehicles = await getAllVehicles(companyId);
       const normalized = vehicles.map((v) => {
          const n = normalizeRecord(v);
          n.vehicleId = n._id; // model-specific ID field
@@ -22,21 +40,31 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
    try {
-      const body = (await req.json()) as IFormVehicle;
-      //console.log('body:', body);
-      // Clean mileage input and covert to number
+      const session = await getAuthSession();
+      if (!session) return unauthenticatedResponse();
+
+      const body = (await req.json()) as IFormVehicle & { companyId?: string };
+      const companyId = body.companyId;
+
+      if (!companyId) {
+         return validationErrorResponse('companyId is required');
+      }
+
+      // RBAC: Check create permission
+      const canCreate = await hasPermission(session.userId, companyId, 'vehicle', 'create');
+      if (!canCreate) {
+         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+
+      // Clean mileage input and convert to number
       if (body.mileage) {
          body.mileage = body.mileage.toString().replace(/,/g, '');
       }
 
       // Sanitize input based on Vehicle schema
-      const sanitized = sanitizeCreate(Vehicle, body);
+      const sanitized = sanitizeCreate(Vehicle, { ...body, companyId });
 
       const vehicle = await createVehicle(sanitized);
-      // note above function get _id and sets vehicleID in DB and response
-
-      // Normalize output
-    //  const normalized = normalizeRecord(vehicle);
 
       return NextResponse.json({ success: true }, { status: 201 });
    } catch (err) {

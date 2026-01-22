@@ -9,6 +9,7 @@ export async function createWorkOrder(data:Partial<IWorkOrder>): Promise<IWorkOr
   return {
     ...wo.toObject(),
     _id: wo._id.toString(),
+    companyId: wo.companyId?.toString?.() ?? '',
     createdAt: wo?.createdAt?.toISOString(),
     updatedAt: wo?.updatedAt?.toISOString(),
   };
@@ -16,12 +17,17 @@ export async function createWorkOrder(data:Partial<IWorkOrder>): Promise<IWorkOr
 
 
 
-export async function getWorkOrdersForVehicle(vehicleId: string):Promise<IWorkOrder[]> {
+export async function getWorkOrdersForVehicle(vehicleId: string, companyId?: string):Promise<IWorkOrder[]> {
   await connectDB();
-  const workOrders = await WorkOrder.find({ vehicleId, status: "open", }).sort({ createdAt: -1 }).lean();
+  const query: any = { vehicleId, status: "open" };
+  if (companyId) {
+    query.companyId = companyId;
+  }
+  const workOrders = await WorkOrder.find(query).sort({ createdAt: -1 }).lean();
   return workOrders.map((wo) => ({
     ...wo,
     _id: wo._id?.toString(),
+    companyId: wo.companyId?.toString?.() ?? '',
     vehicleId: wo.vehicleId?.toString(),
     createdAt: wo.createdAt?.toISOString() ?? null,
     updatedAt: wo.updatedAt?.toISOString() ?? null,
@@ -29,17 +35,24 @@ export async function getWorkOrdersForVehicle(vehicleId: string):Promise<IWorkOr
 }
 
 
-export async function deleteWorkOrder(id: string) {
+export async function deleteWorkOrder(id: string, companyId?: string) {
   await connectDB();
 
-  const deleted = await WorkOrder.findOneAndDelete({
+  const query: any = {
     $or: [{ _id: id }, { workOrderId: id }],
-  }).lean();
+  };
+  
+  if (companyId) {
+    query.companyId = companyId;
+  }
+
+  const deleted = await WorkOrder.findOneAndDelete(query).lean();
 
   return deleted
     ? {
         ...deleted,
         _id: deleted._id.toString(),
+        companyId: deleted.companyId?.toString?.() ?? '',
         vehicleId: deleted.vehicleId?.toString() ?? "",
       }
     : null;

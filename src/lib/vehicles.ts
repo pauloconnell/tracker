@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 
 
-export async function getVehicleById(vehicleId: string) {
+export async function getVehicleById(vehicleId: string, companyId?: string) {
   await connectDB();
 
   // Security: ensure validId sent
@@ -14,30 +14,38 @@ export async function getVehicleById(vehicleId: string) {
   return null; // or throw an error
 }
 
-
-  const vehicle = await Vehicle.findOne({
+  const query: any = {
     $or: [{ vehicleId }, { _id: vehicleId }],
-  }).lean();
+  };
+
+  if (companyId) {
+    query.companyId = companyId;
+  }
+
+  const vehicle = await Vehicle.findOne(query).lean();
 
   if (!vehicle) return null;
 
   return {
     ...vehicle,
     _id: vehicle._id.toString(),
+    companyId: vehicle.companyId?.toString?.() ?? '',
     vehicleId: vehicle.vehicleId?.toString() ?? vehicle._id.toString(),
     createdAt: vehicle.createdAt?.toISOString() ?? null,
     updatedAt: vehicle.updatedAt?.toISOString() ?? null,
   };
 }
 
-export async function getAllVehicles() {
+export async function getAllVehicles(companyId?: string) {
   await connectDB();
 
-  const vehicles = await Vehicle.find().lean();
+  const query = companyId ? { companyId } : {};
+  const vehicles = await Vehicle.find(query).lean();
 
   return vehicles.map((v) => ({
     ...v,
     _id: v._id.toString(),
+    companyId: v.companyId?.toString?.() ?? '',
     vehicleId: v.vehicleId?.toString() ?? v._id.toString(),
     createdAt: v.createdAt?.toISOString() ?? null,
     updatedAt: v.updatedAt?.toISOString() ?? null,

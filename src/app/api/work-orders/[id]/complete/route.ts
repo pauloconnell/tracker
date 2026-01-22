@@ -4,35 +4,66 @@ import WorkOrder from '@/models/WorkOrder';
 import ServiceRecord from '@/models/ServiceRecord';
 import { createNextWorkOrder } from '@/lib/createNextWorkOrder';
 import { IWorkOrder } from '@/types/IWorkOrder';
+import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';
+import { hasPermission } from '@/lib/rbac';
+import mongoose from 'mongoose';
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+   const session = await getAuthSession();
+   if (!session) return unauthenticatedResponse();
+
    await connectDB();
 
    const { id } = await params;
 
    if (!id) {
-      return NextResponse.json({ error: 'Missing ID' }, { status: 400 });
+      return validationErrorResponse('Missing ID');
    }
+
+   if (!mongoose.Types.ObjectId.isValid(id)) {
+      return validationErrorResponse('Invalid ID format');
+   }
+
    const body = await req.json(); // contains completedBy
 
+   if (!body.completedBy) {
+      return validationErrorResponse('completedBy is required');
+   }
+
+   // 1. Fetch the work order to get companyId
    const workOrder = await WorkOrder.findById(id).lean();
    if (!workOrder) {
       return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
    }
 
-   // 1. Update the work order to mark 'completed'
-   await WorkOrder.findByIdAndUpdate(id, {
-      status: 'completed',
-      completedBy: body.completedBy,
-      completedDate: new Date(),
-   });
+   const companyId = workOrder.companyId?.toString() ?? '';
+   if (!companyId) {
+      return NextResponse.json({ error: 'Work order missing company context' }, { status: 400 });
+   }
 
-   // 2. Create the service record
+   // 2. RBAC: Verify user belongs to company
+   const canComplete = await hasPermission(session.userId, companyId, 'workOrder', 'complete');
+   if (!canComplete) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+   }
+
+   // 3. Update the work order to mark 'completed' with companyId in query
+   await WorkOrder.findOneAndUpdate(
+      { _id: id, companyId },
+      {
+         status: 'completed',
+         completedBy: body.completedBy,
+         completedDate: new Date(),
+      }
+   );
+
+   // 4. Create the service record with companyId
    const serviceRecord = await ServiceRecord.create({
+      companyId, // Explicitly set companyId
       vehicleId: workOrder.vehicleId,
+      workOrderId: workOrder._id,
       serviceType: workOrder.serviceType,
       serviceDate: new Date(),
-      completedDate: new Date(),
       serviceDueDate: workOrder.serviceDueDate ?? null,
       serviceDueKM: workOrder.serviceDueKM ?? null,
       mileage: workOrder.mileage,
@@ -41,19 +72,21 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       completedBy: body.completedBy,
       serviceFrequencyKM: workOrder.serviceFrequencyKM ?? null,
       serviceFrequencyWeeks: workOrder.serviceFrequencyWeeks ?? null,
+      isRecurring: workOrder.isRecurring ?? false,
    });
 
+   // 5. Handle recurring work orders
    if (workOrder.isRecurring) {
       const next: Partial<IWorkOrder> = {
+         companyId, // Explicitly set companyId
          vehicleId: workOrder.vehicleId,
          nickName: workOrder.nickName,
-         companyId: workOrder.companyId,
          previousWorkOrderId: workOrder._id,
          serviceType: workOrder.serviceType,
          isRecurring: true,
          location: workOrder.location ?? [],
          notes: workOrder.notes ?? '',
-         mileage: String(workOrder.mileage),
+         mileage: workOrder.mileage,
          serviceFrequencyKM: workOrder.serviceFrequencyKM ?? null,
          serviceFrequencyWeeks: workOrder.serviceFrequencyWeeks ?? null,
       };
@@ -71,10 +104,12 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       }
 
       try {
-         await createNextWorkOrder(workOrder);
+         await createNextWorkOrder(next as IWorkOrder);
       } catch (err) {
-         console.error('Failed to create next recurring work order:', err); // Do NOT throw — completion should still succeed
+         console.error('Failed to create next recurring work order:', err);
+         // Do NOT throw — completion should still succeed
       }
    }
+
    return NextResponse.json({ success: true }, { status: 201 });
 }

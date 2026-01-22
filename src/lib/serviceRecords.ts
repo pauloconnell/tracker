@@ -25,17 +25,23 @@ export async function createServiceRecord(data: Partial<IServiceRecord>) {
 }
 
 export async function getServiceHistory(
-   vehicleId: string
+   vehicleId: string,
+   companyId?: string
 ): Promise<IServiceRecord[]> {
    await connectDB();
-   const records = await ServiceRecord.find({ vehicleId }).sort({ date: -1 }).lean();
+   const query: any = { vehicleId };
+   if (companyId) {
+      query.companyId = companyId;
+   }
+   const records = await ServiceRecord.find(query).sort({ date: -1 }).lean();
 
    return records.map(normalizeServiceRecord);
 }
 
-export async function getAllServiceRecords(): Promise<IServiceRecord[]> {
+export async function getAllServiceRecords(companyId?: string): Promise<IServiceRecord[]> {
    await connectDB();
-   const records = await ServiceRecord.find().lean();
+   const query = companyId ? { companyId } : {};
+   const records = await ServiceRecord.find(query).lean();
 
    return records.map(normalizeServiceRecord);
 }

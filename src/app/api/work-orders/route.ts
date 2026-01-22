@@ -4,15 +4,32 @@ import WorkOrder from '@/models/WorkOrder';
 import { IWorkOrder } from '@/types/IWorkOrder';
 import { sanitizeCreate } from '@/lib/sanitizeCreate';
 import { sanitizeUpdate } from '@/lib/sanitizeUpdate';
-import { IWorkOrderInput } from '@/types/IWorkOrder';
 import { normalizeRecord } from '@/lib/normalizeRecord';
+import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';
+import { hasPermission, assertPermission } from '@/lib/rbac';
+import mongoose from 'mongoose';
 
 export async function POST(req: NextRequest) {
    try {
+      const session = await getAuthSession();
+      if (!session) return unauthenticatedResponse();
+
       await connectDB();
 
-      const body: Partial<IWorkOrder> = await req.json();
-      const sanitized = sanitizeCreate<Partial<IWorkOrder>>(WorkOrder, body);
+      const body: Partial<IWorkOrder> & { companyId?: string } = await req.json();
+      const companyId = body.companyId;
+
+      if (!companyId) {
+         return validationErrorResponse('companyId is required');
+      }
+
+      // RBAC: Check create permission
+      const canCreate = await hasPermission(session.userId, companyId, 'workOrder', 'create');
+      if (!canCreate) {
+         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+
+      const sanitized = sanitizeCreate<Partial<IWorkOrder>>(WorkOrder, { ...body, companyId });
 
       // Create work order
       const wo = await WorkOrder.create(sanitized);
@@ -26,38 +43,85 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
    try {
+      const session = await getAuthSession();
+      if (!session) return unauthenticatedResponse();
+
       await connectDB();
       const body = await req.json();
       const id = body.id || body.workOrderId;
+      const companyId = body.companyId;
+
+      if (!id) {
+         return validationErrorResponse('ID is required');
+      }
+
+      if (!companyId) {
+         return validationErrorResponse('companyId is required');
+      }
+
+      // Verify ID format
+      if (!mongoose.isValidObjectId(id)) {
+         return validationErrorResponse('Invalid ID format');
+      }
+
+      // RBAC: Check update permission
+      await assertPermission(session.userId, companyId, 'workOrder', 'update');
+
+      // Query with companyId for security
+      const existing = await WorkOrder.findOne({ _id: id, companyId }).lean();
+      if (!existing) {
+         return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
+      }
+
       const sanitized = sanitizeUpdate(WorkOrder, body);
-      const updated = await WorkOrder.findByIdAndUpdate(id, sanitized, {
-         new: true,
-      }).lean();
+      const updated = await WorkOrder.findOneAndUpdate(
+         { _id: id, companyId },
+         sanitized,
+         { new: true }
+      ).lean();
+
       if (!updated) {
          return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
       }
+
       return NextResponse.json({ success: true }, { status: 201 });
    } catch (e) {
       console.error('Failed to update work order:', e);
+      if (e instanceof Error && e.message.includes('Unauthorized')) {
+         return NextResponse.json({ error: e.message }, { status: 403 });
+      }
       return NextResponse.json({ error: 'Failed to update work order' }, { status: 500 });
    }
 }
 
 export async function GET(req: NextRequest) {
    try {
+      const session = await getAuthSession();
+      if (!session) return unauthenticatedResponse();
+
       await connectDB();
       const { searchParams } = new URL(req.url);
       const vehicleId = searchParams.get('vehicleId');
+      const companyId = searchParams.get('companyId');
 
-      const baseQuery = { status: 'open' }; // only get 'open'
-      const query = vehicleId ? { ...baseQuery, vehicleId } : baseQuery; // handles both cases: all or just for this vehicle
+      if (!companyId) {
+         return validationErrorResponse('companyId is required');
+      }
+
+      // RBAC: Check read permission
+      const canRead = await hasPermission(session.userId, companyId, 'workOrder', 'read');
+      if (!canRead) {
+         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+
+      const baseQuery: any = { status: 'open', companyId }; // only get 'open' + verify company
+      const query = vehicleId ? { ...baseQuery, vehicleId } : baseQuery;
 
       const workOrders = await WorkOrder.find(query).lean();
 
       // Normalize each record 
       const normalized = workOrders.map((wo) => {
          const n = normalizeRecord(wo);
-        // now use PreviousId  n.workOrderId = n._id; // add model-specific ID field 
          return n;
       });
       return NextResponse.json(normalized);
@@ -69,16 +133,31 @@ export async function GET(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
    try {
+      const session = await getAuthSession();
+      if (!session) return unauthenticatedResponse();
+
       await connectDB();
 
       const { searchParams } = new URL(req.url);
       const workOrderId = searchParams.get('workOrderId');
+      const companyId = searchParams.get('companyId');
 
       if (!workOrderId) {
-         return NextResponse.json({ error: 'Missing work order ID' }, { status: 400 });
+         return validationErrorResponse('Missing work order ID');
       }
 
-      const deleted = await WorkOrder.findByIdAndDelete(workOrderId).lean();
+      if (!companyId) {
+         return validationErrorResponse('companyId is required');
+      }
+
+      // RBAC: Check delete permission
+      await assertPermission(session.userId, companyId, 'workOrder', 'delete');
+
+      // Query with companyId for security
+      const deleted = await WorkOrder.findOneAndDelete({
+         $or: [{ _id: workOrderId }, { workOrderId }],
+         companyId,
+      }).lean();
 
       if (!deleted) {
          return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
@@ -90,6 +169,9 @@ export async function DELETE(req: NextRequest) {
       });
    } catch (err) {
       console.error('Failed to delete work order:', err);
+      if (err instanceof Error && err.message.includes('Unauthorized')) {
+         return NextResponse.json({ error: err.message }, { status: 403 });
+      }
       return NextResponse.json({ error: 'Failed to delete work order' }, { status: 500 });
    }
 }
