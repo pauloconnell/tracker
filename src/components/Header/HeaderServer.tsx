@@ -13,6 +13,6 @@ export default async function HeaderServer() {
            },
         }
       : null;
-console.log("MY AUTH0 ID IS:", session?.user.sub);
+
    return <HeaderClient session={safeSession} />;
 }

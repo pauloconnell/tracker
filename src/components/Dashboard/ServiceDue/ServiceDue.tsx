@@ -7,9 +7,10 @@ import { useVehicleStore } from '@/store/useVehicleStore';
 import { LoadingSpinner} from '@/components/UI/LoadingSpinner';
 interface ServiceDueProps {
    vehicleId?: string;
+   companyId: string;
 }
 
-export default function ServiceDue({ vehicleId }: ServiceDueProps) {
+export default function ServiceDue({ vehicleId, companyId }: ServiceDueProps) {
    const fetchAllWorkOrders = useWorkOrderStore((s) => s.fetchAllWorkOrders);
    const setSelectedWorkOrder = useWorkOrderStore((s) => s.setSelectedWorkOrder);
    const getUpcomingWorkOrders = useWorkOrderStore((s) => s.getUpcomingWorkOrders);
@@ -18,11 +19,13 @@ export default function ServiceDue({ vehicleId }: ServiceDueProps) {
    
 
    useEffect(() => {
+      if (!companyId || companyId === 'undefined') return;
+      
       setLoading(true);
-      fetchAllWorkOrders()
+      fetchAllWorkOrders(companyId)
       .catch(console.error)
       .finally(() => setLoading(false));
-   }, []);
+   }, [companyId, fetchAllWorkOrders]);
 
    // If a vehicleId is passed, filter upcoming WOs for that vehicle
    const upcoming = getUpcomingWorkOrders();

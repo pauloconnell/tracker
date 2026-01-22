@@ -110,6 +110,7 @@ export async function GET(req: NextRequest) {
 
       // RBAC: Check read permission
       const canRead = await hasPermission(session.userId, companyId, 'workOrder', 'read');
+      console.log("GET /api/work-orders - canRead:", canRead);
       if (!canRead) {
          return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
@@ -118,7 +119,7 @@ export async function GET(req: NextRequest) {
       const query = vehicleId ? { ...baseQuery, vehicleId } : baseQuery;
 
       const workOrders = await WorkOrder.find(query).lean();
-
+      console.log({workOrders} );
       // Normalize each record 
       const normalized = workOrders.map((wo) => {
          const n = normalizeRecord(wo);

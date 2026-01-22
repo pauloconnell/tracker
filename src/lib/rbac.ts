@@ -14,13 +14,18 @@ export type Action = 'create' | 'read' | 'update' | 'delete' | 'complete';
 /**
  * User roles in a company
  */
-export type UserRole = 'admin' | 'manager' | 'user';
+export type UserRole = 'owner' | 'admin' | 'manager' | 'user';
 
 /**
  * Permission matrix defining what each role can do
  */
 const PERMISSIONS: Record<UserRole, Record<ResourceType, Action[]>> = {
-   admin: {
+   owner: { 
+      vehicle: ['create', 'read', 'update', 'delete'],
+      workOrder: ['create', 'read', 'update', 'delete'],
+      serviceRecord: ['create', 'read', 'update', 'delete'],
+   },
+    admin: {
       vehicle: ['create', 'read', 'update', 'delete'],
       workOrder: ['create', 'read', 'update', 'delete'],
       serviceRecord: ['create', 'read', 'update', 'delete'],
@@ -83,7 +88,18 @@ export async function hasPermission(
 
    if (!role) return false;
 
-   const allowedActions = PERMISSIONS[role][resource];
+   //  Check if the role found in DB exists in our PERMISSIONS config
+   const rolePermissions = PERMISSIONS[role as UserRole];
+   if (!rolePermissions) {
+      console.error(`RBAC Error: Role '${role}' found in DB but not defined in PERMISSIONS object.`);
+      return false;
+   }
+
+   const allowedActions = rolePermissions[resource];
+   if (!allowedActions) {
+      console.error(`RBAC Error: Resource '${resource}' not defined for role '${role}'.`);
+      return false;
+   }
    return allowedActions.includes(action);
 }
 

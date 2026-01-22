@@ -25,10 +25,10 @@ export default async function VehiclePage({ params }: Props) {
          {/* Back Button */}
          <div className="flex justify-between items-center mb-6 mt-3 mx-6">
             <Link
-               href="/protectedPages/dashboard"
+               href="/"
                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
             >
-               Back to Dashboard
+               Back
             </Link>
             <Link
                href={`/protectedPages/vehicles/${vehicleId}/edit`}

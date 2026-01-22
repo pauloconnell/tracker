@@ -41,7 +41,7 @@ export default async function DashboardPage({ params }: PageProps) {
         {/* Service Due */}
         <section className="flex flex-col gap-6 min-h-[150px] sm:min-h-[300px]">
           <h2 className="text-2xl font-semibold">Service Due</h2>
-          <ServiceDue />
+          <ServiceDue companyId={companyId} />
         </section>
 
         {/* Vehicles */}
