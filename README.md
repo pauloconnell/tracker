@@ -7,7 +7,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 // add db
 
-pollie_db_user 
+DONE pollie_db_user 
 
 DONE: we need a page for 'create work order' which essentially just uses the same 'service' form, but instead creates a work order instead of a service record
 
@@ -23,13 +23,14 @@ DONE=> vehicle store
 
 DONE: need name of vehicle saved into work order to tell which vehicle when dashboard showing list of all outstanding work orders
 
+
+DONE Review props interface in vehicle
+DONE Review editVehicle wrapper page?
+
 Next:
 Add loading spiner: dashboard
-Review props interface in vehicle
-Review editVehicle wrapper page?
 
-
-
+Refactor: CardWorkOrder to have 'priority' dropdown to allow tech to prioritize work orders
 
 TODOD (nice to have):
 remove list of vehicles from work orders and 
