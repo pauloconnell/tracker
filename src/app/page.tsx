@@ -26,12 +26,9 @@ export default async function Home() {
          console.log('FETCHING COMPANIES FOR USER ID:', session.user.sub);
          companies = await getUserCompanies(session.user.sub);
          if (companies.length > 0) {
-            // SCENARIO A: Returning User - Go to the first company dashboard
-            // Note: Make sure to grab the ID from the populated companyId field
             const firstCompanyId = companies[0]._id;
             href = `/protectedPages/${firstCompanyId}/dashboard`;
          } else {
-            // SCENARIO B: New User - Logged in but no company record yet
             href = '/setup-company';
          }
       } catch (error) {
@@ -40,109 +37,204 @@ export default async function Home() {
    }
 
    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
-         {/* Hero Section */}
-         <section className="max-w-5xl mx-auto px-6 pt-32 pb-0 text-center">
-            <h1 className="text-5xl font-extrabold tracking-tight mb-6">
-               Track Your Vehicle Maintenance.
-               <span className="block text-blue-400 mt-2">
-                  Never Miss a Service Again.
-               </span>
-            </h1>
+      <div className="min-h-screen bg-white">
+         {/* Navigation */}
+         {/* <nav className="bg-white border-b border-secondary-200 sticky top-0 z-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+               <div className="flex items-center">
+                  <span className="text-2xl font-bold text-primary-600">mainTracker</span>
+               </div>
+               <div className="flex items-center gap-4">
+                  {isLoggedIn ? (
+                     <>
+                        <a
+                           href={href}
+                           className="px-6 py-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors"
+                        >
+                           Dashboard
+                        </a>
+                        <a
+                           href="/api/auth/logout"
+                           className="px-6 py-2 bg-secondary-100 text-secondary-700 font-semibold rounded-lg hover:bg-secondary-200 transition-colors"
+                        >
+                           Sign Out
+                        </a>
+                     </>
+                  ) : (
+                     <>
+                        <a
+                           href="/api/auth/login"
+                           className="px-6 py-2 text-secondary-700 font-semibold hover:text-secondary-900 transition-colors"
+                        >
+                           Sign In
+                        </a>
+                        <a
+                           href="/api/auth/login?screen_hint=signup"
+                           className="px-6 py-2 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors shadow-md"
+                        >
+                           Get Started
+                        </a>
+                     </>
+                  )}
+               </div>
+            </div>
+         </nav> */}
 
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-10">
-               mainTracker helps you stay ahead of repairs, plan maintenance, and keep
-               your car running like new. Smart reminders, clean history logs, and a
-               dashboard built for real drivers.
-            </p>
-            <div className="w-full flex items-center justify-between gap-4">
+         {/* Hero Section */}
+         <section className="bg-gradient-to-br from-primary-900 via-primary-950 to-secondary-950 py-20 sm:py-32">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+               <div className="text-center mb-12 sm:mb-16">
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-boldt text-white tracking-tight mb-6">
+                     Track Your Vehicle Maintenance
+                     <span className="block text-primary-400 mt-2">
+                        Never Miss a Service Again
+                     </span>
+                  </h1>
+
+                  <p className="text-lg sm:text-xl text-secondary-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+                     mainTracker helps you stay ahead of repairs, plan maintenance, and keep your fleet running smoothly. Smart reminders, complete service history, and an intuitive dashboard built for fleet managers.
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                     <a
+                        href={href}
+                        className=" flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transition duration-150"
+                     >
+                        {isLoggedIn ? 'Go to Dashboard' : 'Get Started Free'}
+                     </a>
+                     {isLoggedIn && (companies.length > 0) && (
+                        <div className="w-full sm:w-auto">
+                           <CompanySwitcher
+                              companies={companies}
+                              activeCompanyId={activeCompanyId}
+                           />
+                        </div>
+                     )}
+                     {isLoggedIn && (
+                        <a
+                           href="/setup-company"
+                           className="flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transition duration-150"
+                        >
+                           Create New Fleet
+                        </a>
+                     )}
+                  </div>
+               </div>
+
+               {/* Hero Image */}
+               <div className="mt-12 sm:mt-16 rounded-2xl overflow-hidden shadow-2xl">
+                  <img
+                     src="/images/CarAndBoat.png"
+                     alt="Fleet Management"
+                     className="w-full h-auto object-cover"
+                  />
+               </div>
+            </div>
+         </section>
+
+         {/* Features Section */}
+         <section className="py-20 sm:py-32 bg-secondary-50">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+               <div className="text-center mb-16">
+                  <h2 className="text-3xl sm:text-4xl font-bold text-secondary-900 mb-4">
+                     Why Choose mainTracker?
+                  </h2>
+                  <p className="text-lg text-secondary-600">
+                     Everything you need to manage your fleet efficiently
+                  </p>
+               </div>
+
+               <div className="grid md:grid-cols-3 gap-8">
+                  {/* Feature 1 */}
+                  <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 p-8 border border-secondary-100">
+                     <div className="flex items-center justify-center w-12 h-12 bg-primary-100 rounded-lg mb-6">
+                        <span className="text-2xl">🔔</span>
+                     </div>
+                     <h3 className="text-xl font-bold text-secondary-900 mb-3">Smart Reminders</h3>
+                     <p className="text-secondary-600">
+                        Automatic notifications for oil changes, tire rotations, inspections, and routine maintenance.
+                     </p>
+                  </div>
+
+                  {/* Feature 2 */}
+                  <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 p-8 border border-secondary-100">
+                     <div className="flex items-center justify-center w-12 h-12 bg-primary-100 rounded-lg mb-6">
+                        <span className="text-2xl">📋</span>
+                     </div>
+                     <h3 className="text-xl font-bold text-secondary-900 mb-3">Complete Service History</h3>
+                     <p className="text-secondary-600">
+                        Keep a searchable log of every repair, upgrade, and maintenance event for your entire fleet.
+                     </p>
+                  </div>
+
+                  {/* Feature 3 */}
+                  <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 p-8 border border-secondary-100">
+                     <div className="flex items-center justify-center w-12 h-12 bg-primary-100 rounded-lg mb-6">
+                        <span className="text-2xl">🚗</span>
+                     </div>
+                     <h3 className="text-xl font-bold text-secondary-900 mb-3">Multi-Vehicle Support</h3>
+                     <p className="text-secondary-600">
+                        Manage all your vehicles in one place — cars, trucks, motorcycles, and equipment.
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </section>
+
+         {/* Image Gallery Section */}
+         <section className="py-20 sm:py-32 bg-white">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                     <img
+                        src="/images/Enduro.png"
+                        alt="Motorcycle Maintenance"
+                        className="w-full h-auto object-cover"
+                     />
+                  </div>
+                  <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                     <img
+                        src="/images/Sled.png"
+                        alt="Equipment Management"
+                        className="w-full h-auto object-cover"
+                     />
+                  </div>
+               </div>
+            </div>
+         </section>
+
+         {/* CTA Section */}
+         <section className="bg-gradient-to-r from-primary-600 to-primary-700 py-20 sm:py-32">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+                  Ready to streamline your maintenance?
+               </h2>
+               <p className="text-lg text-primary-100 mb-8">
+                  Join thousands of fleet managers who trust mainTracker to keep their vehicles in top condition.
+               </p>
                <a
                   href={href}
-                  className="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transition"
+                  className="inline-block px-8 py-4 bg-white text-primary-600 font-bold rounded-lg hover:bg-primary-50 transition-colors shadow-lg hover:shadow-xl duration-200"
                >
-                  {isLoggedIn ? 'Dashboard' : 'Get Started'}
+                  {isLoggedIn ? 'Open Dashboard' : 'Start Your Free Account'}
                </a>
-               {isLoggedIn && companies.length > 0 ? (
-                  <CompanySwitcher
-                     companies={companies}
-                     activeCompanyId={activeCompanyId}
-                  />
-               ) : null}
-
-               {isLoggedIn ? (
-                  <a
-                     href={'/setup-company'}
-                     className="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transition"
-                  >
-                     Create new company/fleet
-                  </a>
-               ) : (
-                  ''
-               )}
             </div>
          </section>
 
-         {/* Sports Car (single row, centered) */}
-         <section className="max-w-6xl mx-auto px-6 pb-0">
-            <img
-               src="/images/CarAndBoat.png"
-               alt="Sports Car"
-               className="rounded-xl shadow-lg w-full object-cover"
-            />
-         </section>
-
-         {/* Feature Cards */}
-         <section className="max-w-6xl mx-auto px-6 pb-20 grid md:grid-cols-3 gap-12">
-            <div className="bg-gray-800/40 p-8 rounded-xl border border-gray-700">
-               <h3 className="text-xl font-semibold mb-3">Smart Reminders</h3>
-               <p className="text-gray-400">
-                  Automatic notifications for oil changes, tire rotations, inspections,
-                  and more.
-               </p>
+         {/* Footer */}
+         <footer className="bg-secondary-900 text-secondary-300 py-12">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+               <div className="flex flex-col sm:flex-row items-center justify-between">
+                  <div className="mb-6 sm:mb-0">
+                     <span className="text-2xl font-bold text-white">mainTracker</span>
+                     <p className="text-sm mt-2 text-secondary-400">Fleet maintenance made simple</p>
+                  </div>
+                  <div className="text-sm text-secondary-400">
+                     © 2025 mainTracker. All rights reserved.
+                  </div>
+               </div>
             </div>
-
-            <div className="bg-gray-800/40 p-8 rounded-xl border border-gray-700">
-               <h3 className="text-xl font-semibold mb-3">Full Service History</h3>
-               <p className="text-gray-400">
-                  Keep a clean, searchable log of every repair, upgrade, and maintenance
-                  event.
-               </p>
-            </div>
-
-            <div className="bg-gray-800/40 p-8 rounded-xl border border-gray-700">
-               <h3 className="text-xl font-semibold mb-3">Multi‑Vehicle Support</h3>
-               <p className="text-gray-400">
-                  Track all your vehicles in one place — cars, trucks, bikes, anything.
-               </p>
-            </div>
-         </section>
-
-         <section className="max-w-6xl mx-auto px-6 pb-20 grid grid-cols-1 md:grid-cols-2 gap-8">
-            {' '}
-            <img
-               src="/images/Enduro.png"
-               alt="Enduro Motorcycle"
-               className="rounded-xl shadow-lg w-full object-cover"
-            />{' '}
-            <img
-               src="/images/Sled.png"
-               alt="Snowmobile"
-               className="rounded-xl shadow-lg w-full object-cover"
-            />{' '}
-         </section>
-
-         {/* CTA Footer */}
-         <section className="text-center py-20 bg-gray-900 border-t border-gray-800">
-            <h2 className="text-3xl font-bold mb-6">
-               Ready to take control of your maintenance?
-            </h2>
-            <a
-               href={href}
-               className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transition"
-            >
-               {isLoggedIn ? 'Dashboard' : 'Create Your Account'}
-            </a>
-         </section>
+         </footer>
       </div>
    );
 }

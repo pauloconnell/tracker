@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllWorkOrders } from '@/lib/workOrders';
+import { CardWorkOrder } from '@/components/UI/CardWorkOrder';
 
 export const metadata: Metadata = {
   title: 'Work Orders',
@@ -37,15 +38,13 @@ export default async function WorkOrdersPage({ params }: { params: Promise<{ com
         ) : (
           <div className="grid gap-4">
             {workOrders.map((wo) => (
-              <Link
-                key={wo._id}
-                href={`/protectedPages/${companyId}/work-orders/${wo._id}`}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
-              >
-                <h2 className="font-semibold text-lg">{wo.serviceType}</h2>
-                <p className="text-gray-600">Vehicle: {wo.vehicleId}</p>
-                <p className="text-sm text-gray-500">Status: {wo.serviceDate ? 'Completed' : 'Pending'}</p>
-              </Link>
+              // <Link
+              //   key={wo._id}
+              //   href={`/protectedPages/${companyId}/work-orders/${wo._id}`}
+              //   className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+              // >
+              <CardWorkOrder wo={wo} companyId={companyId} />
+              
             ))}
           </div>
         )}
