@@ -14,7 +14,7 @@ import { getSession } from '@auth0/nextjs-auth0';
 export async function createCompany(name: string) {
 
     let newCompanyId: string | null = null; // Store ID for redirect
-    
+
     try {
         if (!name || name.trim().length === 0) {
             return { error: 'Company name is required' };
@@ -38,6 +38,22 @@ export async function createCompany(name: string) {
             isActive: true,
         });
 
+        console.log("company created, now create userCompany", company)
+        let obj = {
+            userId: session.user.sub,
+            companyId: company._id,
+            role: 'owner',
+            email: session.user.email,
+            firstName: session.user.given_name || '',
+            lastName: session.user.family_name || '',
+            isActive: true,
+        }
+
+        console.log("obj to create:", obj, newCompanyId);
+
+        newCompanyId = company._id.toString();
+
+
         // 2. Create UserCompany record linking user to company as owner (Security Badge. It tells the system, "This person (UserID) is allowed to enter this building (CompanyID) with these permissions (Role))
         await UserCompany.create({
             userId: session.user.sub,
@@ -48,7 +64,7 @@ export async function createCompany(name: string) {
             lastName: session.user.family_name || '',
             isActive: true,
         });
-        newCompanyId = company._id.toString();
+
 
     } catch (error: any) {
         // Handle MongoDB Duplicate Key Error specifically
@@ -62,6 +78,6 @@ export async function createCompany(name: string) {
     // 3. Redirect to dashboard with company context
 
     if (newCompanyId) {
-        redirect(`/dashboard?companyId=${newCompanyId}`);
+        redirect(`/protectedPages/${newCompanyId}/dashboard`);
     }
 }
