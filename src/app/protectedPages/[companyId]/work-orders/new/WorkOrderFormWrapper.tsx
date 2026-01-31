@@ -5,9 +5,12 @@ import { IVehicle } from '@/types/IVehicle';
 
 interface WorkOrderFormWrapperProps {
   companyId: string;
-  vehicles: IVehicle[];
+  
 }
 
-export default function WorkOrderFormWrapper({ companyId, vehicles }: WorkOrderFormWrapperProps) {
-  return <WorkOrderForm companyId={companyId} vehicles={vehicles} />;
+
+
+export default function WorkOrderFormWrapper({ companyId }: WorkOrderFormWrapperProps) {
+  console.log("create new work order-> ", companyId);
+  return <WorkOrderForm companyId={companyId}  />;
 }

@@ -16,7 +16,7 @@ interface WorkOrderFormProps {
    companyId: string;
    workOrderId?: string;
    vehicleId?: string;
-   vehicles: IVehicle[];
+   vehicles?: IVehicle[];
 }
 
 export default function WorkOrderForm({
@@ -54,7 +54,8 @@ export default function WorkOrderForm({
    // BLOCK URL: if No IDs → redirect
    useEffect(() => {
       if (!workOrderId && !vehicleId) {
-         router.push(`/protectedPages/${companyId}/vehicles`);
+         console.log("no workOrderId or vehicleId, redirecting", workOrderId, vehicleId);
+         router.push(`/protectedPages/${companyId}/dashboard`);
       }
    }, [workOrderId, vehicleId, companyId, router]);
 
@@ -65,6 +66,7 @@ export default function WorkOrderForm({
    // 4) Fetch vehicle (new WO only)
    useEffect(() => {
       if (!isEditing && derivedVehicleId && !selectedVehicle) {
+         console.log("Fetching vehicle")
          fetchVehicle(derivedVehicleId);
       }
    }, [isEditing, derivedVehicleId, selectedVehicle, fetchVehicle]);
