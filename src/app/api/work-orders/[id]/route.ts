@@ -6,13 +6,13 @@ import mongoose from 'mongoose';
 import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';
 import { hasPermission, assertPermission } from '@/lib/rbac';
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
    const session = await getAuthSession();
    if (!session) return unauthenticatedResponse();
 
    await connectDB();
 
-   const { id } = await params;
+   const { id } = params;
 
    if (!mongoose.Types.ObjectId.isValid(id)) {
       return validationErrorResponse('Invalid ID format');
@@ -53,12 +53,12 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 // get a specific work order given it's id (in the url of API)
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
    const session = await getAuthSession();
    if (!session) return unauthenticatedResponse();
 
    await connectDB();
-   const { id } = await params;
+   const { id } = params;
 
    if (!id) {
       return validationErrorResponse('Missing ID');

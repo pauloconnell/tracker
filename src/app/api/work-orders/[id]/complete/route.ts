@@ -8,13 +8,13 @@ import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from
 import { hasPermission } from '@/lib/rbac';
 import mongoose from 'mongoose';
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
    const session = await getAuthSession();
    if (!session) return unauthenticatedResponse();
 
    await connectDB();
 
-   const { id } = await params;
+   const { id } = params;
 
    if (!id) {
       return validationErrorResponse('Missing ID');

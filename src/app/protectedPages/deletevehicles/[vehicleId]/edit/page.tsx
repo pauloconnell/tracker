@@ -5,8 +5,8 @@ import EditFormWrapper from "./EditFormWrapper";
 import mongoose from "mongoose";
 import { toast } from "react-hot-toast";
 
-export default async function EditVehiclePage({ params }: { params: Promise<{ vehicleId: string }> }) {
-  const { vehicleId } = await params;
+export default async function EditVehiclePage({ params }: { params: { vehicleId: string } }) {
+  const { vehicleId } = params;
 
  if (!mongoose.isValidObjectId(vehicleId)) {
      toast.error('failed to load data, this vehicleid is in correct, please try again')

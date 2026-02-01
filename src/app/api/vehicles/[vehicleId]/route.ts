@@ -7,12 +7,12 @@ import mongoose from "mongoose";
 import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';
 import { assertPermission, hasPermission } from '@/lib/rbac';
 
-export async function PUT(req: NextRequest, { params }: { params: Promise<{ vehicleId: string }> }) {
+export async function PUT(req: NextRequest, { params }: { params: { vehicleId: string } }) {
   const session = await getAuthSession();
   if (!session) return unauthenticatedResponse();
 
   try {
-    const { vehicleId } = await params;
+    const { vehicleId } = params;
     await connectDB();
 
     if (!mongoose.isValidObjectId(vehicleId)) {
@@ -62,11 +62,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ vehi
   }
 }
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ vehicleId: string }> }) {
+export async function GET(req: NextRequest, { params }: { params: { vehicleId: string } }) {
   const session = await getAuthSession();
   if (!session) return unauthenticatedResponse();
 
-  const { vehicleId } = await params;
+  const { vehicleId } =  params;
   try {
     await connectDB();
 
