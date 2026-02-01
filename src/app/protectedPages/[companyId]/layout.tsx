@@ -3,11 +3,11 @@ import { ReactNode } from 'react';
 
 interface CompanyLayoutProps {
    children: ReactNode;
-   params: Promise<{ companyId: string }>;
+params: { companyId: string };
 }
 
 export default async function CompanyLayout({ children, params }: CompanyLayoutProps) {
-   const { companyId } = await params;
+   const { companyId } = params;
 
    return (
       <CompanyProvider companyId={companyId}>
