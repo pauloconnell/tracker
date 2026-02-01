@@ -5,13 +5,13 @@ import ServiceDue from '@/components/ServiceDue/ServiceDue';
 //import { requireAuth } from '@/lib/requireAuth';
 
 interface Props {
-   params: Promise<{ vehicleId: string }>;
-   searchParams: Promise<{ companyId: string }>;
+   params: { vehicleId: string };
+   searchParams:{ companyId: string };
 }
 
 export default async function VehiclePage({ params, searchParams }: Props) {
-   const { vehicleId } = await params;
-   const { companyId } = await searchParams;
+   const { vehicleId } = params;
+   const { companyId } = searchParams;
    // done in the layout for protected folder await requireAuth(); // 🔐 protect the page
 
    // Fetch vehicle + service history from MongoDB

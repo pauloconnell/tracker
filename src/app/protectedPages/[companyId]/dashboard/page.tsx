@@ -4,11 +4,11 @@ import VehicleList from '@/components/vehicle/VehicleList';
 import Link from 'next/link';
 
 interface PageProps {
-   params: Promise<{ companyId: string }>;
+   params: { companyId: string };
 }
 
 export default async function DashboardPage({ params }: PageProps) {
-   const { companyId } = await params;
+   const { companyId } = params;
    let vehicles = [];
    try {
       vehicles = await getAllVehicles(companyId);

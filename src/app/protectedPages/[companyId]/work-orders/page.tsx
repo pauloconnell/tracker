@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: 'Work Orders',
 };
 
-export default async function WorkOrdersPage({ params }: { params: Promise<{ companyId: string }> }) {
-  const { companyId } = await params;
+export default async function WorkOrdersPage({ params }: { params: { companyId: string } }) {
+  const { companyId } = params;
 
   const workOrders = await getAllWorkOrders(companyId);
 

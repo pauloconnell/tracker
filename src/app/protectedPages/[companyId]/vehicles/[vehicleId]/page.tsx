@@ -4,11 +4,11 @@ import { getVehicleById } from '@/lib/vehicles';
 import ServiceDue from '@/components/ServiceDue/ServiceDue';
 
 interface Props {
-   params: Promise<{ companyId: string; vehicleId: string }>;
+   params: { companyId: string; vehicleId: string };
 }
 
 export default async function VehiclePage({ params }: Props) {
-   const { companyId, vehicleId } = await params;
+   const { companyId, vehicleId } = params;
 
    // Fetch vehicle + service history from MongoDB
    const vehicle = await getVehicleById(vehicleId, companyId);

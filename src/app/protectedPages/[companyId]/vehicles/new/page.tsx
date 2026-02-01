@@ -2,11 +2,11 @@ import Link from "next/link";
 import VehicleForm from "@/components/Forms/Vehicle/VehicleForm";
 
 interface Props {
-   params: Promise<{ companyId: string }>;
+   params: { companyId: string };
 }
 
 export default async function NewVehiclePage({ params }: Props) {
-   const { companyId } = await params;
+   const { companyId } = params;
 
    return (
       <div className="space-y-6">

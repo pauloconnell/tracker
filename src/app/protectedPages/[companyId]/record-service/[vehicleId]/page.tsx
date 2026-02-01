@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 export default async function RecordServiceDetailPage({
   params,
 }: {
-  params: Promise<{ companyId: string; vehicleId: string }>;
+  params: { companyId: string; vehicleId: string };
 }) {
-  const { companyId, vehicleId } = await params;
+  const { companyId, vehicleId } = params;
 
   return (
     <div className="min-h-screen bg-gray-50">
