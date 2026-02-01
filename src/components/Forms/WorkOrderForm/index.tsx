@@ -16,7 +16,7 @@ interface WorkOrderFormProps {
    companyId: string;
    workOrderId?: string;
    vehicleId?: string;
-   vehicles: IVehicle[];
+   vehicles?: IVehicle[];
 }
 
 export default function WorkOrderForm({
