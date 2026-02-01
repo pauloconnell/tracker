@@ -32,7 +32,8 @@ export default function WorkOrderForm({
    const fetchWorkOrder = useWorkOrderStore((s) => s.fetchWorkOrder);
 
    const selectedVehicle = useVehicleStore((state) => state.selectedVehicle);
-   const fetchVehicle = useVehicleStore((state) => state.fetchVehicle);
+   //const fetchVehicle = useVehicleStore((state) => state.fetchVehicle);
+     const setAllVehicles = useVehicleStore((state) => state.setAllVehicles);
    const setSelectedVehicle = useVehicleStore((s) => s.setSelectedVehicle);
    const fetchAllWorkOrders = useWorkOrderStore((s) => s.fetchAllWorkOrders);
 
@@ -51,23 +52,35 @@ export default function WorkOrderForm({
       }
    }, [isEditing, storeWO, workOrderId, fetchWorkOrder]);
 
-   // BLOCK URL: if No IDs → redirect
-   useEffect(() => {
-      if (!workOrderId && !vehicleId) {
-         router.push(`/protectedPages/${companyId}/vehicles`);
-      }
-   }, [workOrderId, vehicleId, companyId, router]);
+   // Delete this -> if new work order, just need company id
+   // // BLOCK URL: if No IDs → redirect -
+   // useEffect(() => {
+   //    if (!workOrderId && !vehicleId) {
+   //       console.log("no workOrderId or vehicleId, redirecting", workOrderId, vehicleId);
+   //       router.push(`/protectedPages/${companyId}/dashboard`);
+   //    }
+   // }, [workOrderId, vehicleId, companyId, router]);
 
    // 2) derive id
    const derivedVehicleId =
       (isEditing ? storeWO?.vehicleId : vehicleId || selectedVehicle?._id) ?? '';
 
-   // 4) Fetch vehicle (new WO only)
+         // 4) Fetch vehicle (new WO only)
    useEffect(() => {
-      if (!isEditing && derivedVehicleId && !selectedVehicle) {
-         fetchVehicle(derivedVehicleId);
-      }
-   }, [isEditing, derivedVehicleId, selectedVehicle, fetchVehicle]);
+      console.log("Setting vehicles in store from props:", vehicles);
+      if (vehicles)  setAllVehicles(vehicles)
+   }, []);
+
+
+ // selected vehicle is always already set for work orders
+   // // 4) Fetch vehicle (new WO only)
+   // useEffect(() => {
+   //    if (!isEditing && derivedVehicleId && !selectedVehicle) {
+   //       console.log("Fetching vehicle")
+   //      // fetchVehicle(derivedVehicleId);
+
+   //    }
+   // }, [isEditing, derivedVehicleId, selectedVehicle]);
 
    // 2) Form State
 

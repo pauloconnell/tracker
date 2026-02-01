@@ -51,6 +51,7 @@ export default function ServiceRecordForm({ companyId, vehicleId }: { companyId:
       if (!vehicleId) return;
       // If no selectedVehicle OR wrong selectedVehicle, fetch it
       if (!selectedVehicle || selectedVehicle._id !== vehicleId) {
+         //console.log("Good here: Fetching selected vehicle for service record form:", vehicleId);
          fetchVehicle(vehicleId);   // this sets selectedVehicle in store
       }
    }, [vehicleId, selectedVehicle, fetchVehicle]);

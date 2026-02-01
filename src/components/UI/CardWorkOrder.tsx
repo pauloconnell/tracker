@@ -25,7 +25,7 @@ export const CardWorkOrder = ({ wo, companyId }: WorkOrderProps) => {
     : 'No date set';
 
   return (
-    <li className="list-none">
+    <div >
       <Link
         href={`/protectedPages/${companyId}/work-orders/${wo._id}`}
         onClick={() => setSelectedWorkOrder(wo)}
@@ -86,6 +86,6 @@ export const CardWorkOrder = ({ wo, companyId }: WorkOrderProps) => {
           </div>
         </div>
       </Link>
-    </li>
+    </div>
   );
 };
