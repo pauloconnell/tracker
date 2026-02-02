@@ -33,11 +33,6 @@ export async function PUT(req: NextRequest, { params }: { params: { vehicleId: s
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Query with companyId for security
-    const existing = await Vehicle.findOne({ _id: vehicleId, companyId }).lean();
-    if (!existing) {
-      return NextResponse.json({ error: 'Vehicle not found' }, { status: 404 });
-    }
 
     const sanitized = sanitizeUpdate(Vehicle, body);
 
@@ -51,6 +46,8 @@ export async function PUT(req: NextRequest, { params }: { params: { vehicleId: s
       sanitized,
       { new: true }
     );
+
+    if (!updated) { return NextResponse.json({ error: 'Vehicle not found' }, { status: 404 }); }
 
     return NextResponse.json({ success: true });
   } catch (err) {
@@ -66,9 +63,10 @@ export async function GET(req: NextRequest, { params }: { params: { vehicleId: s
   const session = await getAuthSession();
   if (!session) return unauthenticatedResponse();
 
-  const { vehicleId } =  params;
+
   try {
-    await connectDB();
+    const { vehicleId } = params;
+
 
     if (!mongoose.isValidObjectId(vehicleId)) {
       return validationErrorResponse("Invalid ID format");
@@ -78,12 +76,19 @@ export async function GET(req: NextRequest, { params }: { params: { vehicleId: s
     if (!companyId) {
       return validationErrorResponse('companyId is required');
     }
-
-    // RBAC: Check read permission
-    const canRead = await hasPermission(session.userId, companyId, 'vehicle', 'read');
-    if (!canRead) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    await connectDB();
+    // RBAC: Check read permission returns true/false
+    try {
+      const canRead = await hasPermission(session.userId, companyId, 'vehicle', 'read');
+      if (!canRead) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+    } catch (err) {
+      return NextResponse.json({ error: 'Failed permission check' }, { status: 403 });
     }
+
+
+
 
     // Query with companyId for security
     const vehicle = await Vehicle.findOne({ _id: vehicleId, companyId });

@@ -33,7 +33,6 @@
    },
    "dependencies": {
       "@auth0/nextjs-auth0": "^3.8.0",
-      "geist": "^1.5.1",
       "lucide-react": "^0.562.0",
       "mongoose": "^9.1.2",
       "next": "^15.5.9",

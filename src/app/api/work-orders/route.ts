@@ -5,6 +5,7 @@ import { IWorkOrder } from '@/types/IWorkOrder';
 import { sanitizeCreate } from '@/lib/sanitizeCreate';
 import { sanitizeUpdate } from '@/lib/sanitizeUpdate';
 import { normalizeRecord } from '@/lib/normalizeRecord';
+import { createWorkOrder } from '@/lib/workOrders';
 import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';
 import { hasPermission, assertPermission } from '@/lib/rbac';
 import mongoose from 'mongoose';
@@ -32,9 +33,12 @@ export async function POST(req: NextRequest) {
       const sanitized = sanitizeCreate<Partial<IWorkOrder>>(WorkOrder, { ...body, companyId });
 
       // Create work order
-      const wo = await WorkOrder.create(sanitized);
+      //const wo = await WorkOrder.create(sanitized);
+      //use Lib:
+      const wo = await createWorkOrder(sanitized);
 
-      return NextResponse.json({ success: true }, { status: 201 });
+      if (wo == "success") return NextResponse.json({ success: true }, { status: 201 });
+      return NextResponse.json({ error: 'Failed to create work order' }, { status: 500 });
    } catch (err) {
       console.error('Failed to create work order:', err);
       return NextResponse.json({ error: 'Failed to create work order' }, { status: 500 });
@@ -101,16 +105,17 @@ export async function GET(req: NextRequest) {
 
       await connectDB();
       const { searchParams } = new URL(req.url);
-      const vehicleId = searchParams.get('vehicleId');
-      const companyId = searchParams.get('companyId');
-
+      const rawVehicleId = searchParams.get('vehicleId');
+      const vehicleId = rawVehicleId && mongoose.isValidObjectId(rawVehicleId) ? rawVehicleId : null;
+      const rawCompanyId = searchParams.get('companyId');
+      const companyId = rawCompanyId && mongoose.isValidObjectId(rawCompanyId) ? rawCompanyId : null;
       if (!companyId) {
          return validationErrorResponse('companyId is required');
       }
 
       // RBAC: Check read permission
       const canRead = await hasPermission(session.userId, companyId, 'workOrder', 'read');
-      console.log("GET /api/work-orders - canRead:", canRead);
+      // console.log("GET /api/work-orders - canRead:", canRead);
       if (!canRead) {
          return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
@@ -119,7 +124,7 @@ export async function GET(req: NextRequest) {
       const query = vehicleId ? { ...baseQuery, vehicleId } : baseQuery;
 
       const workOrders = await WorkOrder.find(query).lean();
-      console.log({workOrders} );
+      // console.log({workOrders} );
       // Normalize each record 
       const normalized = workOrders.map((wo) => {
          const n = normalizeRecord(wo);
@@ -140,8 +145,11 @@ export async function DELETE(req: NextRequest) {
       await connectDB();
 
       const { searchParams } = new URL(req.url);
-      const workOrderId = searchParams.get('workOrderId');
-      const companyId = searchParams.get('companyId');
+      const rawWorkOrderId = searchParams.get('workOrderId');
+      const rawCompanyId = searchParams.get('companyId');
+
+      const companyId = rawCompanyId && mongoose.isValidObjectId(rawCompanyId) ? rawCompanyId : null;
+      const workOrderId = rawWorkOrderId && mongoose.isValidObjectId(rawWorkOrderId) ? rawWorkOrderId : null;
 
       if (!workOrderId) {
          return validationErrorResponse('Missing work order ID');
@@ -166,7 +174,7 @@ export async function DELETE(req: NextRequest) {
 
       return NextResponse.json(
          { success: true }, {
-            status: 200
+         status: 200
       });
    } catch (err) {
       console.error('Failed to delete work order:', err);

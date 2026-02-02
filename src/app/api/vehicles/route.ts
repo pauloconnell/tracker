@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
 
       // Clean mileage input and convert to number
       if (body.mileage) {
-         body.mileage = body.mileage.toString().replace(/,/g, '');
+         body.mileage = body.mileage?.toString().replace(/,/g, '');
       }
 
       // Sanitize input based on Vehicle schema

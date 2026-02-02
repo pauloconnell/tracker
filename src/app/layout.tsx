@@ -1,11 +1,9 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'geist/font';
+
 import './globals.css';
 import HeaderServer from '@/components/Header/HeaderServer';
 import { Toaster } from 'react-hot-toast';
 
-const geistSans = Geist({ variable: '--font-geist-sans' });
-const geistMono = Geist_Mono({ variable: '--font-geist-mono' });
 
 export const metadata: Metadata = {
    title: 'Maintence Tracker',
@@ -20,7 +18,7 @@ export default function RootLayout({
 }>) {
    return (
       <html lang="en">
-         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+         <body >
             <HeaderServer />
             {children}
             <Toaster position="top-right" />

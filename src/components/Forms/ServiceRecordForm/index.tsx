@@ -85,7 +85,7 @@ export default function ServiceRecordForm({ companyId, vehicleId }: { companyId:
          return;
       }
 
-      // sanitize input (prevent XXS)-throws toast to warn user
+      // sanitize input (prevent XsS)-throws toast to warn user
       const cleaned = sanitizeInput(value);
 
       // Generic update
@@ -94,7 +94,7 @@ export default function ServiceRecordForm({ companyId, vehicleId }: { companyId:
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
-      console.log('about to save ', form);
+    //  console.log('about to save ', form);
       const res = await fetch('/api/service-records', {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
@@ -105,6 +105,7 @@ export default function ServiceRecordForm({ companyId, vehicleId }: { companyId:
          router.push(`/protectedPages/${companyId}/vehicles/${form.vehicleId}`);
       } else {
          alert('Failed to save record');
+
       }
    }
 

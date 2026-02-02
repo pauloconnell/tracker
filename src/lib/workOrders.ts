@@ -1,18 +1,20 @@
 import { connectDB } from "./mongodb";
 import WorkOrder from "@/models/WorkOrder";
 import { IWorkOrder } from "@/types/IWorkOrder";
+import  FilterQuery  from "mongoose";
 
-
-export async function createWorkOrder(data:Partial<IWorkOrder>): Promise<IWorkOrder> {
+export async function createWorkOrder(data:Partial<IWorkOrder>): Promise<string> {
   await connectDB();
   const wo = await WorkOrder.create(data);
-  return {
-    ...wo.toObject(),
-    _id: wo._id.toString(),
-    companyId: wo.companyId?.toString?.() ?? '',
-    createdAt: wo?.createdAt?.toISOString(),
-    updatedAt: wo?.updatedAt?.toISOString(),
-  };
+  // don't need return object here
+  return "success" ;
+  
+    // ...wo.toObject(),
+    // _id: wo._id.toString(),
+    // companyId: wo?.companyId?.toString() ?? '',
+    // createdAt: wo?.createdAt?.toISOString(),
+    // updatedAt: wo?.updatedAt?.toISOString(),
+  
 }
 
 export async function getAllWorkOrders(companyId: string): Promise<IWorkOrder[]> {
@@ -30,7 +32,7 @@ export async function getAllWorkOrders(companyId: string): Promise<IWorkOrder[]>
 
 export async function getWorkOrdersForVehicle(vehicleId: string, companyId?: string):Promise<IWorkOrder[]> {
   await connectDB();
-  const query: any = { vehicleId, status: "open" };
+  const query: Partial<Record<keyof IWorkOrder, unknown>> = { vehicleId, status: "open" };
   if (companyId) {
     query.companyId = companyId;
   }
@@ -46,11 +48,14 @@ export async function getWorkOrdersForVehicle(vehicleId: string, companyId?: str
 }
 
 
-export async function deleteWorkOrder(id: string, companyId?: string) {
+
+// NOTE: THIS ISN"T USED ANYWHERE YET - we DONT Ever want to delete records -> but perhaps will add functionality here in future
+export async function deleteWorkOrder(id: string, companyId?: string):string {
   await connectDB();
 
-  const query: any = {
+  const query: FilterQuery<IWorkOrder> = {
     $or: [{ _id: id }, { workOrderId: id }],
+    ...(companyId ? { companyId }: {}), // optional companyId
   };
   
   if (companyId) {
@@ -59,12 +64,12 @@ export async function deleteWorkOrder(id: string, companyId?: string) {
 
   const deleted = await WorkOrder.findOneAndDelete(query).lean();
 
-  return deleted
-    ? {
-        ...deleted,
-        _id: deleted._id.toString(),
-        companyId: deleted.companyId?.toString?.() ?? '',
-        vehicleId: deleted.vehicleId?.toString() ?? "",
-      }
-    : null;
+  return deleted ? "success":"failed";  // not implemented
+    // ? {
+    //     ...deleted,
+    //     _id: deleted._id.toString(),
+    //     companyId: deleted.companyId?.toString?.() ?? '',
+    //     vehicleId: deleted.vehicleId?.toString() ?? "",
+    //   }
+    //: null;
 }

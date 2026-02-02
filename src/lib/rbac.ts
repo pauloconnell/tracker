@@ -140,7 +140,7 @@ export async function getUserPermissions(
    const role = await getUserRoleInCompany(userId, companyId);
 
    if (!role) return null;
-
+   if(!PERMISSIONS[role]) return null;
    return PERMISSIONS[role];
 }
 

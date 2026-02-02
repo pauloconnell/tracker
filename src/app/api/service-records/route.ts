@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const session = await getAuthSession();
     if (!session) return unauthenticatedResponse();
 
-    const body: Partial<IServiceRecord> & { companyId?: string } = await req.json();
+    const body: Partial<IServiceRecord> & { companyId: string } = await req.json();
     const companyId = body.companyId;
 
     if (!companyId) {
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     const sanitized = sanitizeCreate<Partial<IServiceRecord>>(ServiceRecord, { ...body, companyId });
 
     const record = await createServiceRecord(sanitized);
-    return NextResponse.json("Success", { status: 201 });
+    return NextResponse.json("Success", { status: 201 });   // we don't need service recordIds so just return a fast success(service records are view only, and reloaded on page navigation)
   } catch (err) {
     console.error("Error creating service record:", err);
     return NextResponse.json({ error: "Failed to create record" }, { status: 500 });

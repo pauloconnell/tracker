@@ -11,15 +11,13 @@ export default async function VehiclePage({ params }: Props) {
    const { companyId, vehicleId } = params;
 
    // Fetch vehicle + service history from MongoDB
-   const vehicle = await getVehicleById(vehicleId, companyId);
-   const history = await getServiceHistory(vehicleId, companyId);
+   const [vehicle, history] = await Promise.all([
+      getVehicleById(vehicleId, companyId),
+      getServiceHistory(vehicleId, companyId),
+   ]);
 
    if (!vehicle) {
-      return (
-         <div className="text-red-600 p-6">
-            Vehicle not found
-         </div>
-      );
+      return <div className="text-red-600 p-6">Vehicle not found</div>;
    }
 
    return (

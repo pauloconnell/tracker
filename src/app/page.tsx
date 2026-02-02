@@ -84,7 +84,7 @@ export default async function Home() {
          <section className="bg-gradient-to-br from-primary-900 via-primary-950 to-secondary-950 py-20 sm:py-32">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                <div className="text-center mb-12 sm:mb-16">
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-boldt text-white tracking-tight mb-6">
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6">
                      Track Your Vehicle Maintenance
                      <span className="block text-primary-400 mt-2">
                         Never Miss a Service Again

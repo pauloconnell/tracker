@@ -30,6 +30,10 @@ export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
       //const companyId = useCompanyStore.getState().activeCompanyId;
       if (!companyId){
          console.log("No active companyId in store, cannot fetch work orders");
+         set({ workOrders: [] });
+         // navigate to company selection? aka Dashboard
+         
+         return;
       } 
 
       try {

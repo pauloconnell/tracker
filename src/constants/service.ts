@@ -5,7 +5,7 @@ export const SERVICE_TYPES = [
   'Tire Replacement',
   'Brake Caliper Service',
   'Brake Pads Replace',
-  'Brake Fluid bleed',
+  'Brake Fluid Bleed',
   'Belt Change',
   'Power Steering Fluid Flush',
   'Coolant Flush',

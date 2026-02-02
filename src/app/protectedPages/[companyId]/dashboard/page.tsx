@@ -105,13 +105,13 @@ export default async function DashboardPage({ params }: PageProps) {
                      >
                         <span className="hover:text-black">📋All Work Orders</span>
                      </Link>
-
+{/* need to build page to show all service records*/}
                      <Link
-                        href={`/protectedPages/${companyId}/work-orders`}
+                        href={`/protectedPages/${companyId}/record-service/all`}
                         className="flex items-center justify-center px-4 py-3 bg-secondary-50 text-secondary-700 font-semibold rounded-lg hover:bg-secondary-100 transition-colors duration-200 border border-secondary-200"
                      >
-                        <span className="hover:text-black">📋 All Service Records</span>
-                     </Link>
+                        <span className="hover:text-black">📋Future: All Service Records</span>
+                     </Link> 
                   </div>
                </div>
             </div>

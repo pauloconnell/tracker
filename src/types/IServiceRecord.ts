@@ -12,9 +12,7 @@ export interface IServiceRecord extends IBaseService {
     serviceDueDate?:  string;
     serviceDueKM?: string;
 
-    
-
     // Timestamps (ISO strings on the client, Date objects on the server) 
     createdAt: string;
-    updatedAt: string
+    updatedAt: string;
 }

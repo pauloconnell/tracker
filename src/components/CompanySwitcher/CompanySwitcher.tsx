@@ -26,9 +26,9 @@ export default function CompanySwitcher({
       }
    }, [activeCompanyId, setActiveCompanyId]);
 
-   // if (companies.length <= 1) {
-   //    return null; // Don't show switcher if only one company
-   // }
+   if (companies.length <= 1) {
+      return null; // Don't show switcher if only one company
+   }
 
    const activeCompany = companies.find((c) => c._id === activeCompanyId);
 
@@ -46,6 +46,18 @@ export default function CompanySwitcher({
       <div className="relative">
          <button
             onClick={() => setIsOpen(!isOpen)}
+            onKeyDown={(e) => {
+               if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setIsOpen(!isOpen);
+               }
+               if (e.key === 'Escape') {
+                  setIsOpen(false);
+               }
+            }}
+            aria-haspopup="listbox"
+            aria-expanded={isOpen}
+            aria-label="Select company"
             className="flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transition duration-150"
          >
             {activeCompany?.name || 'Select Company'} ▼
@@ -56,6 +68,8 @@ export default function CompanySwitcher({
                {companies.map((company) => (
                   <button
                      key={company._id}
+                     role="option"
+                     aria-selected={company._id === activeCompanyId}
                      onClick={() => handleSwitch(company._id)}
                      className={`w-full text-left px-6 py-3 hover:bg-gray-200 transition-colors ${
                         company._id === activeCompanyId

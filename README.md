@@ -50,8 +50,25 @@ add 'quick actions here too' just like record service
 
 
 
+![alt text](image.png)
 
+## Next.js 15 + Auth0: Routing, Params & Session Rules
 
+| Area                                   | `params` type        | `await params` | Use Auth0 session (`getSession`) | Should middleware run |
+|----------------------------------------|-----------------------|----------------|----------------------------------|------------------------|
+| **Server Components** (`page.tsx`)     | sometimes async       | Yes            | No                               | Yes                    |
+| **API Routes** (`route.ts`)            | always plain object   | No             | Yes                              | No                     |
+| **Middleware** (`middleware.ts`)       | n/a                   | n/a            | Yes                              | n/a                    |
+
+### Key Rules
+- **Await `params` only in Server Components**  
+- **Never await `params` in API routes**  
+
+- **Middleware protects pages, not API routes**  
+- **API routes must authenticate themselves**  
+- **Exclude `/api/*` from middleware** to avoid Next.js 15 treating `params` as a Promise
+
+- **Auth0 session helpers work only in API routes + middleware**  
 
 
 

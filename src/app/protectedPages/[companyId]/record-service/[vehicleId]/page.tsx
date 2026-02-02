@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: 'Record Service',
 };
 
-export default async function RecordServiceDetailPage({
+export default function RecordServiceDetailPage({
   params,
 }: {
   params: { companyId: string; vehicleId: string };

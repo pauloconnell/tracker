@@ -12,7 +12,7 @@ interface VehicleState {
   allVehicles: IVehicle[];
   setAllVehicles: (vehicles: IVehicle[]) => void;
   fetchAllVehicles: (companyId: string) => Promise<void>;
-  getAllVehicles: () => IVehicle[]; 
+  getAllVehicles: () => IVehicle[];
 }
 
 export const useVehicleStore = create<VehicleState>((set, get) => ({
@@ -22,18 +22,18 @@ export const useVehicleStore = create<VehicleState>((set, get) => ({
   setSelectedVehicle: (vehicle) => set({ selectedVehicle: vehicle }),
   clearSelectedVehicle: () => set({ selectedVehicle: null }),
 
-fetchVehicle: async (id) => {
-  try {
-    console.log("store Fetching vehicle with id:", id);
-    const res = await fetch(`/api/vehicles/${id}`);
-    if (!res.ok) throw new Error(`Failed to fetch vehicle: ${res.status}`);
-    const data = await res.json();
-    set({ selectedVehicle: data });
-  } catch (error) {
-    console.error('Error fetching vehicle:', error);
-    set({ selectedVehicle: null });
-  }
-},
+  fetchVehicle: async (id) => {
+    try {
+      console.log("store Fetching vehicle with id:", id);
+      const res = await fetch(`/api/vehicles/${id}`);
+      if (!res.ok) throw new Error(`Failed to fetch vehicle: ${res.status}`);
+      const data = await res.json();
+      set({ selectedVehicle: data });
+    } catch (error) {
+      console.error('Error fetching vehicle:', error);
+      set({ selectedVehicle: null });
+    }
+  },
 
 
   // --- All Vehicles ---
@@ -43,15 +43,15 @@ fetchVehicle: async (id) => {
 
   fetchAllVehicles: async (companyId) => {
     try {
-       console.log("Fetching vehicle with id:", companyId);
-    const res = await fetch(`/api/vehicles?companyId=${companyId}`);
-     if (!res.ok) throw new Error(`Failed to fetch vehicles: ${res.status}`);
-    const data = await res.json();
-    set({ allVehicles: data });
-  } catch (error) {
+      //console.log("Fetching vehicle with companyid:", companyId);
+      const res = await fetch(`/api/vehicles?companyId=${companyId}`);
+      if (!res.ok) throw new Error(`Failed to fetch vehicles: ${res.status}`);
+      const data = await res.json();
+      set({ allVehicles: data });
+    } catch (error) {
       console.error('Error fetching vehicles:', error);
-   // set({ allVehicles: [] });
-  }
+      // set({ allVehicles: [] });
+    }
   },
 
   getAllVehicles: () => get().allVehicles,

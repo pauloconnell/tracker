@@ -85,28 +85,28 @@ export default function WorkOrderForm({
    // 2) Form State
 
    const [form, setForm] = useState<IFormWorkOrder>(() => {
-      if (isEditing && storeWO) {
-         return {
-            companyId,
-            workOrderId: storeWO._id,
-            vehicleId: storeWO.vehicleId ?? '',
-            serviceType: storeWO.serviceType ?? '',
-            serviceDueDate: storeWO.serviceDueDate
-               ? String(storeWO.serviceDueDate).split('T')[0]
-               : '',
-            serviceDueKM: String(storeWO.serviceDueKM) ?? '',
-            mileage: String(storeWO.mileage) ?? '',
-            location: storeWO.location ?? ['N/A'],
-            notes: storeWO.notes ?? '',
-            serviceDate: storeWO.serviceDate
-               ? String(storeWO.serviceDate).split('T')[0]
-               : '',
-            completedBy: storeWO.completedBy ?? '',
-            isRecurring: storeWO.isRecurring ?? false,
-            serviceFrequencyKM: String(storeWO.serviceFrequencyKM) ?? '',
-            serviceFrequencyWeeks: String(storeWO.serviceFrequencyWeeks) ?? '',
-         };
-      } // New Work Order
+      // if (isEditing && storeWO) {
+      //    return {
+      //       companyId,
+      //       workOrderId: storeWO._id,
+      //       vehicleId: storeWO.vehicleId ?? '',
+      //       serviceType: storeWO.serviceType ?? '',
+      //       serviceDueDate: storeWO.serviceDueDate
+      //          ? String(storeWO.serviceDueDate).split('T')[0]
+      //          : '',
+      //       serviceDueKM: String(storeWO.serviceDueKM) ?? '',
+      //       mileage: String(storeWO.mileage) ?? '',
+      //       location: storeWO.location ?? ['N/A'],
+      //       notes: storeWO.notes ?? '',
+      //       serviceDate: storeWO.serviceDate
+      //          ? String(storeWO.serviceDate).split('T')[0]
+      //          : '',
+      //       completedBy: storeWO.completedBy ?? '',
+      //       isRecurring: storeWO.isRecurring ?? false,
+      //       serviceFrequencyKM: String(storeWO.serviceFrequencyKM) ?? '',
+      //       serviceFrequencyWeeks: String(storeWO.serviceFrequencyWeeks) ?? '',
+      //    };
+      // } // New Work Order
       return {
          companyId,
          workOrderId: '',
@@ -133,7 +133,7 @@ export default function WorkOrderForm({
             workOrderId: storeWO?._id,
             vehicleId: storeWO.vehicleId ?? '',
             serviceType: storeWO.serviceType ?? '',
-            serviceDueDate: String(storeWO.serviceDueDate)?.split('T')[0] ?? '',
+            serviceDueDate: storeWO.serviceDueDate ? String(storeWO.serviceDueDate).split('T')[0] : '',
             serviceDueKM: String(storeWO.serviceDueKM) ?? '',
             mileage: String(storeWO.mileage) ?? '',
             location: storeWO.location ?? ['N/A'],
@@ -163,7 +163,7 @@ export default function WorkOrderForm({
       const { name, value, type } = e.target;
 
       // If the user changed the vehicle dropdown, update the store
-      if (name === 'vehicleId') {
+      if (name === 'vehicleId' && vehicles) {
          const v = vehicles.find((veh) => veh._id === value);
          console.log('changed vehicle ', v);
          if (v) {

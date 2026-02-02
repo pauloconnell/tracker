@@ -98,7 +98,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
       // Calculate next due date
       if (workOrder.serviceFrequencyWeeks) {
-         const nextDate = new Date(workOrder.serviceDate ?? Date.now());
+         const nextDate = new Date(workOrder?.serviceDate ?? Date.now());
          nextDate.setDate(nextDate.getDate() + workOrder.serviceFrequencyWeeks * 7);
          next.serviceDueDate = nextDate.toISOString().split('T')[0];
       }

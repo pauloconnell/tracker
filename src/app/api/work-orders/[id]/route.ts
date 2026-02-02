@@ -14,15 +14,20 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
    const { id } = params;
 
+   if (!id) {
+      return validationErrorResponse('Missing ID');
+   }
    if (!mongoose.Types.ObjectId.isValid(id)) {
       return validationErrorResponse('Invalid ID format');
    }
 
-   if (!id) {
-      return validationErrorResponse('Missing ID');
+   let body=null;
+   try {
+      body = await req.json();
+   } catch (err) {
+      return validationErrorResponse('Invalid JSON body');
    }
 
-   const body = await req.json();
    const companyId = body.companyId;
 
    if (!companyId) {
@@ -48,7 +53,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
    if (!updated) {
       return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
    }
-   return NextResponse.json({ success: true }, { status: 201 });
+   return NextResponse.json({ success: true }, { status: 200 });
 }
 
 // get a specific work order given it's id (in the url of API)
@@ -88,10 +93,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({
          ...wo,
          _id: wo._id.toString(),
-         companyId: wo.companyId?.toString?.() ?? '',
-         vehicleId: wo.vehicleId?.toString?.() ?? '',
-         createdAt: wo.createdAt?.toISOString?.() ?? null,
-         updatedAt: wo.updatedAt?.toISOString?.() ?? null,
+         companyId: wo.companyId?.toString() ?? '',
+         vehicleId: wo.vehicleId?.toString() ?? '',
+         createdAt: wo.createdAt?.toISOString() ?? null,
+         updatedAt: wo.updatedAt?.toISOString() ?? null,
       });
    } catch (err) {
       console.error('Failed to fetch work order:', err);

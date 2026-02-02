@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
  */
 export interface SessionContext {
    userId: string;
-   email: string;
+   email?: string;
 }
 
 /**

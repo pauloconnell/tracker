@@ -6,7 +6,7 @@ interface CompanyLayoutProps {
 params: { companyId: string };
 }
 
-export default async function CompanyLayout({ children, params }: CompanyLayoutProps) {
+export default function CompanyLayout({ children, params }: CompanyLayoutProps) {
    const { companyId } = params;
 
    return (

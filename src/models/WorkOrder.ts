@@ -4,7 +4,7 @@ const WorkOrderSchema = new mongoose.Schema(
    {
       companyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Company', required: true, index: true },
       vehicleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Vehicle', required: true },
-      workOrderId: { type: String }, 
+      workOrderId: { type: String, index: true }, 
       previousWorkOrderId: { type: mongoose.Schema.Types.ObjectId, ref: 'WorkOrder', default: null },
       nickName: { type: String, required: true },
       year: { type: String },

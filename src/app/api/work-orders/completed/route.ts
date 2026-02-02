@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import WorkOrder from "@/models/WorkOrder";
+import mongoose from "mongoose";
 
 // get all 'completed' work orders
 export async function GET(req: Request) {
@@ -8,7 +9,11 @@ export async function GET(req: Request) {
     await connectDB();
 
     const { searchParams } = new URL(req.url);
-    const vehicleId = searchParams.get("vehicleId");
+
+
+    const rawVehicleId = searchParams.get("vehicleId");
+
+const vehicleId = rawVehicleId && mongoose.isValidObjectId(rawVehicleId) ? rawVehicleId : null;
 
     const baseQuery = { status: "completed" };
 
@@ -22,7 +27,7 @@ export async function GET(req: Request) {
       workOrders.map((wo) => ({
         ...wo,
         _id: wo._id.toString(),
-        vehicleId: wo.vehicleId?.toString() ?? "",
+        vehicleId: wo.vehicleId?.toString() ?? null,
         createdAt: wo.createdAt?.toISOString() ?? null,
         updatedAt: wo.updatedAt?.toISOString() ?? null,
       }))

@@ -38,14 +38,16 @@ export default function ServiceDue({ vehicleId, companyId }: ServiceDueProps) {
       : upcoming; // else show all
 
    // if passed vehicleId in URL, then populate store with vehicle details
-   useEffect(() => {
-       setLoading(true);
-      if (vehicleId && !selectedVehicle) {
-         fetchVehicle(vehicleId)
-            .catch(console.error)
-            .finally(() => setLoading(false));
-      }
-   }, [vehicleId, selectedVehicle]);
+useEffect(() => {
+  if (vehicleId && !selectedVehicle) {
+    setLoading(true);
+
+    fetchVehicle(vehicleId)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }
+}, [vehicleId, selectedVehicle]);
+
 
     if (loading) return <div><LoadingSpinner /> Loading…</div>;
 
@@ -67,32 +69,7 @@ export default function ServiceDue({ vehicleId, companyId }: ServiceDueProps) {
                >
 
                   <CardWorkOrder wo={wo} companyId={companyId} />
-                  {/* <Link
-                     href={`/protectedPages/${companyId}/work-orders/${wo._id}`}
-                     onClick={() => setSelectedWorkOrder(wo)}
-                  >
-                     <div className="text-center font-extrabold text-lg mb-2">
-              
-                        {wo?.nickName ?? ''}
-                     </div>
-
-                     <div className="font-bold">{wo.serviceType}
-                     {wo.serviceType === 'Other' && wo.notes && (
-                        <div className="mb-2 text-sm ">
-                           {wo.notes}
-                        </div>
-                     )}
-    
-                     </div>
-                                       
-                    {wo.serviceDueDate && ( <div className="text-sm text-gray-500">
-                        Service Due: {String(wo.serviceDueDate).split("T")[0]}
-                     </div>)}
-                     {wo.serviceDueKM && (
-                     <div className="text-sm text-gray-500">
-                        Service Due @: {wo.serviceDueKM} KM
-                     </div>)}
-                  </Link> */}
+            
                </li>
             ))}
          </ul>

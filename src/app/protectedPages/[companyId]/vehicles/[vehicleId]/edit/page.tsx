@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default async function EditVehiclePage({ params }: Props) {
-   const { companyId, vehicleId } =params;
+   const { companyId, vehicleId } = params;
 
    if (!mongoose.isValidObjectId(vehicleId)) {
       return (

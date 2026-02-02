@@ -17,31 +17,12 @@ interface SharedFieldsFormProps <T extends IFormBaseService> {
    handleChange: ( e: React.ChangeEvent< HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement > ) => void; 
 }
 
-// interface SharedServiceFormFieldsProps {
-//    form: Partial<IFormServiceRecord>;
-//    setForm: React.Dispatch<React.SetStateAction<Partial<IFormServiceRecord>>>;
-//    vehicles: IVehicle[];
-//    serviceTypes: string[];
-//    locations: LocationOption[];
-//    handleChange: (
-//       e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-//    ) => void;
-// }
 
 export default function SharedServiceFormFields<T extends IFormBaseService>({
    form, setForm, vehicles, handleChange, }: SharedFieldsFormProps<T>) {
 
 
-//    form: Partial<T>;
-//    setForm: React.Dispatch<React.SetStateAction<Partial<T>>>; 
-//    vehicles: IVehicle[]; 
-//    serviceTypes: string[]; 
-//    locations: LocationOption[]; 
-//    handleChange: ( e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> ) => void;
-//    }(  form, setForm,
-//    vehicles,
-//    handleChange,
-// ) {
+
    // toggle lock for recurring service intervals
    const [isLocked, setIsLocked] = useState(form.isRecurring);
    const serviceTypes = SERVICE_TYPES;

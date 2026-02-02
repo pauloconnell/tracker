@@ -31,8 +31,8 @@ export default function DeleteWorkOrderButton({ workOrderId }: DeleteWorkOrderBu
       // Navigate back to dashboard
       router.push("/protectedPages/dashboard");
 
-      // Ensure dashboard refreshes its data
-      router.refresh();
+      // // Ensure dashboard refreshes its data
+      // router.refresh();
 
     } catch (err) {
       
