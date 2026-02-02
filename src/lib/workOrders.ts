@@ -53,7 +53,7 @@ export async function getWorkOrdersForVehicle(vehicleId: string, companyId?: str
 export async function deleteWorkOrder(id: string, companyId?: string): Promise<string> {
   await connectDB();
 
-  const query: mongoose.FilterQuery<IWorkOrder> = {
+  const query: any = {
     $or: [{ _id: id }, { workOrderId: id }],
     ...(companyId ? { companyId }: {}), // optional companyId
   };
