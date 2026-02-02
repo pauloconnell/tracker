@@ -30,8 +30,9 @@
       "**/*.tsx",
       ".next/types/**/*.ts",
       ".next/dev/types/**/*.ts",
-      "**/*.mts"
-, "src/components/UI/CardWorkOrder"   ],
+      "**/*.mts",
+      "src/components/UI/CardWorkOrder"
+   ],
    "exclude": ["node_modules", "vitest.config.ts", "tsconfig.vitest.json"],
    "references": [{ "path": "./tsconfig.config.json" }]
 }

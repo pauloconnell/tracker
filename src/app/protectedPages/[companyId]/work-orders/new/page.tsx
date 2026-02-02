@@ -10,11 +10,12 @@ export default async function NewWorkOrderPage({
    params,
    searchParams,
 }: {
-   params: { companyId: string };
-   searchParams: { vehicleId?: string };
+   params: Promise<{ companyId: string }>;
+   searchParams: Promise<{ vehicleId?: string }>;
 }) {
 
-  const { companyId } = params;
+  const { companyId } = await params;
+  const { vehicleId } = await searchParams;
    const vehicles = await getAllVehicles(companyId);
 
    return (

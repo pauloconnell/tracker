@@ -230,7 +230,7 @@ export default function WorkOrderForm({
          <SharedServiceFormFields<IFormWorkOrder>
             form={form}
             setForm={setForm}
-            vehicles={vehicles}
+            vehicles={vehicles || []}
             handleChange={handleChange}
          />
          {/* If existing work order: allow user to Complete work order - must add tech's name */}

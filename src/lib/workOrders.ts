@@ -1,7 +1,7 @@
 import { connectDB } from "./mongodb";
 import WorkOrder from "@/models/WorkOrder";
 import { IWorkOrder } from "@/types/IWorkOrder";
-import  FilterQuery  from "mongoose";
+import mongoose from "mongoose";
 
 export async function createWorkOrder(data:Partial<IWorkOrder>): Promise<string> {
   await connectDB();
@@ -50,10 +50,10 @@ export async function getWorkOrdersForVehicle(vehicleId: string, companyId?: str
 
 
 // NOTE: THIS ISN"T USED ANYWHERE YET - we DONT Ever want to delete records -> but perhaps will add functionality here in future
-export async function deleteWorkOrder(id: string, companyId?: string):string {
+export async function deleteWorkOrder(id: string, companyId?: string): Promise<string> {
   await connectDB();
 
-  const query: FilterQuery<IWorkOrder> = {
+  const query: mongoose.FilterQuery<IWorkOrder> = {
     $or: [{ _id: id }, { workOrderId: id }],
     ...(companyId ? { companyId }: {}), // optional companyId
   };

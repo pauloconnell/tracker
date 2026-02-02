@@ -4,11 +4,11 @@ import EditFormWrapper from "./EditFormWrapper";
 import mongoose from "mongoose";
 
 interface Props {
-   params: { companyId: string; vehicleId: string };
+   params: Promise<{ companyId: string; vehicleId: string }>;
 }
 
 export default async function EditVehiclePage({ params }: Props) {
-   const { companyId, vehicleId } = params;
+   const { companyId, vehicleId } = await params;
 
    if (!mongoose.isValidObjectId(vehicleId)) {
       return (

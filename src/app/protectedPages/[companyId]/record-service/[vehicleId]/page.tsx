@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: 'Record Service',
 };
 
-export default function RecordServiceDetailPage({
+export default async function RecordServiceDetailPage({
   params,
 }: {
-  params: { companyId: string; vehicleId: string };
+  params: Promise<{ companyId: string; vehicleId: string }>;
 }) {
-  const { companyId, vehicleId } = params;
+  const { companyId, vehicleId } = await params;
 
   return (
     <div className="min-h-screen bg-gray-50">

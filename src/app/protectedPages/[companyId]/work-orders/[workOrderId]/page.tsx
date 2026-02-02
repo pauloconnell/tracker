@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 export default async function WorkOrderDetailPage({
   params,
 }: {
-  params: { companyId: string; workOrderId: string };
+  params: Promise<{ companyId: string; workOrderId: string }>;
 }) {
-  const { companyId, workOrderId } = params;
+  const { companyId, workOrderId } = await params;
 
   const vehicles = await getAllVehicles(companyId);
 
