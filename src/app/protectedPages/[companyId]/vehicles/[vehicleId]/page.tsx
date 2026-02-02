@@ -4,11 +4,11 @@ import { getVehicleById } from '@/lib/vehicles';
 import ServiceDue from '@/components/ServiceDue/ServiceDue';
 
 interface Props {
-   params: { companyId: string; vehicleId: string };
+   params: Promise<{ companyId: string; vehicleId: string }>;
 }
 
 export default async function VehiclePage({ params }: Props) {
-   const { companyId, vehicleId } = params;
+   const { companyId, vehicleId } = await params;
 
    // Fetch vehicle + service history from MongoDB
    const [vehicle, history] = await Promise.all([
@@ -64,7 +64,7 @@ export default async function VehiclePage({ params }: Props) {
          {/* Service Due */}
          <section className="flex flex-col gap-6 min-h-[150px]">
             <h2 className="text-2xl font-semibold">Service Due</h2>
-            <ServiceDue companyId={companyId} />
+            <ServiceDue companyId={companyId} vehicleId={vehicleId}  />
          </section>
 
          {/* Service History */}

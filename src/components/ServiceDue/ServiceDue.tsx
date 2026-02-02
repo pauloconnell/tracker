@@ -52,7 +52,7 @@ useEffect(() => {
     if (loading) return <div><LoadingSpinner /> Loading…</div>;
 
    if (!workOrders.length) {
-      return <div>No upcoming service due</div>;
+      return <div>No service due for at least 2 weeks</div>;
    }
   
    //if (workOrders.length === 0) return <div className="text-gray-500">No outstanding work orders</div>;
