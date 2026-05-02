@@ -44,7 +44,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
    // 2. RBAC: Verify user belongs to company
    const canComplete = await hasPermission(session.userId, companyId, 'workOrder', 'complete');
    if (!canComplete) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: 'Forbidden-User not from this company' }, { status: 403 });
    }
 
    // 3. Update the work order to mark 'completed' with companyId in query
@@ -113,3 +113,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
    return NextResponse.json({ success: true }, { status: 201 });
 }
+
+
+

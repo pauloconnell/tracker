@@ -103,3 +103,33 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: 'Failed to fetch work order' }, { status: 500 });
    }
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+   const session = await getAuthSession();
+   if (!session) return unauthenticatedResponse();
+
+   await connectDB();
+   const { id } = await params;
+
+     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return validationErrorResponse('Invalid or missing ID');
+   }
+ // 1. Fetch the work order first to check ownership/company
+   const workOrder = await WorkOrder.findById(id).lean();
+   if (!workOrder) return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
+
+    // 2. RBAC: Ensure the user has permission to delete for this company
+   const companyId = workOrder.companyId?.toString();
+   const canDelete = await hasPermission(session.userId, companyId, 'workOrder', 'delete');
+   
+   if (!canDelete) {
+      // Sending a specific message for the UI to display
+      return NextResponse.json(
+         { error: 'Insufficient Permissions', message: 'Only a manager or owner can delete work orders.' }, 
+         { status: 403 }
+      );
+   }
+  // 3. Perform the delete
+   await WorkOrder.findByIdAndDelete(id);
+   return NextResponse.json({ success: true });
+}
