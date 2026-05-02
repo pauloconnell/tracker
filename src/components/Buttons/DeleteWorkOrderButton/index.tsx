@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 
 interface DeleteWorkOrderButtonProps {
@@ -11,6 +11,8 @@ export default function DeleteWorkOrderButton({
    workOrderId,
 }: DeleteWorkOrderButtonProps) {
    const router = useRouter();
+   const params = useParams();
+   const companyId = params.companyId;
 
    async function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
       e.preventDefault();
@@ -18,6 +20,8 @@ export default function DeleteWorkOrderButton({
       const confirmed = confirm('Are you sure you want to delete this work order?');
       if (!confirmed) return;
 
+   
+      
       try {
          const res = await fetch(`/api/work-orders/${workOrderId}`, {
             method: 'DELETE',
@@ -35,9 +39,10 @@ export default function DeleteWorkOrderButton({
          }
 
          toast.success('Work order deleted');
+         
 
          // Navigate back to dashboard
-         router.push('/protectedPages/dashboard');
+         router.push(`/protectedPages/${companyId}/dashboard`);
 
          // // Ensure dashboard refreshes its data
          // router.refresh();

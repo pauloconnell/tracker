@@ -1,5 +1,6 @@
 import { getSession } from '@auth0/nextjs-auth0';
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers'; // Import cookies
 
 /**
  * Session context extracted from Auth0
@@ -23,6 +24,10 @@ export interface AuthContext {
  */
 export async function getAuthSession(req?: NextRequest): Promise<SessionContext | null> {
    try {
+      // FIX: Explicitly await cookies() to satisfy Next.js 15 requirements
+      // This tells Next.js to "unlock" the headers for the current execution context
+      await cookies();
+
       const session =req ? await getSession(req, new NextResponse()) : await getSession();
       if (!session?.user) return null;
 
