@@ -1,12 +1,20 @@
 "use client";
 
-import type { Session } from "@auth0/nextjs-auth0";
 import LoginButton from "../auth/LoginButton";
 import LogoutButton from "../auth/LogoutButton";
 import Link from "next/link";
 
+interface SafeSession {
+   user: {
+      name: string | null;
+      email: string | null;
+      picture: string | null;
+      sub: string | null;
+   };
+}
+
 interface HeaderClientProps {
-  session: Session | null;
+   session: SafeSession | null;
 }
 
 export default function HeaderClient({ session }: HeaderClientProps) {

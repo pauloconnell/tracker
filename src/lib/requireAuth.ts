@@ -1,12 +1,12 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@auth0/nextjs-auth0/edge";
+import { redirect } from 'next/navigation';
+import { auth0 } from '@/lib/auth0';
 
 export async function requireAuth() {
-  const session = await getSession();
-
-  if (!session) {
-    redirect("/api/auth/login");
-  }
-
-  return session;
+   try {
+      const session = await auth0.getSession();
+      if (!session) redirect('/auth/login');
+      return session;
+   } catch {
+      redirect('/api/auth/login');
+   }
 }

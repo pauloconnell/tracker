@@ -22,12 +22,12 @@ export type UserRole = 'owner' | 'admin' | 'manager' | 'user';
 const PERMISSIONS: Record<UserRole, Record<ResourceType, Action[]>> = {
    owner: { 
       vehicle: ['create', 'read', 'update', 'delete'],
-      workOrder: ['create', 'read', 'update', 'delete'],
+      workOrder: ['create', 'read', 'update', 'delete', 'complete'],
       serviceRecord: ['create', 'read', 'update', 'delete'],
    },
     admin: {
       vehicle: ['create', 'read', 'update', 'delete'],
-      workOrder: ['create', 'read', 'update', 'delete'],
+      workOrder: ['create', 'read', 'update', 'delete', 'complete'],
       serviceRecord: ['create', 'read', 'update', 'delete'],
    },
    manager: {

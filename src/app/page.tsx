@@ -1,23 +1,18 @@
-import { getSession } from '@auth0/nextjs-auth0';
 import CompanySwitcher from '@/components/CompanySwitcher/CompanySwitcher';
 import { getUserCompanies } from '@/lib/companyContext';
 import '@/models/Company';
 import type { ICompany } from '@/types/ICompany';
+import { auth0 } from '@/lib/auth0';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-   let session = null;
-   try {
-      session = await getSession();
-   } catch (error) {
-      console.error('Failed to get session:', error);
-   }
+   const session = await auth0.getSession();
 
-   const isLoggedIn = !!session;
-   let href = session
+   const isLoggedIn = !!session?.user;
+   let href = session?.user
       ? '/protectedPages/dashboard'
-      : '/api/auth/login?screen_hint=signup';
+      : '/auth/login?screen_hint=signup';
    let companies: (ICompany & { role: string })[] = [];
    let activeCompanyId = '';
 
