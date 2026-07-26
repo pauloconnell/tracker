@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { connectDB } from '@/lib/mongodb';
 import Company from '@/models/Company';
 import UserCompany from '@/models/UserCompany';
-import { getSession } from '@auth0/nextjs-auth0';
+import { auth0 } from '@/lib/auth0';
 
 /**
  * Server Action: Create a new company and link the user as owner
@@ -20,7 +20,7 @@ export async function createCompany(name: string) {
             return { error: 'Company name is required' };
         }
 
-        const session = await getSession();
+        const session = await auth0.getSession();
         if (!session?.user) {
             return { error: 'Not authenticated' };
         }

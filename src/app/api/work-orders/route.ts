@@ -100,7 +100,7 @@ export async function PUT(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
    try {
-      const session = await getAuthSession(req);
+      const session = await getAuthSession();
       if (!session) return unauthenticatedResponse();
 
       await connectDB();

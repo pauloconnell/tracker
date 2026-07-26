@@ -20,7 +20,7 @@ export async function getUserCompanies(userId: string): Promise<(ICompany & { ro
          .populate('companyId')
          .lean();
 
-         console.log("This user ",userId,"has userCompanies:", userCompanies);
+       //  console.log("This user ",userId,"has userCompanies:", userCompanies);
       return userCompanies.map((uc: any) => ({
          _id: uc.companyId?._id?.toString(),
          name: uc.companyId.name,
