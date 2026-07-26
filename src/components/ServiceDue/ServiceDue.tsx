@@ -15,34 +15,29 @@ interface ServiceDueProps {
 
 export default function ServiceDue({ vehicleId, companyId }: ServiceDueProps) {
    const fetchAllWorkOrders = useWorkOrderStore((s) => s.fetchAllWorkOrders);
-   const setSelectedWorkOrder = useWorkOrderStore((s) => s.setSelectedWorkOrder);
    const getUpcomingWorkOrders = useWorkOrderStore((s) => s.getUpcomingWorkOrders);
+   const workOrdersInStore = useWorkOrderStore((s) => s.workOrders);
    const [loading, setLoading] = useState(true);
    const { selectedVehicle, fetchVehicle } = useVehicleStore();
-   
 
    useEffect(() => {
       if (!companyId || companyId === 'undefined') return;
-      
       setLoading(true);
       fetchAllWorkOrders(companyId)
-      .catch(console.error)
-      .finally(() => setLoading(false));
+        .catch(console.error)
+        .finally(() => setLoading(false));
    }, [companyId, fetchAllWorkOrders]);
 
-   // If a vehicleId is passed, filter upcoming WOs for that vehicle
    const upcoming = getUpcomingWorkOrders();
-   //console.log({ upcoming });
    const workOrders = vehicleId
       ? upcoming.filter((wo) => wo.vehicleId === vehicleId)
-      : upcoming; // else show all
+      : upcoming;
 
    // if passed vehicleId in URL, then populate store with vehicle details
 useEffect(() => {
   if (vehicleId && !selectedVehicle) {
     setLoading(true);
-
-    fetchVehicle(vehicleId)
+    fetchVehicle(vehicleId, companyId)
       .catch(console.error)
       .finally(() => setLoading(false));
   }

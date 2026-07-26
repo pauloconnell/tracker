@@ -1,7 +1,6 @@
 'use client';
 
 import { useCompanyStore } from '@/store/useCompanyStore';
-import { useEffect } from 'react';
 
 /**
  * CompanyProvider: Initializes activeCompanyId in the store
@@ -15,9 +14,7 @@ export default function CompanyProvider({
    children: React.ReactNode;
    companyId: string;
 }) {
-   useEffect(() => {
-      useCompanyStore.setState({ activeCompanyId: companyId });
-   }, [companyId]);
+   useCompanyStore.setState({ activeCompanyId: companyId });
 
    return <>{children}</>;
 }
