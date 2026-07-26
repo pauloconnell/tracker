@@ -10,6 +10,7 @@ import { useVehicleStore } from '@/store/useVehicleStore';
 import { IVehicle } from '@/types/IVehicle';
 import { IFormWorkOrder } from '@/types/IFormWorkOrder';
 import { sanitizeInput } from '@/lib/sanitizeInput';
+import { completeWorkOrder } from '@/lib/actions/workOrders';
 
 
 interface WorkOrderFormProps {
@@ -207,19 +208,14 @@ export default function WorkOrderForm({
 
    // handle complete will complete a work order to mark it done:
    const handleComplete = async () => {
-      const res = await fetch(`/api/work-orders/${form.workOrderId}/complete`, {
-         method: 'PUT',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ companyId, completedBy: form.completedBy }),
-      });
-
-      const data = await res.json();
-
-      toast.success('Work order completed');
-      await fetchAllWorkOrders(companyId); // refresh Zustand store
-      router.push(`/protectedPages/${companyId}/vehicles/${form.vehicleId}`);
-
-      router.refresh();
+      try {
+         await completeWorkOrder(form.workOrderId!, form.completedBy!);
+         toast.success('Work order completed');
+         await fetchAllWorkOrders(companyId);
+         router.push(`/protectedPages/${companyId}/vehicles/${form.vehicleId}`);
+      } catch (err: any) {
+         toast.error(err.message ?? 'Failed to complete work order');
+      }
    };
 
    return (
