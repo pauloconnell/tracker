@@ -22,14 +22,14 @@ export default function HeaderClient({ session }: HeaderClientProps) {
     <header className="w-full flex items-center justify-between px-6 py-4 bg-gray-900 text-white">
       <h1 className="text-xl font-semibold">
        <Link href="/" className=" text-white px-4 py-2 rounded-lg hover:bg-blue-700" >
-        mainTracker
+        MainTracker
         </Link>
         </h1>
 
       <div className="flex items-center gap-4">
         {session ? (
           <>
-            <span className="text-sm opacity-80">{session.user.name}</span>
+            <span className="hidden md:inline-flex text-sm opacity-80">{session.user.name}</span>
             <LogoutButton />
           </>
         ) : (

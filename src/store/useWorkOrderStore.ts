@@ -15,6 +15,7 @@ interface WorkOrderState {
    getWorkOrdersForVehicle: (vehicleId: string) => IWorkOrder[];
    getUpcomingWorkOrders: () => IWorkOrder[];
    updateWorkOrderInStore: (wo: IWorkOrder) => void;
+   reorderWorkOrders: (id: string, newPriority: number) => void;
 }
 
 export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
@@ -92,6 +93,13 @@ export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
       set((state) => ({
          workOrders: state.workOrders.map((wo: IWorkOrder) =>
             wo._id === updatedWO._id ? updatedWO : wo
+         ),
+      })),
+
+   reorderWorkOrders: (id: string, newPriority: number) =>
+      set((state) => ({
+         workOrders: state.workOrders.map((wo) =>
+            wo._id === id ? { ...wo, priority: newPriority } : wo
          ),
       })),
 }));

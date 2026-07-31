@@ -41,7 +41,7 @@ export const CardWorkOrder = ({ wo, companyId }: WorkOrderProps) => {
             </h3>
             
             {/* Status Badge */}
-            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
+            <span className={`hidden md:inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
               isOverdue 
                 ? 'bg-red-50 text-red-700 border-red-100' 
                 : 'bg-primary-50 text-primary-700 border-primary-100'

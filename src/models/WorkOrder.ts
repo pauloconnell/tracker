@@ -19,6 +19,7 @@ const WorkOrderSchema = new mongoose.Schema(
       serviceDueKM: { type: Number, default: null },
       completedDate: { type: Date },
       completedBy: { type: String },
+      priority: { type: Number, default: 10 },
       isRecurring: { type: Boolean, default: false },
       serviceFrequencyKM: { type: Number, default: null },
       serviceFrequencyWeeks: { type: Number, default: null },

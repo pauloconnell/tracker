@@ -15,8 +15,7 @@ export interface IWorkOrder extends IBaseService {
    updatedAt?: string;
 
    completedDate?: string;
-
-
+   priority?: number;
 }
 
 // Payload shape for creating a new work order
