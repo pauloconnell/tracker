@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllWorkOrders } from '@/lib/workOrders';
+import { getAllWorkOrders } from '@/lib/db/workOrders';
 import { CardWorkOrder } from '@/components/UI/CardWorkOrder';
 
 export const metadata: Metadata = {

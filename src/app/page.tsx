@@ -1,5 +1,5 @@
 import CompanySwitcher from '@/components/CompanySwitcher/CompanySwitcher';
-import { getUserCompanies } from '@/lib/companyContext';
+import { getUserCompanies } from '@/lib/db/companyContext';
 import '@/models/Company';
 import type { ICompany } from '@/types/ICompany';
 import { auth0 } from '@/lib/auth0';

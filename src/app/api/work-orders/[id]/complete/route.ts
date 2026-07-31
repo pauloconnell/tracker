@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import WorkOrder from '@/models/WorkOrder';
 import ServiceRecord from '@/models/ServiceRecord';
-import { createNextWorkOrder } from '@/lib/createNextWorkOrder';
+import { createNextWorkOrder } from '@/lib/db/createNextWorkOrder';
 import { IWorkOrder } from '@/types/IWorkOrder';
 import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';
 import { hasPermission } from '@/lib/rbac';

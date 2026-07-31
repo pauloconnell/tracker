@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { getServiceHistory } from '@/lib/serviceRecords';
-import { getVehicleById } from '@/lib/vehicles';
+import { getServiceHistory } from '@/lib/db/serviceRecords';
+import { getVehicleById } from '@/lib/db/vehicles';
 import ServiceDue from '@/components/ServiceDue/ServiceDue';
 
 interface Props {
