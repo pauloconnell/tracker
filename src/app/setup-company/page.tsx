@@ -3,7 +3,7 @@
 import { FormEvent, useState } from 'react';
 import { createCompany } from '@/lib/actions/company';
 import { useRouter } from 'next/navigation';
-import { sanitizeInput } from '@/lib/sanitizeInput';
+import { sanitizeInput } from '@/lib/utils/client/sanitizeInput';
 
 export default function SetupCompanyPage() {
    const [companyName, setCompanyName] = useState('');

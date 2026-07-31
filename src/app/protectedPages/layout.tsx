@@ -1,5 +1,5 @@
 import { requireAuth } from "@/lib/requireAuth";
-import { userHasCompany } from "@/lib/companyContext";
+import { userHasCompany } from "@/lib/db/companyContext";
 import { redirect } from "next/navigation";
 import { auth0 } from "@/lib/auth0";
 import { ReactNode } from "react";

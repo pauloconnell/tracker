@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { getAllVehicles, createVehicle } from '@/lib/vehicles';
-import { sanitizeCreate } from '@/lib/sanitizeCreate';
-import { normalizeRecord } from '@/lib/normalizeRecord';
+import { getAllVehicles, createVehicle } from '@/lib/db/vehicles';
+import { sanitizeCreate } from '@/lib/utils/server/sanitizeCreate';
+import { normalizeRecord } from '@/lib/utils/server/normalizeRecord';
 import Vehicle from '@/models/Vehicle';
 import type { IFormVehicle } from "@/types/IFormVehicle";
 import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';

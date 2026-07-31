@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getVehicleById } from "@/lib/vehicles";
+import { getVehicleById } from "@/lib/db/vehicles";
 import EditFormWrapper from "./EditFormWrapper";
 import mongoose from "mongoose";
 

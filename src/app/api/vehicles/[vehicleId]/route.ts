@@ -1,8 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import Vehicle from "@/models/Vehicle";
 import { connectDB } from "@/lib/mongodb";
-import { sanitizeUpdate } from "@/lib/sanitizeUpdate";
-import { normalizeRecord } from "@/lib/normalizeRecord";
+import { sanitizeUpdate } from "@/lib/utils/server/sanitizeUpdate";
+import { normalizeRecord } from "@/lib/utils/server/normalizeRecord";
 import mongoose from "mongoose";
 import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';
 import { assertPermission, hasPermission } from '@/lib/rbac';

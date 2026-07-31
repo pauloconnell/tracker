@@ -1,5 +1,5 @@
 import ServiceDue from '@/components/ServiceDue/ServiceDue';
-import { getAllVehicles } from '@/lib/vehicles';
+import { getAllVehicles } from '@/lib/db/vehicles';
 import VehicleList from '@/components/vehicle/VehicleList';
 import Link from 'next/link';
 

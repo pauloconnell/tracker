@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import WorkOrder from '@/models/WorkOrder';
-import { sanitizeUpdate } from '@/lib/sanitizeUpdate';
+import { sanitizeUpdate } from '@/lib/utils/server/sanitizeUpdate';
 import mongoose from 'mongoose';
 import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';
 import { hasPermission, assertPermission } from '@/lib/rbac';

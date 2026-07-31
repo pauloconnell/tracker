@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import { createServiceRecord } from "@/lib/serviceRecords";
+import { createServiceRecord } from '@/lib/db/serviceRecords';
 import ServiceRecord from "@/models/ServiceRecord"; 
-import { sanitizeCreate } from "@/lib/sanitizeCreate";
+import { sanitizeCreate } from '@/lib/utils/server/sanitizeCreate';
 import { IServiceRecord } from "@/types/IServiceRecord"
 import { getAuthSession, unauthenticatedResponse, validationErrorResponse } from '@/lib/auth';
 import { hasPermission } from '@/lib/rbac';
