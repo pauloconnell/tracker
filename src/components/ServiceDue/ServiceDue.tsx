@@ -92,7 +92,7 @@ export default function ServiceDue({ vehicleId, companyId }: ServiceDueProps) {
                   onDragStart={(e) => { e.stopPropagation(); dragIndex.current = index; }}
                   onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                   onDrop={(e) => { e.preventDefault(); e.stopPropagation(); handleDrop(index); }}
-                  className="p-3 border rounded-lg bg-yellow-50 hover:bg-gray-50 transition cursor-grab active:cursor-grabbing"
+                  className=" border rounded-lg bg-yellow-50 hover:bg-gray-50 transition cursor-grab active:cursor-grabbing"
                >
                   <CardWorkOrder wo={wo} companyId={companyId} />
                </li>

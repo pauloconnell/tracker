@@ -92,7 +92,7 @@ export default async function DashboardPage({ params }: PageProps) {
 
                      <Link
                         href={`/protectedPages/${companyId}/vehicles/new`}
-                        className="flex items-center justify-center px-4 py-3 bg-primary-50 text-primary-700 font-semibold rounded-lg hover:bg-primary-100 transition-colors duration-200 border border-primary-200"
+                        className="flex items-center justify-center px-4 py-3 bg-primary-600 text-primary-700 font-semibold rounded-lg hover:bg-primary-100 transition-colors duration-200 border border-primary-200"
                      >
                         <span className="hover:text-black">+ Add Vehicle</span>
                      </Link>
@@ -101,14 +101,14 @@ export default async function DashboardPage({ params }: PageProps) {
 
                      <Link
                         href={`/protectedPages/${companyId}/work-orders`}
-                        className="flex items-center justify-center px-4 py-3 bg-secondary-50 text-secondary-700 font-semibold rounded-lg hover:bg-secondary-100 transition-colors duration-200 border border-secondary-200"
+                        className="flex items-center justify-center px-4 py-3 bg-primary-600 text-secondary-700 font-semibold rounded-lg hover:bg-secondary-100 transition-colors duration-200 border border-secondary-200"
                      >
                         <span className="hover:text-black">📋All Work Orders</span>
                      </Link>
 {/* need to build page to show all service records*/}
                      <Link
                         href={`/protectedPages/${companyId}/record-service/all`}
-                        className="flex items-center justify-center px-4 py-3 bg-secondary-50 text-secondary-700 font-semibold rounded-lg hover:bg-secondary-100 transition-colors duration-200 border border-secondary-200"
+                        className="flex items-center justify-center px-4 py-3 bg-primary-600 text-secondary-700 font-semibold rounded-lg hover:bg-secondary-100 transition-colors duration-200 border border-secondary-200"
                      >
                         <span className="hover:text-black">📋Future: All Service Records</span>
                      </Link> 
