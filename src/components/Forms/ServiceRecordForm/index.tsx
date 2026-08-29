@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import SharedServiceFormFields from '../Shared/SharedServiceFormFields';
 import { useVehicleStore } from '@/store/useVehicleStore';
 import { sanitizeInput } from '@/lib/utils/client/sanitizeInput';
 import type { IFormServiceRecord } from '@/types/IFormServiceRecord';
+import { SERVICE_TYPES } from '@/constants/service';
 
 export default function ServiceRecordForm({ companyId, vehicleId }: { companyId: string; vehicleId?: string }) {
    const router = useRouter();
@@ -15,13 +16,13 @@ export default function ServiceRecordForm({ companyId, vehicleId }: { companyId:
    const fetchAllVehicles = useVehicleStore((s) => s.fetchAllVehicles);
    const selectedVehicle = useVehicleStore((s) => s.selectedVehicle);
    const fetchVehicle = useVehicleStore((s) => s.fetchVehicle); // Fetch all vehicles if not loaded (dashboard mode)
-
+const searchParams = useSearchParams();
 
       // Form state
    const [form, setForm] = useState<IFormServiceRecord>({
       companyId,
       vehicleId: vehicleId || '',
-      serviceType: '',
+       serviceType: searchParams.get('serviceType') === 'inspection' ? SERVICE_TYPES[0] : '',
       serviceDate: new Date().toISOString().split('T')[0],
       mileage: '',
       location: ['N/A'],
