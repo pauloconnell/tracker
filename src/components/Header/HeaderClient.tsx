@@ -3,6 +3,7 @@
 import LoginButton from "../auth/LoginButton";
 import LogoutButton from "../auth/LogoutButton";
 import Link from "next/link";
+import { useCompanyStore } from "@/store/useCompanyStore";
 
 interface SafeSession {
    user: {
@@ -18,10 +19,12 @@ interface HeaderClientProps {
 }
 
 export default function HeaderClient({ session }: HeaderClientProps) {
+  const activeCompanyId = useCompanyStore((s) => s.activeCompanyId);
+  const homeHref = activeCompanyId ? `/protectedPages/${activeCompanyId}/dashboard` : "/";
   return (
     <header className="w-full flex items-center justify-between px-6 py-4 bg-gray-900 text-white">
       <h1 className="text-xl font-semibold">
-       <Link href="/" className=" text-white px-4 py-2 rounded-lg hover:bg-blue-700" >
+       <Link href={homeHref} className=" text-white px-4 py-2 rounded-lg hover:bg-blue-700" >
         MainTracker
         </Link>
         </h1>

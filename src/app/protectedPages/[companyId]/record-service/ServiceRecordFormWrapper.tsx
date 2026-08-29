@@ -1,5 +1,4 @@
-'use client';
-
+import { Suspense } from 'react';
 import ServiceRecordForm from '@/components/Forms/ServiceRecordForm';
 
 interface ServiceRecordFormWrapperProps {
@@ -8,5 +7,9 @@ interface ServiceRecordFormWrapperProps {
 }
 
 export default function ServiceRecordFormWrapper({ companyId, vehicleId }: ServiceRecordFormWrapperProps) {
-  return <ServiceRecordForm companyId={companyId} vehicleId={vehicleId} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ServiceRecordForm companyId={companyId} vehicleId={vehicleId} />
+    </Suspense>
+  );
 }

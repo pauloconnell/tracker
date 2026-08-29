@@ -1,5 +1,7 @@
 export const SERVICE_TYPES = [
-  "--- Fluids & Filters ---",
+"General Inspection:  Every 12 months or 20,000 km — Time: 0.5 hours",
+
+  "---     Fluids & Filters  ---",
   "Air Filter: Replace — 20,000–30,000 km — Time: 0.2 hours",
   "Brake Fluid: Bleed — Every 2 years — Time: 0.8 hours",
   "Cabin Air Filter: Replace — 20,000–30,000 km — Time: 0.2 hours",
@@ -11,7 +13,7 @@ export const SERVICE_TYPES = [
   "Power Steering Fluid: Flush — Every 80,000–100,000 km — Time: 0.7 hours",
   "Radiator Cap: Pressure Test — Annually — Time: 0.1 hours",
 
-  "--- General Maintenance ---",
+  "---     General Maintenance ---",
   "Battery: Replace / Test — Test annually / Replace 4–6 years — Time: 0.4 hours",
   "Battery Cables: Inspect — Corrosion / looseness — Time: 0.2 hours",
   "Battery Jump / Boost — As needed — Time: 0.1 hours",
@@ -38,7 +40,7 @@ export const SERVICE_TYPES = [
   "Throttle / Idle: Adjust — As needed — Time: 0.2 hours",
   "Wiper Blades: Replace — Annually — Time: 0.1 hours",
 
-  "--- Brake Services ---",
+  "---     Brake Services ---",
   "Brake Calipers: Service — Every brake job — Time: 0.6 hours",
   "Brake Hardware: Service — Every brake job — Time: 0.4 hours",
   "Brake Lines: Inspect — Annually — Time: 0.2 hours",
@@ -46,17 +48,17 @@ export const SERVICE_TYPES = [
   "Brake Rotors / Drums: Service — Every brake job — Time: 0.8 hours",
   "Parking Brake: Adjust — Annually — Time: 0.3 hours",
 
-  "--- Tires & Wheels ---",
+  "---    Tires & Wheels ---",
   "Lug Nuts: Torque Check — After tire service — Time: 0.1 hours",
   "Tire: Replace — 40,000–80,000 km — Time: 0.8 hours",
   "Tire: Rotate — Every 8,000–10,000 km — Time: 0.4 hours",
   "Wheel Bearings: Check — Annually — Time: 0.3 hours",
 
-  "--- Steering & Suspension ---",
+  "---    Steering & Suspension ---",
   "Front End Check: Ball Joints — Annually — Time: 0.3 hours",
   "Front End Check: Tie Rods — Annually — Time: 0.3 hours",
 
-  "--- Diagnostics & Misc ---",
+  "---    Diagnostics & Misc ---",
   "Accessory: Install — Time: 0.5–1.0 hours",
   "Charging System: Test — Annually — Time: 0.2 hours",
   "Compression Test — As needed — Time: 0.5 hours",
@@ -68,7 +70,7 @@ export const SERVICE_TYPES = [
   "Vacuum Leak: Test — As needed — Time: 0.3 hours",
   "Other",
 
-  "--- Marine Services ---",
+  "---    Marine Services ---",
   "Anodes: Replace — Annually — Time: 0.4 hours",
   "Bilge Float Switch: Test — Annually — Time: 0.2 hours",
   "Bilge Pump: Service — Annually — Time: 0.5 hours",
