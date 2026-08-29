@@ -1,5 +1,5 @@
 export const SERVICE_TYPES = [
-"General Inspection — Every 12 months / 20,000 km — Time: 0.5 hours",
+"General Inspection:  Every 12 months or 20,000 km — Time: 0.5 hours",
 
   "---     Fluids & Filters  ---",
   "Air Filter: Replace — 20,000–30,000 km — Time: 0.2 hours",
