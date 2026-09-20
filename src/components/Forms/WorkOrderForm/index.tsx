@@ -188,8 +188,17 @@ export default function WorkOrderForm({
       const url = isEditing ? `/api/work-orders/${form.workOrderId}` : `/api/work-orders`;
       const method = isEditing ? 'PUT' : 'POST';
 
-      const workOrderName = `${selectedVehicle?.nickName} : ${selectedVehicle?.make} ` ;
-      const payload = { ...form, companyId, nickName: workOrderName };
+     // const workOrderName = `${selectedVehicle?.nickName} : ${selectedVehicle?.make} ` ;
+     // const payload = { ...form, companyId, nickName: workOrderName };
+
+
+const workOrderName = isEditing
+   ? storeWO?.nickName ?? ''
+   : `${selectedVehicle?.nickName} : ${selectedVehicle?.make}`;
+const payload = { ...form, companyId, nickName: workOrderName };
+
+
+
       console.log('saving ', payload);
       const res = await fetch(url, {
          method,
