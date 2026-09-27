@@ -7,6 +7,6 @@ export async function requireAuth() {
       if (!session) redirect('/auth/login');
       return session;
    } catch {
-      redirect('/api/auth/login');
+      redirect('/auth/login');
    }
 }
