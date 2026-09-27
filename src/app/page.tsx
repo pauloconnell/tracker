@@ -47,7 +47,7 @@ export default async function Home() {
                   </h1>
 
                   <p className="text-lg sm:text-xl text-secondary-300 max-w-3xl mx-auto mb-8 leading-relaxed">
-                     mainTracker helps you stay ahead of repairs, plan maintenance, and keep your fleet running smoothly. Smart reminders, complete service history, and an intuitive dashboard built for fleet managers.
+                     mainTracker helps you keep track of your maintenance history, stay ahead of repairs to  plan maintenance, and keep your fleet running smoothly. Smart reminders, complete service history, and an intuitive dashboard built for fleet managers.
                   </p>
 
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -57,7 +57,7 @@ export default async function Home() {
                      >
                         {isLoggedIn ? 'Go to Dashboard' : 'Get Started Free'}
                      </a>
-                     {isLoggedIn && (companies.length > 0) && (
+                     {isLoggedIn && (companies.length > 1) && (
                         <div className="w-full sm:w-auto">
                            <CompanySwitcher
                               companies={companies}
