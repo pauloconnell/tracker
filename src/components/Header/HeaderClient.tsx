@@ -19,8 +19,11 @@ interface HeaderClientProps {
 }
 
 export default function HeaderClient({ session }: HeaderClientProps) {
-  const activeCompanyId = useCompanyStore((s) => s.activeCompanyId);
-  const homeHref = activeCompanyId ? `/protectedPages/${activeCompanyId}/dashboard` : "/";
+
+  // Already have link to dashboard, so just linking to homepage here as no other link back to homepage
+  //const activeCompanyId = useCompanyStore((s) => s.activeCompanyId);
+  const homeHref ="/" //activeCompanyId ? `/protectedPages/${activeCompanyId}/dashboard` : "/";
+  
   return (
     <header className="w-full flex items-center justify-between px-6 py-4 bg-gray-900 text-white">
       <h1 className="text-xl font-semibold">
