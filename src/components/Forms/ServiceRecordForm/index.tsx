@@ -80,7 +80,7 @@ const searchParams = useSearchParams();
          setForm((prev) => ({
             ...prev,
             vehicleId: value,
-            nickName: v?.nickName ?? prev.nickName, //|| '', // REQUIRED by WorkOrder schema
+            nickName: v?.nickName ?? prev.nickName, // this fixes any records with bad nickNames    old:|| '', // REQUIRED by WorkOrder schema
             mileage: String(v?.mileage ?? prev.mileage), // set mileage to last known
          }));
          return;
