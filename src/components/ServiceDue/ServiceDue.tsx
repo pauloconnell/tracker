@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { IWorkOrder } from '@/types/IWorkOrder';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
+import { apiFetch } from '@/lib/utils/client/apiFetch';
 import { useVehicleStore } from '@/store/useVehicleStore';
 import { LoadingSpinner } from '@/components/UI/LoadingSpinner';
 import { CardWorkOrder } from '@/components/UI/CardWorkOrder';
@@ -103,7 +104,7 @@ export default function ServiceDue({ vehicleId, companyId }: ServiceDueProps) {
 
       const toastId = toast.loading('Saving...');
       try {
-         const res = await fetch(`/api/work-orders/${moved._id}`, {
+         const res = await apiFetch(`/api/work-orders/${moved._id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ companyId, priority: newPriority }),

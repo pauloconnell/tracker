@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { IWorkOrder } from '@/types/IWorkOrder';
 import { useCompanyStore } from './useCompanyStore';
+import { apiFetch } from '@/lib/utils/client/apiFetch';
 
 interface WorkOrderState {
    workOrders: IWorkOrder[];
@@ -38,7 +39,7 @@ export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
       } 
 
       try {
-         const res = await fetch(`/api/work-orders?companyId=${companyId}`);
+         const res = await apiFetch(`/api/work-orders?companyId=${companyId}`);
          if (!res.ok) {
             throw new Error(`Failed to fetch work order: ${res.statusText}`);
          }
@@ -54,7 +55,7 @@ export const useWorkOrderStore = create<WorkOrderState>((set, get) => ({
    fetchWorkOrder: async (workOrderId: string) => {
       try {
          const companyId = useCompanyStore.getState().activeCompanyId;
-         const res = await fetch(`/api/work-orders/${workOrderId}?companyId=${companyId}`);
+         const res = await apiFetch(`/api/work-orders/${workOrderId}?companyId=${companyId}`);
          if (!res.ok) {
             throw new Error(`Failed to fetch work order: ${res.statusText}`);
          }

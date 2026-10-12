@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { sanitizeInput } from '@/lib/utils/client/sanitizeInput';
 import type { IVehicle } from '@/types/IVehicle';
 import type { IFormVehicle } from '@/types/IFormVehicle';
+import { apiFetch } from '@/lib/utils/client/apiFetch';
 
 interface VehicleFormProps {
    vehicle?: IVehicle | IFormVehicle;
@@ -39,7 +40,7 @@ export default function VehicleForm({ vehicle, companyId }: VehicleFormProps) {
       if (isEdit && vehicle) {
          const savedVehicle = vehicle as IVehicle;
          // UPDATE existing vehicle
-         let res = await fetch(`/api/vehicles/${savedVehicle._id}`, {
+         let res = await apiFetch(`/api/vehicles/${savedVehicle._id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...form, companyId }),
@@ -52,7 +53,7 @@ export default function VehicleForm({ vehicle, companyId }: VehicleFormProps) {
          router.refresh();
       } else {
          // CREATE new vehicle
-         let res = await fetch('/api/vehicles', {
+         let res = await apiFetch('/api/vehicles', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...form, companyId }),
