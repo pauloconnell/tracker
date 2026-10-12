@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { IVehicle } from '@/types/IVehicle';
+import { apiFetch } from '@/lib/utils/client/apiFetch';
 
 interface VehicleState {
   // Single vehicle (detail view)
@@ -24,7 +25,7 @@ export const useVehicleStore = create<VehicleState>((set, get) => ({
 
   fetchVehicle: async (id, companyId) => {
     try {
-      const res = await fetch(`/api/vehicles/${id}?companyId=${companyId}`);
+      const res = await apiFetch(`/api/vehicles/${id}?companyId=${companyId}`);
       if (!res.ok) throw new Error(`Failed to fetch vehicle: ${res.status}`);
       const data = await res.json();
       set({ selectedVehicle: data });
@@ -43,7 +44,7 @@ export const useVehicleStore = create<VehicleState>((set, get) => ({
   fetchAllVehicles: async (companyId) => {
     try {
       //console.log("Fetching vehicle with companyid:", companyId);
-      const res = await fetch(`/api/vehicles?companyId=${companyId}`);
+      const res = await apiFetch(`/api/vehicles?companyId=${companyId}`);
       if (!res.ok) throw new Error(`Failed to fetch vehicles: ${res.status}`);
       const data = await res.json();
       set({ allVehicles: data });

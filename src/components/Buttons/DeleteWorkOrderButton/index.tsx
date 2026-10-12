@@ -2,6 +2,7 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import { apiFetch } from '@/lib/utils/client/apiFetch';
 
 interface DeleteWorkOrderButtonProps {
    workOrderId: string;
@@ -23,7 +24,7 @@ export default function DeleteWorkOrderButton({
    
       
       try {
-         const res = await fetch(`/api/work-orders/${workOrderId}`, {
+         const res = await apiFetch(`/api/work-orders/${workOrderId}`, {
             method: 'DELETE',
          });
 

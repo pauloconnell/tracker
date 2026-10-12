@@ -7,6 +7,7 @@ import { useVehicleStore } from '@/store/useVehicleStore';
 import { sanitizeInput } from '@/lib/utils/client/sanitizeInput';
 import type { IFormServiceRecord } from '@/types/IFormServiceRecord';
 import { SERVICE_TYPES } from '@/constants/service';
+import { apiFetch } from '@/lib/utils/client/apiFetch';
 
 export default function ServiceRecordForm({ companyId, vehicleId }: { companyId: string; vehicleId?: string }) {
    const router = useRouter();
@@ -96,7 +97,7 @@ const searchParams = useSearchParams();
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
     //  console.log('about to save ', form);
-      const res = await fetch('/api/service-records', {
+      const res = await apiFetch('/api/service-records', {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify(form),

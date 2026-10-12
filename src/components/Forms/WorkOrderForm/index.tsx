@@ -11,6 +11,7 @@ import { IVehicle } from '@/types/IVehicle';
 import { IFormWorkOrder } from '@/types/IFormWorkOrder';
 import { sanitizeInput } from '@/lib/utils/client/sanitizeInput';
 import { completeWorkOrder } from '@/lib/actions/workOrders';
+import { apiFetch } from '@/lib/utils/client/apiFetch';
 
 
 interface WorkOrderFormProps {
@@ -200,7 +201,7 @@ const payload = { ...form, companyId, nickName: workOrderName };
 
 
       console.log('saving ', payload);
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
          method,
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify(payload),
