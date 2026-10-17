@@ -9,7 +9,13 @@ import type { IFormServiceRecord } from '@/types/IFormServiceRecord';
 import { SERVICE_TYPES } from '@/constants/service';
 import { apiFetch } from '@/lib/utils/apiFetch';
 
-export default function ServiceRecordForm({ companyId, vehicleId }: { companyId: string; vehicleId?: string }) {
+export default function ServiceRecordForm({
+   companyId,
+   vehicleId,
+}: {
+   companyId: string;
+   vehicleId?: string;
+}) {
    const router = useRouter();
 
    // Zustand
@@ -17,13 +23,14 @@ export default function ServiceRecordForm({ companyId, vehicleId }: { companyId:
    const fetchAllVehicles = useVehicleStore((s) => s.fetchAllVehicles);
    const selectedVehicle = useVehicleStore((s) => s.selectedVehicle);
    const fetchVehicle = useVehicleStore((s) => s.fetchVehicle); // Fetch all vehicles if not loaded (dashboard mode)
-const searchParams = useSearchParams();
+   const searchParams = useSearchParams();
 
-      // Form state
+   // Form state
    const [form, setForm] = useState<IFormServiceRecord>({
       companyId,
       vehicleId: vehicleId || '',
-       serviceType: searchParams.get('serviceType') === 'inspection' ? SERVICE_TYPES[0] : '',
+      serviceType:
+         searchParams.get('serviceType') === 'inspection' ? SERVICE_TYPES[0] : '',
       serviceDate: new Date().toISOString().split('T')[0],
       mileage: '',
       location: ['N/A'],
@@ -34,7 +41,6 @@ const searchParams = useSearchParams();
       serviceFrequencyWeeks: '',
    });
 
-
    // Load all vehicles (dashboard mode)
 
    // if no vehicleId, get all vehicles into store
@@ -43,7 +49,6 @@ const searchParams = useSearchParams();
          fetchAllVehicles(companyId);
       }
    }, [vehicles, fetchAllVehicles]);
-
 
    //  Load selected vehicle (detail mode)
 
@@ -54,11 +59,10 @@ const searchParams = useSearchParams();
       // If no selectedVehicle OR wrong selectedVehicle, fetch it
       if (!selectedVehicle || selectedVehicle._id !== vehicleId) {
          //console.log("Good here: Fetching selected vehicle for service record form:", vehicleId);
-         fetchVehicle(vehicleId, companyId);   // this sets selectedVehicle in store
+         fetchVehicle(vehicleId, companyId); // this sets selectedVehicle in store
       }
    }, [vehicleId, selectedVehicle, fetchVehicle]);
 
-   
    // Hydrate form when selectedVehicle loads
    useEffect(() => {
       if (!selectedVehicle) return;
@@ -70,9 +74,9 @@ const searchParams = useSearchParams();
       }));
    }, [selectedVehicle]);
 
-
-
-   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
+   function handleChange(
+      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+   ) {
       const { name, value } = e.target;
 
       // Special case: vehicle selection
@@ -96,7 +100,7 @@ const searchParams = useSearchParams();
 
    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
-    //  console.log('about to save ', form);
+      //  console.log('about to save ', form);
       const res = await apiFetch('/api/service-records', {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
@@ -107,7 +111,6 @@ const searchParams = useSearchParams();
          router.push(`/protectedPages/${companyId}/vehicles/${form.vehicleId}`);
       } else {
          alert('Failed to save record');
-
       }
    }
 
@@ -116,6 +119,11 @@ const searchParams = useSearchParams();
          onSubmit={handleSubmit}
          className="bg-white p-6 rounded-lg shadow-sm border space-y-6"
       >
+         <h1 className="text-3xl font-semibold mb-8">
+            {searchParams.get('serviceType') === 'inspection'
+               ? 'Record Inspection'
+               : 'Record Service'}
+         </h1>
          <SharedServiceFormFields<IFormServiceRecord>
             form={form}
             setForm={setForm}
