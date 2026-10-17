@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import { sanitizeInput } from '@/lib/utils/client/sanitizeInput';
 import type { IVehicle } from '@/types/IVehicle';
 import type { IFormVehicle } from '@/types/IFormVehicle';
-import { apiFetch } from '@/lib/utils/client/apiFetch';
+import { apiFetch } from '@/lib/utils/apiFetch';
 
 interface VehicleFormProps {
    vehicle?: IVehicle | IFormVehicle;

@@ -2,7 +2,7 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-import { apiFetch } from '@/lib/utils/client/apiFetch';
+import { apiFetch } from '@/lib/utils/apiFetch';
 
 interface DeleteWorkOrderButtonProps {
    workOrderId: string;

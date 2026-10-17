@@ -7,7 +7,7 @@ import { useVehicleStore } from '@/store/useVehicleStore';
 import { sanitizeInput } from '@/lib/utils/client/sanitizeInput';
 import type { IFormServiceRecord } from '@/types/IFormServiceRecord';
 import { SERVICE_TYPES } from '@/constants/service';
-import { apiFetch } from '@/lib/utils/client/apiFetch';
+import { apiFetch } from '@/lib/utils/apiFetch';
 
 export default function ServiceRecordForm({ companyId, vehicleId }: { companyId: string; vehicleId?: string }) {
    const router = useRouter();

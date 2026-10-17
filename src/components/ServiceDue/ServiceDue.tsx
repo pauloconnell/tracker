@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { IWorkOrder } from '@/types/IWorkOrder';
 import { useWorkOrderStore } from '@/store/useWorkOrderStore';
-import { apiFetch } from '@/lib/utils/client/apiFetch';
+import { apiFetch } from '@/lib/utils/apiFetch';
 import { useVehicleStore } from '@/store/useVehicleStore';
 import { LoadingSpinner } from '@/components/UI/LoadingSpinner';
 import { CardWorkOrder } from '@/components/UI/CardWorkOrder';

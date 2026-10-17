@@ -11,7 +11,7 @@ import { IVehicle } from '@/types/IVehicle';
 import { IFormWorkOrder } from '@/types/IFormWorkOrder';
 import { sanitizeInput } from '@/lib/utils/client/sanitizeInput';
 import { completeWorkOrder } from '@/lib/actions/workOrders';
-import { apiFetch } from '@/lib/utils/client/apiFetch';
+import { apiFetch } from '@/lib/utils/apiFetch';
 
 
 interface WorkOrderFormProps {

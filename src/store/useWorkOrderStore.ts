@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { IWorkOrder } from '@/types/IWorkOrder';
 import { useCompanyStore } from './useCompanyStore';
-import { apiFetch } from '@/lib/utils/client/apiFetch';
+import { apiFetch } from '@/lib/utils/apiFetch';
 
 interface WorkOrderState {
    workOrders: IWorkOrder[];

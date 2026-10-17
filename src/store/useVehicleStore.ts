@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { IVehicle } from '@/types/IVehicle';
-import { apiFetch } from '@/lib/utils/client/apiFetch';
+import { apiFetch } from '@/lib/utils/apiFetch';
 
 interface VehicleState {
   // Single vehicle (detail view)
