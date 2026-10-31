@@ -89,4 +89,10 @@ export const BOAT_OUTBOARD_SERVICES = [
     interval: "Seasonal",
     laborHours: 1.5,
   },
+  {
+    id: "other-service",
+    name: "Other Service",
+    interval: "Other",
+    laborHours: 1,
+  }
 ] as const;

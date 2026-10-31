@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import type { IVehicle } from '@/types/IVehicle';
 import type { IFormBaseService } from '@/types/IFormBaseService';
-import { SERVICE_TYPES, SERVICE_TYPES_BY_VEHICLE } from '@/constants/service';
+import { SERVICE_TYPES, SERVICE_TYPES_BY_VEHICLE, SERVICE_DETAILS_BY_VEHICLE } from '@/constants/service';
 import { LOCATIONS } from '@/constants/locations';
 import { apiFetch } from '@/lib/utils/apiFetch';
 
@@ -28,7 +28,7 @@ export default function SharedServiceFormFields<T extends IFormBaseService>({
    // toggle lock for recurring service intervals
    const [isLocked, setIsLocked] = useState(form.isRecurring);
    const serviceTypes = vehicleType ? (SERVICE_TYPES_BY_VEHICLE[vehicleType] ?? SERVICE_TYPES) : SERVICE_TYPES;
-   const isLegacyServiceType = form.serviceType !== '' && !serviceTypes.includes(form.serviceType);
+   const isLegacyServiceType = form.serviceType !== '' && !serviceTypes.includes(form.serviceType);   // this requires serviceTypes to be a string
    const locations = LOCATIONS;
 
    const [lastService, setLastService] = useState<{ date: string; mileage: string } | null | 'loading' | 'none'>('none');
@@ -62,6 +62,9 @@ export default function SharedServiceFormFields<T extends IFormBaseService>({
       }, 500);
       return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
    }, [form.serviceType, form.vehicleId, form.companyId]);
+   const selectedDetail = vehicleType
+   ? SERVICE_DETAILS_BY_VEHICLE[vehicleType]?.find((s) => s.name === form.serviceType)
+   : undefined;
 
    return (
       <>
@@ -113,6 +116,12 @@ export default function SharedServiceFormFields<T extends IFormBaseService>({
             {lastService && lastService !== 'loading' && lastService !== 'none' && lastService !== null && (
                <p className="text-xs text-green-700 mt-1">Last done: {lastService?.date} @ {lastService?.mileage}</p>
             )}
+            {selectedDetail && (
+   <p className="text-xs text-blue-600 mt-1">
+      · Interval: {selectedDetail.interval} <br/>
+      · Est. labour: {selectedDetail.laborHours}h
+   </p>
+)}
          </div>
 
          {/* Location */}

@@ -89,4 +89,8 @@ export const MOTORBIKE_ATV_SERVICES = [
     interval: "As needed",
     laborHours: 0.5,
   },
+  {
+    id: "other",
+    name: "Other",
+  },
 ] as const;
