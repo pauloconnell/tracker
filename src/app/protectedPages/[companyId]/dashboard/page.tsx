@@ -42,10 +42,9 @@ export default async function DashboardPage({ params }: PageProps) {
 
                <Link
                   href={`/`}
-                  className="inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors duration-200 shadow-md hover:shadow-lg whitespace-nowrap"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg whitespace-nowrap"
                >
-                  <span className="text-lg"></span>
-                  <span className="hover:text-black ml-2">Change Fleet</span>
+                  Change Fleet
                </Link>
             </div>
 
@@ -76,42 +75,38 @@ export default async function DashboardPage({ params }: PageProps) {
                   <div className="flex flex-col gap-4">
                      <Link
                         href={`/protectedPages/${companyId}/record-service?serviceType=inspection`}
-                        className="inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors duration-200 shadow-md hover:shadow-lg whitespace-nowrap"
+                        className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg"
                      >
-                        <span className="text-lg">+</span>
-                        <span className="hover:text-black ml-2">Record Inspection </span>
+                        + Record Inspection
                      </Link>
 
                      <Link
                         href={`/protectedPages/${companyId}/record-service`}
-                        className="inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors duration-200 shadow-md hover:shadow-lg whitespace-nowrap"
+                        className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg"
                      >
-                        <span className="text-lg">+</span>
-                        <span className="hover:text-black ml-2">Record Service</span>
+                        + Record Service
                      </Link>
 
                      <Link
                         href={`/protectedPages/${companyId}/vehicles/new`}
-                        className="flex items-center justify-center px-4 py-3 bg-primary-600 text-primary-700 font-semibold rounded-lg hover:bg-primary-100 transition-colors duration-200 border border-primary-200"
+                        className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg"
                      >
-                        <span className="hover:text-black">+ Add Vehicle</span>
+                        + Add Vehicle
                      </Link>
-
-                  
 
                      <Link
                         href={`/protectedPages/${companyId}/work-orders`}
-                        className="flex items-center justify-center px-4 py-3 bg-primary-600 text-secondary-700 font-semibold rounded-lg hover:bg-secondary-100 transition-colors duration-200 border border-secondary-200"
+                        className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg"
                      >
-                        <span className="hover:text-black">📋All Work Orders</span>
+                        📋 All Work Orders
                      </Link>
-{/* need to build page to show all service records*/}
+
                      <Link
                         href={`/protectedPages/${companyId}/record-service/all`}
-                        className="flex items-center justify-center px-4 py-3 bg-primary-600 text-secondary-700 font-semibold rounded-lg hover:bg-secondary-100 transition-colors duration-200 border border-secondary-200"
+                        className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg"
                      >
-                        <span className="hover:text-black">📋Future: All Service Records</span>
-                     </Link> 
+                        📋 Future: All Service Records
+                     </Link>
                   </div>
                </div>
             </div>

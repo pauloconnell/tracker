@@ -53,7 +53,7 @@ export default async function Home() {
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                      <a
                         href={href}
-                        className=" flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transition duration-150"
+                        className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-lg border border-blue-600 shadow-lg hover:bg-white hover:text-black transition-colors duration-200"
                      >
                         {isLoggedIn ? 'Go to Dashboard' : 'Get Started Free'}
                      </a>
@@ -68,7 +68,7 @@ export default async function Home() {
                      {isLoggedIn && (
                         <a
                            href="/setup-company"
-                           className="flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transition duration-150"
+                           className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-lg border border-blue-600 shadow-lg hover:bg-white hover:text-black transition-colors duration-200"
                         >
                            Create New Fleet
                         </a>
@@ -169,7 +169,7 @@ export default async function Home() {
                </p>
                <a
                   href={href}
-                  className="inline-block px-8 py-4 bg-white text-primary-600 font-bold rounded-lg hover:bg-primary-50 transition-colors shadow-lg hover:shadow-xl duration-200"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-600 font-bold rounded-lg border border-white hover:bg-primary-600 hover:text-white transition-colors duration-200 shadow-lg hover:shadow-xl"
                >
                   {isLoggedIn ? 'Open Dashboard' : 'Start Your Free Account'}
                </a>

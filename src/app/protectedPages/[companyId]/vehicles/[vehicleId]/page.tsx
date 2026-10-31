@@ -23,46 +23,46 @@ export default async function VehiclePage({ params }: Props) {
    return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
          {/* Back Button */}
-         <div className="flex justify-between items-center mb-6 mt-3 mx-6">
+         <div className="flex justify-between items-center mb-6">
             <Link
                href={`/protectedPages/${companyId}/dashboard`}
-               className="bg-gray-900 px-4 py-2 rounded-lg hover:bg-gray-300"
+               className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg"
             >
                Back to Dashboard
             </Link>
             <Link
                href={`/protectedPages/${companyId}/vehicles/${vehicleId}/edit`}
-               className="bg-yellow-600 text-white px-4 py-2 rounded-lg"
+               className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg"
             >
                Edit Vehicle
             </Link>
          </div>
 
          {/* Vehicle Title */}
-         <h1 className="text-2xl font-bold">
+         <h1 className="text-2xl font-bold mb-1">
             {vehicle?.year} {vehicle?.make} {vehicle?.model} - {vehicle?.nickName}
          </h1>
-         <h2>Type: {vehicle?.vehicleType ?? 'car/truck'} | KM: {vehicle?.mileage}</h2>
+         <h2 className="text-gray-600 mb-6">Type: {vehicle?.vehicleType ?? 'car/truck'} | KM: {vehicle?.mileage}</h2>
 
          {/* Action Buttons */}
-         <div className="flex gap-4">
+         <div className="flex gap-4 mb-8">
             <Link
                href={`/protectedPages/${companyId}/work-orders/new?vehicleId=${vehicleId}`}
-               className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+               className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg"
             >
                Create Work Order
             </Link>
 
             <Link
                href={`/protectedPages/${companyId}/record-service/${vehicleId}`}
-               className="bg-green-600 text-white px-4 py-2 rounded-lg"
+               className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg"
             >
                Record Service
             </Link>
          </div>
 
          {/* Service Due */}
-         <section className="flex flex-col gap-6 min-h-[150px]">
+         <section className="flex flex-col gap-6 min-h-[150px] mb-8">
             <h2 className="text-2xl font-semibold">Service Due</h2>
             <ServiceDue companyId={companyId} vehicleId={vehicleId}  />
          </section>
