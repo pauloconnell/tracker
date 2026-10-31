@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { IVehicle } from '@/types/IVehicle';
 import type { IFormBaseService } from '@/types/IFormBaseService';
-import { SERVICE_TYPES } from '@/constants/service';
+import { SERVICE_TYPES, SERVICE_TYPES_BY_VEHICLE } from '@/constants/service';
 import { LOCATIONS } from '@/constants/locations';
 
 interface LocationOption {
@@ -14,18 +14,19 @@ interface SharedFieldsFormProps <T extends IFormBaseService> {
    form: T; 
    setForm: React.Dispatch<React.SetStateAction<T>>; 
    vehicles: IVehicle[]; 
-   handleChange: ( e: React.ChangeEvent< HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement > ) => void; 
+   handleChange: ( e: React.ChangeEvent< HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement > ) => void;
+   vehicleType?: string;
 }
 
 
 export default function SharedServiceFormFields<T extends IFormBaseService>({
-   form, setForm, vehicles, handleChange, }: SharedFieldsFormProps<T>) {
+   form, setForm, vehicles, handleChange, vehicleType, }: SharedFieldsFormProps<T>) {
 
 
 
    // toggle lock for recurring service intervals
    const [isLocked, setIsLocked] = useState(form.isRecurring);
-   const serviceTypes = SERVICE_TYPES;
+   const serviceTypes = vehicleType ? (SERVICE_TYPES_BY_VEHICLE[vehicleType] ?? SERVICE_TYPES) : SERVICE_TYPES;
    const locations = LOCATIONS;
 
    return (

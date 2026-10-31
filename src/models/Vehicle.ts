@@ -10,6 +10,7 @@ const VehicleSchema = new Schema(
       nickName: { type: String, required: true },
       mileage: { type: Number },
       vin: { type: String },
+      vehicleType: { type: String, default: 'car/truck' },
    },
    { timestamps: true }
 );

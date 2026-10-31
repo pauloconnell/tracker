@@ -6,5 +6,6 @@ export interface IFormVehicle {
   mileage?: string;
   vin?: string;
   vehicleId?: string;
+  vehicleType?: string;
   companyId: string;
 }

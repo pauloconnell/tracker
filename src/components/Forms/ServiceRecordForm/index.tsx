@@ -22,7 +22,8 @@ export default function ServiceRecordForm({
    const vehicles = useVehicleStore((s) => s.allVehicles);
    const fetchAllVehicles = useVehicleStore((s) => s.fetchAllVehicles);
    const selectedVehicle = useVehicleStore((s) => s.selectedVehicle);
-   const fetchVehicle = useVehicleStore((s) => s.fetchVehicle); // Fetch all vehicles if not loaded (dashboard mode)
+   const fetchVehicle = useVehicleStore((s) => s.fetchVehicle);
+   const setSelectedVehicle = useVehicleStore((s) => s.setSelectedVehicle);
    const searchParams = useSearchParams();
 
    // Form state
@@ -82,6 +83,7 @@ export default function ServiceRecordForm({
       // Special case: vehicle selection
       if (name === 'vehicleId') {
          const v = vehicles.find((veh) => veh._id === value);
+         if (v) setSelectedVehicle(v);
          setForm((prev) => ({
             ...prev,
             vehicleId: value,
@@ -129,6 +131,7 @@ export default function ServiceRecordForm({
             setForm={setForm}
             vehicles={vehicles}
             handleChange={handleChange}
+            vehicleType={selectedVehicle?.vehicleType}
          />
 
          <div className="flex flex-col md:flex-row gap-4">

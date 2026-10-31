@@ -8,6 +8,14 @@ import type { IVehicle } from '@/types/IVehicle';
 import type { IFormVehicle } from '@/types/IFormVehicle';
 import { apiFetch } from '@/lib/utils/apiFetch';
 
+const VEHICLE_TYPES = [
+   'car/truck',
+   'motorbike/atv',
+   'motorhome/RV',
+   'boat/outboard',
+   'chainsaw/mower/generator',
+];
+
 interface VehicleFormProps {
    vehicle?: IVehicle | IFormVehicle;
    companyId?: string;
@@ -28,11 +36,16 @@ export default function VehicleForm({ vehicle, companyId }: VehicleFormProps) {
       vin: vehicle?.vin ?? '',
       vehicleId: derivedVehicleId,
       companyId: companyId ?? '',
+      vehicleType: vehicle?.vehicleType ?? 'car/truck',
    });
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const cleaned = sanitizeInput(e.target.value);
       setForm({ ...form, [e.target.name]: cleaned });
+   };
+
+   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setForm({ ...form, [e.target.name]: e.target.value });
    };
 
    const handleSubmit = async (e: React.FormEvent) => {
@@ -139,6 +152,15 @@ export default function VehicleForm({ vehicle, companyId }: VehicleFormProps) {
                className="border px-3 py-2 rounded w-full"
                required
             />
+         </div>
+
+         <div>
+            <label htmlFor="vehicleType" className="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+            <select id="vehicleType" name="vehicleType" value={form.vehicleType} onChange={handleSelectChange} className="border px-3 py-2 rounded w-full">
+               {VEHICLE_TYPES.map((t) => (
+                  <option key={t} value={t}>{t}</option>
+               ))}
+            </select>
          </div>
 
          <div>
