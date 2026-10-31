@@ -72,12 +72,13 @@ export const CardWorkOrder = ({ wo, companyId }: WorkOrderProps) => {
             <Link
                href={`/protectedPages/${companyId}/work-orders/${wo._id}`}
                onClick={() => { setSelectedWorkOrder(wo); setNavigating(true); }}
-               className="inline-flex items-center justify-center p-2 rounded-full bg-secondary-50 text-secondary-400 hover:bg-primary-600 hover:text-white transition-all duration-300"
+               className="inline-flex flex-col items-center justify-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg"
             >
                {navigating
                   ? <div className="h-5 w-5 animate-spin rounded-full border-2 border-secondary-300 border-t-primary-600" />
                   : <ChevronRight className="w-5 h-5" />
                }
+               <span className="text-[10px] font-medium mt-0.5">Details</span>
             </Link>
          </div>
       </div>

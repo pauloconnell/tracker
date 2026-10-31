@@ -48,8 +48,7 @@ export default function WorkOrderForm({
    useEffect(() => {
       if (isEditing && workOrderId) {
          if (!storeWO || storeWO._id !== workOrderId) {
-            // If store is empty OR store has a different workOrderId, fetch it
-            fetchWorkOrder(workOrderId);
+            fetchWorkOrder(workOrderId, companyId);
          }
       }
    }, [isEditing, storeWO, workOrderId, fetchWorkOrder]);
@@ -301,15 +300,14 @@ const payload = { ...form, companyId, nickName: workOrderName };
 
          {/* Submit + Delete */}
          <div className="flex justify-between items-center mt-6 px-3">
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg">
+            <button type="submit" className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg border border-blue-600 hover:bg-white hover:text-black transition-colors duration-200 shadow-md hover:shadow-lg">
                Save Work Order
             </button>
-
             {workOrderId && <DeleteWorkOrderButton workOrderId={workOrderId} />}
             <button
                type="button"
                onClick={() => router.back()}
-               className="bg-gray-200 px-4 py-2 rounded-lg"
+               className="inline-flex items-center justify-center px-6 py-3 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition-colors duration-200"
             >
                Cancel
             </button>

@@ -1,67 +1,92 @@
 export const BOAT_OUTBOARD_SERVICES = [
   {
+    id: "general-inspection",
+    name: "General Inspection",
+    interval: "Annually or every 100 hours",
+    laborHours: 0.5,
+  },
+  {
     id: "outboard-tuneup",
     name: "Outboard Tune-Up",
+    interval: "Annually or every 100 hours",
     laborHours: 1.5,
   },
   {
     id: "fuel-water-separator",
     name: "Fuel Water Separator Replacement",
+    interval: "Every season or every 100 hours",
     laborHours: 0.3,
   },
   {
     id: "fuel-line-primer",
     name: "Fuel Line & Primer Bulb Replacement",
+    interval: "Every 2 seasons or every 200 hours",
     laborHours: 0.5,
   },
   {
     id: "marine-battery",
     name: "Marine Battery Service",
+    interval: "Inspect annually, replace every 3–5 years",
     laborHours: 0.3,
   },
   {
     id: "marine-electrical",
     name: "Marine Electrical Diagnosis",
+    interval: "As needed",
     laborHours: 1.0,
   },
   {
     id: "marine-plugs",
     name: "Marine Spark Plug Replacement",
+    interval: "Every season or every 100 hours",
     laborHours: 0.5,
   },
   {
     id: "outboard-carb",
     name: "Outboard Carb Synchronization",
+    interval: "Annually or every 100 hours",
     laborHours: 1.5,
   },
   {
     id: "water-impeller",
     name: "Water Impeller Replacement",
+    interval: "Every 2 seasons or every 200 hours",
     laborHours: 1.5,
   },
   {
     id: "lower-unit",
     name: "Lower Unit Service",
+    interval: "Annually or every 100 hours",
     laborHours: 1.0,
   },
   {
     id: "propeller",
     name: "Propeller Inspection / Replacement",
+    interval: "Every season or as needed",
     laborHours: 0.5,
   },
   {
     id: "anodes",
     name: "Anode Replacement",
+    interval: "Annually or when 50% depleted",
     laborHours: 0.5,
   },
   {
     id: "bilge-pump",
     name: "Bilge Pump Service",
+    interval: "Annually",
     laborHours: 0.8,
+  },
+  {
+    id: "steering-cable",
+    name: "Steering Cable Lubrication",
+    interval: "Annually",
+    laborHours: 0.3,
   },
   {
     id: "winterization",
     name: "Winterization / De-Winterization",
+    interval: "Seasonal",
     laborHours: 1.5,
   },
 ] as const;

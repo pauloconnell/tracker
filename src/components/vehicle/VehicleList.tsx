@@ -30,9 +30,8 @@ const setActiveCompanyId = useCompanyStore((s) => s.setActiveCompanyId);
                key={v._id}
                href={`/protectedPages/${companyId}/vehicles/${v._id}`}
                onClick={() => setSelectedVehicle(v)}
-               className="p-4 border rounded-lg bg-primary-600 shadow-sm hover:shadow-md transition"
-            >
-               <div className="font-medium bg-primary-600">
+               className="p-4 border border-blue-600 rounded-lg bg-blue-600 text-white font-semibold shadow-sm hover:bg-white hover:text-black transition-colors duration-200">
+               <div className="font-medium">
                   {v.year} {v.make} {v.model}, Name: {v.nickName}
                </div>
             </Link>

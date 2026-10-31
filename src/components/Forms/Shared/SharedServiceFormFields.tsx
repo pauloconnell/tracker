@@ -1,9 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { IVehicle } from '@/types/IVehicle';
 import type { IFormBaseService } from '@/types/IFormBaseService';
 import { SERVICE_TYPES, SERVICE_TYPES_BY_VEHICLE } from '@/constants/service';
 import { LOCATIONS } from '@/constants/locations';
+import { apiFetch } from '@/lib/utils/apiFetch';
 
 interface LocationOption {
    value: string;
@@ -27,7 +28,40 @@ export default function SharedServiceFormFields<T extends IFormBaseService>({
    // toggle lock for recurring service intervals
    const [isLocked, setIsLocked] = useState(form.isRecurring);
    const serviceTypes = vehicleType ? (SERVICE_TYPES_BY_VEHICLE[vehicleType] ?? SERVICE_TYPES) : SERVICE_TYPES;
+   const isLegacyServiceType = form.serviceType !== '' && !serviceTypes.includes(form.serviceType);
    const locations = LOCATIONS;
+
+   const [lastService, setLastService] = useState<{ date: string; mileage: string } | null | 'loading' | 'none'>('none');
+   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+   useEffect(() => {
+      if (!form.serviceType || !form.vehicleId || !form.companyId) {
+         setLastService('none');
+         return;
+      }
+      setLastService('loading');
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(async () => {
+         try {
+            const res = await apiFetch(
+               `/api/service-records?vehicleId=${form.vehicleId}&companyId=${form.companyId}&serviceType=${encodeURIComponent(form.serviceType)}`
+            );
+            if (!res.ok) { setLastService(null); return; }
+            const data = await res.json();
+            if (data) {
+               setLastService({
+                  date: new Date(data.serviceDate).toLocaleDateString(),
+                  mileage: data.mileage ? `${data.mileage.toLocaleString()} km` : 'km unknown',
+               });
+            } else {
+               setLastService(null);
+            }
+         } catch {
+            setLastService(null);
+         }
+      }, 500);
+      return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+   }, [form.serviceType, form.vehicleId, form.companyId]);
 
    return (
       <>
@@ -53,20 +87,32 @@ export default function SharedServiceFormFields<T extends IFormBaseService>({
          {/* Service Type */}
          <div>
             <label className="block font-medium mb-1">Service Type</label>
+            {isLegacyServiceType && (
+               <div className="mb-2 p-2 bg-yellow-50 border border-yellow-300 rounded text-sm text-yellow-800">
+                  <span className="font-medium">Current (legacy): </span>{form.serviceType}
+               </div>
+            )}
             <select
                name="serviceType"
-               value={form.serviceType}
+               value={isLegacyServiceType ? '' : form.serviceType}
                onChange={handleChange}
                className="w-full border rounded-lg p-2"
-               required
+               required={!isLegacyServiceType}
             >
-               <option value="">Select service</option>
+               <option value="">{isLegacyServiceType ? 'Update to new service type (optional)' : 'Select service'}</option>
                {serviceTypes.map((s) => (
-                  <option key={s} value={s}>
-                     {s}
-                  </option>
+                  <option key={s} value={s}>{s}</option>
                ))}
             </select>
+            {lastService === 'loading' && (
+               <p className="text-xs text-gray-400 mt-1">Checking last service...</p>
+            )}
+            {lastService === null && (
+               <p className="text-xs text-gray-400 mt-1">No previous record found</p>
+            )}
+            {lastService && lastService !== 'loading' && lastService !== 'none' && lastService !== null && (
+               <p className="text-xs text-green-700 mt-1">Last done: {lastService?.date} @ {lastService?.mileage}</p>
+            )}
          </div>
 
          {/* Location */}

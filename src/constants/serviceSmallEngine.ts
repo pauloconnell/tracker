@@ -1,62 +1,86 @@
 export const SMALL_ENGINE_SERVICES = [
   {
+    id: "general-inspection",
+    name: "General Inspection",
+    interval: "Annually or every 50 hours",
+    laborHours: 0.5,
+  },
+  {
     id: "tuneup",
     name: "Tune-Up",
+    interval: "Annually or every 50 hours",
     laborHours: 1.0,
   },
   {
     id: "oil-change",
     name: "Oil Change",
+    interval: "Every 50 hours or annually (25 hours for new engines)",
     laborHours: 0.3,
   },
   {
     id: "air-filter",
     name: "Air Filter Replacement",
+    interval: "Every 25 hours or annually (more often in dusty conditions)",
     laborHours: 0.2,
   },
   {
     id: "fuel-filter",
     name: "Fuel Filter Replacement",
+    interval: "Annually or every 2 seasons",
     laborHours: 0.3,
   },
   {
     id: "spark-plugs",
     name: "Spark Plug Replacement",
+    interval: "Annually or every 100 hours",
     laborHours: 0.3,
   },
   {
     id: "carb-service",
     name: "Carburetor Service",
+    interval: "Annually or as needed (especially after storage)",
     laborHours: 1.0,
   },
   {
     id: "fuel-system-clean",
     name: "Fuel System Cleaning",
+    interval: "Annually or before storage",
     laborHours: 0.5,
   },
   {
     id: "chain-sharpen",
     name: "Chainsaw Chain Sharpening",
+    interval: "Every 3–5 hours of cutting use",
     laborHours: 0.3,
+  },
+  {
+    id: "chain-oil",
+    name: "Chainsaw Bar & Chain Oil Check",
+    interval: "Every use",
+    laborHours: 0.1,
   },
   {
     id: "blade-sharpen",
     name: "Mower Blade Sharpening",
+    interval: "Every season or every 25 hours",
     laborHours: 0.4,
   },
   {
     id: "starter-repair",
     name: "Recoil Starter Service",
+    interval: "As needed",
     laborHours: 0.7,
   },
   {
     id: "compression-test",
     name: "Compression Test",
+    interval: "As needed or annually for older equipment",
     laborHours: 0.5,
   },
   {
     id: "diagnostic",
     name: "Diagnostic Service",
+    interval: "As needed",
     laborHours: 0.5,
   },
 ] as const;

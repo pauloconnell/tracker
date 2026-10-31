@@ -41,9 +41,9 @@ export default async function EditVehiclePage({ params }: Props) {
    }
 
    return (
-      <div className="space-y-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
          {/* Back Button */}
-         <div className="flex justify-between items-center mb-6 mt-3 mx-6">
+         <div className="flex justify-between items-center mb-6">
             <Link
                href={`/protectedPages/${companyId}/vehicles/${vehicleId}`}
                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300"
@@ -51,12 +51,8 @@ export default async function EditVehiclePage({ params }: Props) {
                Back to Vehicle
             </Link>
          </div>
-
-         {/* Page Title */}
-         <h1 className="text-2xl font-bold">Edit Vehicle</h1>
-
-         {/* Form */}
-         <div className="max-w-3xl mx-auto px-6 py-6">
+         <h1 className="text-2xl font-bold mb-6">Edit Vehicle</h1>
+         <div className="max-w-3xl">
             <EditFormWrapper vehicle={vehicle} companyId={companyId} />
          </div>
       </div>

@@ -17,6 +17,12 @@ export async function getServiceHistory(vehicleId: string, companyId?: string): 
   return records.map(serializeServiceRecord);
 }
 
+export async function getLastServiceRecord(vehicleId: string, companyId: string, serviceType: string): Promise<IServiceRecord | null> {
+  await connectDB();
+  const record = await ServiceRecord.findOne({ vehicleId, companyId, serviceType }).sort({ serviceDate: -1 }).lean();
+  return record ? serializeServiceRecord(record) : null;
+}
+
 export async function getAllServiceRecords(companyId?: string): Promise<IServiceRecord[]> {
   await connectDB();
   const query = companyId ? { companyId } : {};
