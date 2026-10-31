@@ -1,3 +1,27 @@
+import { CAR_TRUCK_SERVICES } from './serviceCarTruck';
+import { MOTORBIKE_ATV_SERVICES } from './serviceMotorcycleAtv';
+import { RV_SERVICES } from './serviceRV';
+import { BOAT_OUTBOARD_SERVICES } from './serviceBoatOutboard';
+import { SMALL_ENGINE_SERVICES } from './serviceSmallEngine';
+
+type ServiceItem = { id: string; name: string; interval?: string; laborHours?: number };
+
+function toStrings(items: readonly ServiceItem[]): string[] {
+  return items.map((s) =>
+    s.interval
+      ? `${s.name} — ${s.interval} — Time: ${s.laborHours} hours`
+      : `${s.name} — Time: ${s.laborHours} hours`
+  );
+}
+
+export const SERVICE_TYPES_BY_VEHICLE: Record<string, string[]> = {
+  'car/truck': toStrings(CAR_TRUCK_SERVICES),
+  'motorbike/atv': toStrings(MOTORBIKE_ATV_SERVICES),
+  'motorhome/RV': toStrings(RV_SERVICES),
+  'boat/outboard': toStrings(BOAT_OUTBOARD_SERVICES),
+  'chainsaw/mower/generator': toStrings(SMALL_ENGINE_SERVICES),
+};
+
 export const SERVICE_TYPES = [
 "General Inspection:  Every 12 months or 20,000 km — Time: 0.5 hours",
 

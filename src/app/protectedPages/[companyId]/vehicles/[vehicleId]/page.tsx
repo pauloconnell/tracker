@@ -42,7 +42,7 @@ export default async function VehiclePage({ params }: Props) {
          <h1 className="text-2xl font-bold">
             {vehicle?.year} {vehicle?.make} {vehicle?.model} - {vehicle?.nickName}
          </h1>
-         <h2>KM: {vehicle?.mileage}</h2>
+         <h2>Type: {vehicle?.vehicleType ?? 'car/truck'} | KM: {vehicle?.mileage}</h2>
 
          {/* Action Buttons */}
          <div className="flex gap-4">

@@ -8,6 +8,7 @@ export interface IVehicle {
    mileage: string;
    year: string;
    vin?: string;
+   vehicleType?: string;
    createdAt?: string;
    updatedAt?: string;
 }

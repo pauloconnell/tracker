@@ -148,6 +148,9 @@ export default function WorkOrderForm({
             serviceFrequencyKM: String(storeWO.serviceFrequencyKM) ?? '',
             serviceFrequencyWeeks: String(storeWO.serviceFrequencyWeeks ?? ''),
          });
+         // sync selectedVehicle so vehicleType-based service list is correct
+         const v = vehicles?.find((veh) => veh._id === storeWO.vehicleId);
+         if (v) setSelectedVehicle(v);
       }
    }, [isEditing, storeWO, companyId]);
 
@@ -238,6 +241,7 @@ const payload = { ...form, companyId, nickName: workOrderName };
             setForm={setForm}
             vehicles={vehicles || []}
             handleChange={handleChange}
+            vehicleType={selectedVehicle?.vehicleType}
          />
          {/* If existing work order: allow user to Complete work order - must add tech's name */}
          {isEditing && (
