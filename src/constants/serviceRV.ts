@@ -83,4 +83,8 @@ export const RV_SERVICES = [
     interval: "As needed",
     laborHours: 0.7,
   },
+  {
+    id: "other",
+    name: "Other",
+  },
 ] as const;

@@ -8,9 +8,10 @@ type ServiceItem = { id: string; name: string; interval?: string; laborHours?: n
 
 function toStrings(items: readonly ServiceItem[]): string[] {
   return items.map((s) =>
-    s.interval
-      ? `${s.name} — ${s.interval} — Time: ${s.laborHours} hours`
-      : `${s.name} — Time: ${s.laborHours} hours`
+    `${s.name}`
+    // s.interval
+    //   ? `${s.name} — ${s.interval} — Time: ${s.laborHours} hours`
+    //   : `${s.name} — Time: ${s.laborHours} hours`
   );
 }
 
@@ -20,6 +21,14 @@ export const SERVICE_TYPES_BY_VEHICLE: Record<string, string[]> = {
   'motorhome/RV': toStrings(RV_SERVICES),
   'boat/outboard': toStrings(BOAT_OUTBOARD_SERVICES),
   'chainsaw/mower/generator': toStrings(SMALL_ENGINE_SERVICES),
+};
+
+export const SERVICE_DETAILS_BY_VEHICLE: Record<string, readonly ServiceItem[]> = {
+  'car/truck': CAR_TRUCK_SERVICES,
+  'motorbike/atv': MOTORBIKE_ATV_SERVICES,
+  'motorhome/RV': RV_SERVICES,
+  'boat/outboard': BOAT_OUTBOARD_SERVICES,
+  'chainsaw/mower/generator': SMALL_ENGINE_SERVICES,
 };
 
 export const SERVICE_TYPES = [
