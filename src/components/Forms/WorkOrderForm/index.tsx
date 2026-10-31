@@ -48,8 +48,7 @@ export default function WorkOrderForm({
    useEffect(() => {
       if (isEditing && workOrderId) {
          if (!storeWO || storeWO._id !== workOrderId) {
-            // If store is empty OR store has a different workOrderId, fetch it
-            fetchWorkOrder(workOrderId);
+            fetchWorkOrder(workOrderId, companyId);
          }
       }
    }, [isEditing, storeWO, workOrderId, fetchWorkOrder]);

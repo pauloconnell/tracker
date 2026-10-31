@@ -27,6 +27,7 @@ export default function SharedServiceFormFields<T extends IFormBaseService>({
    // toggle lock for recurring service intervals
    const [isLocked, setIsLocked] = useState(form.isRecurring);
    const serviceTypes = vehicleType ? (SERVICE_TYPES_BY_VEHICLE[vehicleType] ?? SERVICE_TYPES) : SERVICE_TYPES;
+   const isLegacyServiceType = form.serviceType !== '' && !serviceTypes.includes(form.serviceType);
    const locations = LOCATIONS;
 
    return (
@@ -53,18 +54,21 @@ export default function SharedServiceFormFields<T extends IFormBaseService>({
          {/* Service Type */}
          <div>
             <label className="block font-medium mb-1">Service Type</label>
+            {isLegacyServiceType && (
+               <div className="mb-2 p-2 bg-yellow-50 border border-yellow-300 rounded text-sm text-yellow-800">
+                  <span className="font-medium">Current (legacy): </span>{form.serviceType}
+               </div>
+            )}
             <select
                name="serviceType"
-               value={form.serviceType}
+               value={isLegacyServiceType ? '' : form.serviceType}
                onChange={handleChange}
                className="w-full border rounded-lg p-2"
-               required
+               required={!isLegacyServiceType}
             >
-               <option value="">Select service</option>
+               <option value="">{isLegacyServiceType ? 'Update to new service type (optional)' : 'Select service'}</option>
                {serviceTypes.map((s) => (
-                  <option key={s} value={s}>
-                     {s}
-                  </option>
+                  <option key={s} value={s}>{s}</option>
                ))}
             </select>
          </div>
